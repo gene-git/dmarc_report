@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "dmarc_report"
-version = "0.8.1"
-description = "Generate nice reports from one or more DMARC report files"
+version = "0.9.0"
+description = "Generate a human readable DMARC report from 1 or more standard xml email reports."
 authors = ["Gene C"]
 license = "MIT"
 readme = "README.md"

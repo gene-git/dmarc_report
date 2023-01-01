@@ -1,6 +1,6 @@
 # dmarc_report
 
-Generate Report from dmarc email reports
+Generate a human readable DMARC report from 1 or more standard xml email reports .
 
 ## Installation
 

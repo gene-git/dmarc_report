@@ -105,7 +105,7 @@ def print_ip_row(opts, name, iprpt, cols):
     selectors = ' '.join(iprpt.dkim_selectors)
 
     if printit:
-        print(f'{col1} | {col2} | {col3} | {col4} ({selectors})')
+        print(f'{col1} | {col2} | {col3} | {col4} | {selectors}')
 
 
 def print_domain_report(opts, org, dom, cols):
@@ -166,15 +166,15 @@ def print_report(rpt):
     #
     # print selector map
     #
-    print('\nSelectors:')
+    print('\nSelector Map:')
     dash6 = 6*'-'
     dash20 = 20 *'-'
     sel_map = rpt.sel_map
 
-    print(f'{"":5s} {"Short":^6s} {"selector":20s} {"Pass":>6s} {"Fail":>6s} {"domain":20s}')
-    print(f'{"":5s} {dash6:^6s} {dash20:20s} {dash6:>6s} {dash6:>6s} {dash20:20s}')
+    print(f'{"":5s} {"Short":^6s} {"Selector":20s} {"Pass":>6s} {"Fail":>6s}   {"domain":20s}')
+    print(f'{"":5s} {dash6:^6s} {dash20:20s} {dash6:>6s} {dash6:>6s}   {dash20:20s}')
     for sel in sel_map.selectors:
-        print(f'{"":5s} {sel.short:^6s} {sel.name:20s} {sel.passes:>6,d} {sel.fails:>6,d} {sel.domain}')
+        print(f'{"":5s} {sel.short:^6s} {sel.name:20s} {sel.passes:>6,d} {sel.fails:>6,d}   {sel.domain}')
 
     #
     # If more than 1 org processed then add grand total
