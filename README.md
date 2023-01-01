@@ -1,25 +1,55 @@
 # dmarc_report
 
-Generate nice reports from one or more DMARC report files
+Generate Report from dmarc email reports
 
 ## Installation
 
-```bash
-$ pip install dmarc_report
-```
+Available on
+ - [Github source ](https://github.com/gene-git/dmarc_report)
+ - [Archlinux AUR](https://aur.archlinux.org/packages/dmarc_report)
+   PKGBUILD also in source tree under packaging
+
+If on Arch can build using the PKGBUILD provided which is also available in the AUR.
+
+To build it manually, clone the repo and do:
+
+        rm -f dist/*
+        poetry build --format wheel
+        root_dest="/"
+        ./scripts/do-install $root_dest
+
+  If running as non-root then set root\_dest a user writable directory
+
+### Dependencies
+
+- Run Time :
+  - python (3.9 or later)
+  - netaddr (aka python-netaddr )
+
+- Building Package:
+  - git
+  - poetry (aka python-poetry)
+  - wheel (aka python-wheel)
+  - pip (aka python-pip)
+  - rsync
 
 ## Usage
 
-- TODO
+Save all dmarc reports into a directory. The ripmime[1] tool is useful for extracting compressed xml 
+report files from saved emails especially if saving multiple email reports.
 
-## Contributing
+Change to the directory containing one or more dmarc report files and simply run
 
-Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a Code of Conduct. By contributing to this project, you agree to abide by its terms.
+
+        dmarc-rpt
+
+The tool processes all xml and gzip/zip compresses xml files.
+
+[1] https://github.com/inflex/ripMIME
+
 
 ## License
 
-`dmarc_report` was created by Gene C. It is licensed under the terms of the MIT license.
+`dmarc_rpt` was created by Gene C. It is licensed under the terms of the MIT license.
 
 ## Credits
-
-`dmarc_report` was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/) and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-cookiecutter).
