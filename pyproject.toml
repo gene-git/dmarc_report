@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dmarc_report"
-version = "0.7.0"
+version = "0.8.0"
 description = "Generate nice reports from one or more DMARC report files"
 authors = ["Gene C"]
 license = "MIT"
