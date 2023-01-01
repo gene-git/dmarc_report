@@ -1,0 +1,48 @@
+#!/bin/bash
+#
+# installer script for dmarc_rpt
+# e.g. Call from PKGBUILD or other package builder:  
+#   ./do-install ${pkgdir}
+# gene c (2023)
+#
+dest="$1"
+self="dmarc_report"
+
+info="README.md CHANGELOG.md scripts packaging"
+infodir="/usr/share/${self}"
+
+license="LICENSE"
+licensedir="/usr/share/licenses/${self}"
+
+# list apps without the ".py" or leave empty string
+apps=('dmarc-rpt')
+
+# so can make app link in /usr/bin
+sitedir=$(/usr/bin/python3 -c "import site; print(site.getsitepackages()[0])")
+
+if [ ! -d "$dest" ] ; then
+    echo 'Missing destination directory'
+    exit 1
+else
+    # shared
+    /usr/bin/rsync --mkpath -a ${info} ${dest}${infodir}
+    /usr/bin/rsync --mkpath -a ${license} ${dest}/${licensedir}/${license}
+
+    #
+    # Ensure no pip config is used.
+    #
+    export PIP_CONFIG_FILE=/dev/null
+    pipopts="--isolated --ignore-installed --no-deps"
+    /usr/bin/pip install --root="${dest}" $pipopts dist/*.whl
+
+    # link(s) in /usr/bin/
+    if [ -v apps ] ; then
+        /usr/bin/mkdir -p "${dest}/usr/bin"
+        for app in ${apps[@]}
+        do
+            /usr/bin/ln -sf ${sitedir}/${self}/${app}.py ${dest}/usr/bin/${app}
+        done
+    fi
+    exit 0
+fi
+
