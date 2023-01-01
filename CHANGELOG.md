@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.9.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-01
+ - Small tweak to report output  
+ - fix typo  
+ - update CHANGELOG.md  
+
 ## [0.8.1] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-01
  - update readme  
  - update CHANGELOG.md  
