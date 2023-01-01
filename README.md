@@ -43,7 +43,7 @@ Change to the directory containing one or more dmarc report files and simply run
 
         dmarc-rpt
 
-The tool processes all xml and gzip/zip compresses xml files.
+The tool processes all xml and gzip/zip compressed xml files.
 
 [1] https://github.com/inflex/ripMIME
 
