@@ -198,7 +198,7 @@ def print_report(rpt):
         for org in rpt.org:
             num_ips = org.get_num_ips()
             total_num_ips += num_ips
-            if num_ips > 1:
-                print_total(rpt.opts, org.name, org.total, cols, do_dashes=False)
+            #if num_ips > 1:
+            print_total(rpt.opts, org.name, org.total, cols, do_dashes=False)
         if total_num_ips > 1:
             print_total(rpt.opts, 'Grand Total', rpt.total, cols)

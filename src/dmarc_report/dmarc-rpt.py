@@ -10,6 +10,7 @@
 from lib import DmarcRpt
 from lib import xml_file_list
 from lib import xml_file_read
+from lib import find_extract_email_attachments
 
 def main():
     """
@@ -17,9 +18,13 @@ def main():
     """
     #pdb.set_trace()
     report = DmarcRpt()
+    topdir = report.opts.dir
+
+    # process any email files first (extract dmarc report attachments)
+    find_extract_email_attachments(topdir)
 
     # returns dict of items ftype: file_list
-    xml_files = xml_file_list()
+    xml_files = xml_file_list(topdir)
 
     sep = 40*'-'
     for (ftype, files) in xml_files.items():
@@ -27,7 +32,7 @@ def main():
             if report.opts.verb:
                 print(f'{sep}')
                 print (f' - {file}')
-            xml = xml_file_read(ftype, file)
+            xml = xml_file_read(topdir, ftype, file)
             report.make_report(xml)
 
     report.print()

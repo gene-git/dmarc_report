@@ -1,6 +1,8 @@
 """
 Helper tools for dmarc report generator
 """
+import os
+import glob
 from operator import itemgetter
 import netaddr
 
@@ -52,3 +54,22 @@ def drange_summary(drange_list):
         contig_flag = '*'
 
     return (start, end, contig_flag)
+
+def get_glob_file_list(topdir, pattern, withpath=False):
+    """
+    gets list of files in topdir/pattern
+      - returns filenames without topdir unless withpath=True
+    """
+    if topdir.endswith('/'):
+        gpat = f'{topdir}{pattern}'
+    else:
+        gpat = f'{topdir}/{pattern}'
+
+    flist = glob.glob(gpat)
+    if not withpath:
+        fnames = []
+        for fpath in flist:
+            file = os.path.basename(fpath)
+            fnames.append(file)
+        flist = fnames
+    return flist

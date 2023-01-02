@@ -26,6 +26,9 @@ To build it manually, clone the repo and do:
   - python (3.9 or later)
   - netaddr (aka python-netaddr )
 
+- Optional :
+  - ripMIME
+
 - Building Package:
   - git
   - poetry (aka python-poetry)
@@ -33,44 +36,39 @@ To build it manually, clone the repo and do:
   - pip (aka python-pip)
   - rsync
 
+## Interesting, New or Coming Soon
+
+### New
+
+ - Added support to extract dmarc reports from mime attachments in  
+   email files.  Any file with extension *.eml* is treated as an email file.
+   No longer necessary to use standalone program to extract mime attachments.
+
+ - Added option *-d, --dir*  
+   Allows specifying the directory with the dmarc report files to be processed.  
+   The default dir remains the current directory.
+
 ## Usage
 
-Save all dmarc reports into a directory. The ripmime[1] tool is useful for extracting attached compressed xml 
-report files from saved emails especially if saving multiple email reports.
-
+Save all dmarc reports into a directory. 
 Change to the directory containing one or more dmarc report files and simply run
 
 
         dmarc-rpt
 
-The tool processes all xml and gzip/zip compressed xml files.
+Any email files, those ending with *.eml* will be processed first. These are assumed to
+contain the dmarc report as a mime attachment. The attachment is extracted from any such email 
+files. 
 
-[1] https://github.com/inflex/ripMIME
+Then all remaining files are read and processed. The tool processes all xml 
+and gzip/zip compressed xml dmarc report files and generates a human readable report.
 
-### Extracting xml attachments from emails
+## Saving Email Reports
 
-In thunderbird if I select multiple email reports and then use File -> Save As into a directory
-each email gets saved with a *.eml* extension. Then the dmarc report attachments can be extracted using 
-ripMIME using a little script such as:
+In most mail clients, such as thunderbird,  one can select multiple email reports and 
+then use *File -> Save As* to save the email files into a directory of your choosing.
+Each email gets saved with a *.eml* extension.
 
-        #!/bin/bash
-        #
-        # extract attachments from all the saved '.eml' files
-        #
-        for i in *.eml
-        do
-            echo " ... $i"
-            ripmime -i "$i"
-        done
-        rm -f textfile* *.eml
-
-I file all incoming dmarc reports into a separate dmarc report email folder
-by using dovecot's pigeonhole sieve functionality. 
-
-The sieve rule matches on the *To* header and then uses
-*fileinto* to put the mail into the dmarc folder. This makes it very 
-simple to select all, save and process 
-quickly to get the final (human) report for all the email reports.
 
 ## License
 

@@ -14,11 +14,16 @@ class DmarcOpts:
         self.dmarc_fails = False
         self.dkim_fails = False
         self.spf_fails = False
+        self.dir = './'
 
         par = argparse.ArgumentParser(description='dmarc-rpt')
         par.add_argument('-v','--verb',
                         action = 'store_true',
                         help='More verbose')
+
+        par.add_argument('-d','--dir',
+                         default = './',
+                        help='Directory containing dmarc report files (default ./)')
 
         par.add_argument('-fdm','--dmarc_fails',
                         action = 'store_true',

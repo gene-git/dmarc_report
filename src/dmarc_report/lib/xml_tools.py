@@ -3,11 +3,13 @@
 """
 # pylint: disable=R0913, R0914
 
+import os
 import glob
 import gzip
 import zipfile
 import datetime
 import xml.etree.ElementTree as xml_et
+from .utils import get_glob_file_list
 
 def get_xml_from_zip(fname):
     """
@@ -88,14 +90,14 @@ def xml_pull_date_range(metadata):
     drange = [dstart, dend]
     return drange
 
-def xml_file_list():
+def xml_file_list(topdir):
     """
     Make list of xml files (plain or zip or gzip)
     Return dictionary containing list of files of each type
     """
-    plain_files = glob.glob('*.xml')
-    gzip_files = glob.glob('*.gz')
-    zip_files = glob.glob('*.zip')
+    plain_files = get_glob_file_list(topdir, '*.xml')
+    gzip_files = get_glob_file_list(topdir, '*.gz')
+    zip_files = get_glob_file_list(topdir, '*.zip')
 
     xml_files = {
             'xml' : plain_files,
@@ -104,22 +106,23 @@ def xml_file_list():
             }
     return  xml_files
 
-def xml_file_read(ftype, file):
+def xml_file_read(topdir, ftype, file):
     """
     Read file into xml - ftype is one of types retturned by xml_file_list():
       - xml, gz, zip
     Note that while zip may contain more than 1 file - all dmarc reports
     only use zip to compress single file.
     """
+    fpath = os.path.join(topdir, file)
     match ftype:
         case 'xml':
-            xml = get_xml_from_xml(file)
+            xml = get_xml_from_xml(fpath)
 
         case 'gzip':
-            xml = get_xml_from_gz(file)
+            xml = get_xml_from_gz(fpath)
 
         case 'zip':
-            xml_list = get_xml_from_zip(file)
+            xml_list = get_xml_from_zip(fpath)
             xml = xml_list[0]
             if len(xml_list) > 1:
                 print('Warning zip compressed report has more than 1 report file - not exepcted')
