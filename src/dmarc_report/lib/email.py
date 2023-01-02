@@ -12,7 +12,7 @@ def email_file_list(topdir):
     eml_list = get_glob_file_list(topdir, '*.eml')
     return eml_list
 
-def email_extract_attachment(topdir, email_file, skip_exist=True):
+def email_extract_attachment(topdir, email_file, keep_email, skip_exist=True):
     """
     extract mime attachment from email file
      - if attachment file exists we skip
@@ -20,8 +20,9 @@ def email_extract_attachment(topdir, email_file, skip_exist=True):
 
     email_path = os.path.join(topdir, email_file)
     email_str = None
-    with open(email_path, 'r', encoding='UTF-8') as fobj:
-        email_str = fobj.read()
+    if os.path.exists(email_path):
+        with open(email_path, 'r', encoding='UTF-8') as fobj:
+            email_str = fobj.read()
 
     if email_str:
         mail = email.message_from_string(email_str)
@@ -30,8 +31,10 @@ def email_extract_attachment(topdir, email_file, skip_exist=True):
         if not (skip_exist and os.path.exists(attach_path)):
             with open(attach_path, 'wb') as fobj:
                 fobj.write(mail.get_payload(decode=True))
+        if not keep_email:
+            os.unlink(email_path)
 
-def find_extract_email_attachments(topdir):
+def find_extract_email_attachments(topdir, keep_email):
     """
     Get all filenames ending in .eml in topdir
     Extract mime attachment into same directory
@@ -42,4 +45,4 @@ def find_extract_email_attachments(topdir):
         return
 
     for eml in eml_list:
-        email_extract_attachment(topdir, eml)
+        email_extract_attachment(topdir, eml, keep_email)

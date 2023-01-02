@@ -19,9 +19,10 @@ def main():
     #pdb.set_trace()
     report = DmarcRpt()
     topdir = report.opts.dir
+    keep_eml = report.opts.keep
 
     # process any email files first (extract dmarc report attachments)
-    find_extract_email_attachments(topdir)
+    find_extract_email_attachments(topdir, keep_eml)
 
     # returns dict of items ftype: file_list
     xml_files = xml_file_list(topdir)

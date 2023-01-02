@@ -40,6 +40,9 @@ To build it manually, clone the repo and do:
 
 ### New
 
+ - *.eml* files are now removed after the dmarc report is extracted.  
+   Use option *-k, --keep* to prevent the *.eml* being removed
+
  - Added support to extract dmarc reports from mime attachments in  
    email files.  Any file with extension *.eml* is treated as an email file.
    No longer necessary to use standalone program to extract mime attachments.
