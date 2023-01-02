@@ -63,6 +63,10 @@ files.
 Then all remaining files are read and processed. The tool processes all xml 
 and gzip/zip compressed xml dmarc report files and generates a human readable report.
 
+Following Postel's law and try to be liberal in what we accept for input. To that end
+we accept the dmarc XML report file, a gzip/zip compressed version of same or a saved email 
+file with the report embedded as a mime attachment.
+
 ## Saving Email Reports
 
 In most mail clients, such as thunderbird,  one can select multiple email reports and 
