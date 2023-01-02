@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.1] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-02
+ - remove reference to ripmime - no longer needed now that we handle mime attachments ourselves  
+ - update CHANGELOG.md  
+
 ## [1.2.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-02
  - Fix bug with some multipart mime email from some reporters  
  - update CHANGELOG.md  
