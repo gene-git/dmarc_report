@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-02
+ - *.eml* files are now removed after the dmarc report is extracted.  
+   Use option *-k, --keep* to prevent the *.eml* being removed  
+ - update CHANGELOG.md  
+
 ## [1.0.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-02
  - Added support to extract dmarc reports from mime attachments in email files  
    Added option *-d, --dir* to specify the directory containing report files  
