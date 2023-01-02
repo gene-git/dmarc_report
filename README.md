@@ -50,7 +50,7 @@ The tool processes all xml and gzip/zip compressed xml files.
 ### Extracting xml attachments from emails
 
 In thunderbird if I select multiple email reports and then use File -> Save As into a directory
-each email gets saved with a *.eml* extension. Then attached dmarc reports can be extracted using 
+each email gets saved with a *.eml* extension. Then the dmarc report attachments can be extracted using 
 ripMIME using a little script such as:
 
         #!/bin/bash
@@ -64,11 +64,12 @@ ripMIME using a little script such as:
         done
         rm -f textfile* *.eml
 
-I file all email dmarc reports into a separate dmarc report email folder
-using dovecot's pigeonhole sieve functionality. 
+I file all incoming dmarc reports into a separate dmarc report email folder
+by using dovecot's pigeonhole sieve functionality. 
 
 The sieve rule matches on the *To* header and then uses
-*fileinto* the dmarc folder. This makes it very simple to select all, save and process 
+*fileinto* to put the mail into the dmarc folder. This makes it very 
+simple to select all, save and process 
 quickly to get the final (human) report for all the email reports.
 
 ## License
