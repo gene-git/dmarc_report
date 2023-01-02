@@ -35,7 +35,7 @@ To build it manually, clone the repo and do:
 
 ## Usage
 
-Save all dmarc reports into a directory. The ripmime[1] tool is useful for extracting compressed xml 
+Save all dmarc reports into a directory. The ripmime[1] tool is useful for extracting attached compressed xml 
 report files from saved emails especially if saving multiple email reports.
 
 Change to the directory containing one or more dmarc report files and simply run
@@ -47,9 +47,29 @@ The tool processes all xml and gzip/zip compressed xml files.
 
 [1] https://github.com/inflex/ripMIME
 
+### Extracting xml attachments from emails
+
+In thunderbird if I select multiple email reports and then use File -> Save As into a directory
+each email gets saved with a *.eml* extension. The to exttract the attached dmarc reports I run
+a script which does:
+
+        #!/bin/bash
+        #
+        # extract attachments from all the saved '.eml' files
+        #
+        for i in *.eml
+        do
+            echo " ... $i"
+            ripmime -i "$i"
+        done
+        rm -f textfile* *.eml
+
+I file all email dmarc reports, using dovecot's pigeonhole sieve functionality, into a separate
+dmarc report email folder. The sieve rule matches on the *To* header and then does
+*fileinto* the dmarc folder. This makes it very simple to select all, save and process 
+quickly to get the final (human) report for all the email reports.
 
 ## License
 
 `dmarc_rpt` was created by Gene C. It is licensed under the terms of the MIT license.
 
-## Credits
