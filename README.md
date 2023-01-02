@@ -26,9 +26,6 @@ To build it manually, clone the repo and do:
   - python (3.9 or later)
   - netaddr (aka python-netaddr )
 
-- Optional :
-  - ripMIME
-
 - Building Package:
   - git
   - poetry (aka python-poetry)
