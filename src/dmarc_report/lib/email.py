@@ -33,7 +33,8 @@ def email_extract_attachment(topdir, email_file, keep_email, skip_exist=True):
             counter = 1
             for part in mail.walk():
                 # multipart/* are just containers
-                if part.get_content_maintype() == 'multipart':
+                cmtype = part.get_content_maintype()
+                if cmtype in  ['multipart', 'text', 'html']:
                     continue
                 # Applications should really sanitize the given filename so that an
                 # email message can't be used to overwrite important files
@@ -45,9 +46,9 @@ def email_extract_attachment(topdir, email_file, keep_email, skip_exist=True):
                         ext = '.bin'
                     attach_fname = f'part-{counter:03d}{ext}'
 
-                # skip txt, html and bin
-                if ext in ['.txt', '.html', '.bin'] :
-                    continue
+                    # skip txt, html and bin
+                    if ext in ['.txt', '.html', '.bin'] :
+                        continue
 
                 counter += 1
                 attach_path = os.path.join(topdir, attach_fname)
