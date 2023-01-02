@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.9.1] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-02
+ - Add note on handling email reports efficiently to README  
+ - remove unused file  
+ - update CHANGELOG.md  
+
 ## [0.9.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-01
  - Small tweak to report output  
  - fix typo  
