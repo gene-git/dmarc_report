@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-02
+ - Added support to extract dmarc reports from mime attachments in email files  
+   Added option *-d, --dir* to specify the directory containing report files  
+ - more readme tweaks  
+ - tweak readme  
+ - update CHANGELOG.md  
+
 ## [0.9.1] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-02
  - Add note on handling email reports efficiently to README  
  - remove unused file  
