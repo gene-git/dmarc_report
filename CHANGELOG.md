@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-02
+ - Fix bug with some multipart mime email from some reporters  
+ - update CHANGELOG.md  
+
 ## [1.1.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-02
  - *.eml* files are now removed after the dmarc report is extracted.  
    Use option *-k, --keep* to prevent the *.eml* being removed  
