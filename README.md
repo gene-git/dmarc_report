@@ -45,7 +45,8 @@ To build it manually, clone the repo and do:
         long_opt_name = xxx
 
  - *-thm, --theme*  
-   Default 'dark'. Can also be 'light' or 'none', which turns off color report.
+   Report is now in color.
+   Default theme is 'dark'. Theme can be 'light' 'dark' or 'none', which turns off color report.
 
  - *-ips, --dom_ips*  
    *dom_ips = [ip, cidr, ... ]  
@@ -101,7 +102,8 @@ e.g. to set data report dir in config use:
    Prevent the *.eml* being removed after the attached xml reports are extracted.
 
  - *-thm, --theme*  
-   Default 'dark'. Can also be 'light' or 'none', which turns off report colors.
+   Report is now in color.
+   Default theme is 'dark'. Theme can be 'light' 'dark' or 'none', which turns off color report.
 
  - *-ips, --dom_ips*  
    *dom_ips = [ip, cidr, ... ]  
