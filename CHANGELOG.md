@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.0.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-03
+ - Fix bug where grand total missed orgs with 1 IP  
+   Add color report, default theme is dark. Can be light, dark or none to turn color off  
+   Add support for config files: /etc/dmarc_report/config - ~.config/dmarc_report/config  
+   Config file is TOML format where each variable is the long_option name:  
+   e.g. dir = "/a/b/dmarc_stuff"  
+   Add new option to set your IP or CIDR blocks - this will allow your own IPs to be colored  
+   Makes it easy to spot mail generated from your own IP vs mail lists etc  
+ - update CHANGELOG.md  
+
 ## [1.3.1] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-03
  - Improve report format a bit  
  - typo  
