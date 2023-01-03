@@ -6,7 +6,11 @@
 # pylint: disable=R0913,R0914,C0301
 
 from .utils import sort_by_ip
+from .utils import string_is_ip
 from .utils import drange_summary
+from .report_colors import dmarc_colors
+from .report_colors import dkim_colors
+from .report_colors import spf_colors
 
 def print_report_header(cols):
     """
@@ -38,25 +42,40 @@ def print_report_header(cols):
     # line
     print(f'{"":{ldr}s} {line}')
 
-def print_total(opts, name, tot, cols, do_dashes=True):
+def print_total(rpt, name, tot, cols, do_dashes=True):
     """
     print total for 'name'
     """
+    opts = rpt.opts
+    prnt = rpt.prnt
+
     dashes = int(cols.wip/2)*'-'
     line = f'{dashes:>{cols.wip}s}'
 
     if do_dashes:
         print(f'{line}')
-    if tot.cnt > 1:
-        print_ip_row(opts, name, tot, cols)
+    if tot.cnt > 1 or not do_dashes:        # summary has no dashes
+        print_ip_row(rpt, name, tot, cols)
         if do_dashes:
             print(f'{line}')
 
-def print_ip_row(opts, name, iprpt, cols):
+def _format_item(prnt, width, color, txt):
+    """
+    Colorize text - hanbdle widht adjustments from additiinal 
+    ascii color codes in output string
+    """
+    (txt_fmt, cdel) = prnt.colorize(txt, fg_col=color)
+    wid = width + cdel 
+    txt_fmt = f'{txt_fmt:{wid}s}'
+    return txt_fmt
+
+def print_ip_row(rpt, name, iprpt, cols):
     """
     print 1 row of report per IP address
      - name is IP for ip report line, or org/grand total name for totals
     """
+    opts = rpt.opts
+    prnt = rpt.prnt
 
     cw1 = cols.cw1
     cw2 = cols.cw2
@@ -97,18 +116,73 @@ def print_ip_row(opts, name, iprpt, cols):
     elif opts.spf_fails and iprpt.spf_auth_fail > 0:
         printit = True
 
-    col1 = f'{name:>{wip}s} {cnt:{wvol},d}'
-    col2 = f'{dmarc_pass:{cw1},d} {dmarc_fail:{cw2},d} {dmarc_pct:{cw3}.0f}'
-    col3 = f'{dkim_auth_pass:{cw1},d} {dkim_auth_fail:{cw2},d} {dkim_policy_pass:{cw3},d}'
-    col4 = f'{spf_auth_pass:{cw1},d} {spf_auth_fail:{cw2},d} {spf_policy_pass:{cw3},d}'
+    #
+    # IP column
+    #
+    wid = cols.wip
+    if string_is_ip(name) and rpt.ip_in_dom_ips(name):
+        (name, cdel) = prnt.colorize(name, fg_col='dom') 
+        wid = cols.wip + cdel
+    col_ip = f'{name:>{wid}s} {cnt:{wvol},d}'
 
+    #
+    # DMARC column
+    #
+    color = dmarc_colors(cnt, dmarc_pass, dmarc_fail, dmarc_pct)
+
+    pass_s = f'{dmarc_pass:,d}'
+    pass_s = _format_item(prnt, cols.cw1, color, pass_s)
+
+    fail_s = f'{dmarc_fail:,d}'
+    fail_s = _format_item(prnt, cols.cw2, color, fail_s)
+
+    pct_s = f'{dmarc_pct:.0f}'
+    pct_s = _format_item(prnt, cols.cw3, color, pct_s)
+
+    col_dmarc = f'{pass_s} {fail_s} {pct_s}'
+
+    #
+    # DKIM column
+    #
+    (color_pass, color_fail, color_align) = dkim_colors(cnt, dkim_auth_pass, dkim_auth_fail, dkim_policy_pass)
+
+    pass_s = f'{dkim_auth_pass:,d}'
+    pass_s = _format_item(prnt, cols.cw1, color_pass, pass_s)
+
+    fail_s = f'{dkim_auth_fail:,d}'
+    fail_s = _format_item(prnt, cols.cw2, color_fail, fail_s)
+
+    align_s = f'{dkim_policy_pass:,d}'
+    align_s = _format_item(prnt, cols.cw3, color_align, align_s)
+
+    col_dkim = f'{pass_s} {fail_s} {align_s}'
+
+    #
+    # SPF column
+    #
+    (color_pass, color_fail, color_align) = spf_colors(cnt, spf_auth_pass, spf_auth_fail, spf_policy_pass)
+        
+    pass_s = f'{spf_auth_pass:,d}'
+    pass_s = _format_item(prnt, cols.cw1, color_pass, pass_s)
+
+    fail_s = f'{spf_auth_fail:,d}'
+    fail_s = _format_item(prnt, cols.cw2, color_fail, fail_s)
+
+    align_s = f'{spf_policy_pass:,d}'
+    align_s = _format_item(prnt, cols.cw3, color_align, align_s)
+
+    col_spf = f'{pass_s} {fail_s} {align_s}'
+
+    #
+    # Selectors seen
+    #
     selectors = ' '.join(iprpt.dkim_selectors)
 
     if printit:
-        print(f'{col1} | {col2} | {col3} | {col4} | {selectors}')
+        print(f'{col_ip} | {col_dmarc} | {col_dkim} | {col_spf} | {selectors}')
 
 
-def print_domain_report(opts, org, dom, cols):
+def print_domain_report(rpt, org, dom, cols):
     """
     Server -> Domain
                   |   dmarc         | spf              | dkim
@@ -116,14 +190,22 @@ def print_domain_report(opts, org, dom, cols):
     IP     Count  |   pass fail %   | pass fail  pass  | pass fail pass
           25      |   25              25                 25
     """
+    prnt = rpt.prnt
+
     (start, end, contig) = drange_summary(dom.drange)
 
     org_name = org.name
     dom_name = dom.domain
 
-
     print('')
-    print(f' {org_name:{cols.wip}s} {"":5s} {start} - {end} {contig}')
+    (org_name, cdel_org) = prnt.colorize(org.name, fg_col='org')
+    (dom_name, cdel_dom)  = prnt.colorize(dom.domain, fg_col='dom') 
+    wip = cols.wip + cdel_org
+
+    date_range = f'{start} - {end} {contig}'
+    (date_range, cdel)  = prnt.colorize(date_range, fg_col='org')
+
+    print(f' {org_name:{wip}s} {"":5s} {date_range}')
     print(f' {"":3s} ↪ {dom_name}')
 
     #
@@ -136,7 +218,7 @@ def print_domain_report(opts, org, dom, cols):
 
     for ip in iplist_sorted:
         iprpt = dom.ip_rpt[ip]
-        print_ip_row(opts, ip, iprpt, cols)
+        print_ip_row(rpt, ip, iprpt, cols)
 
 class ColWidth:
     """ Column Widths """
@@ -153,17 +235,19 @@ def print_report(rpt):
     Print out dmarc report from all reporting domains
     """
     cols = ColWidth()
+    prnt = rpt.prnt
 
+    print(f' Report data directory: {rpt.opts.dir}')
     print_report_header(cols)
 
     for org in rpt.org:
         for dom in org.domain:
-            print_domain_report(rpt.opts, org, dom, cols)
+            print_domain_report(rpt, org, dom, cols)
 
         # if more than one IP entry then show total
         num_ips = org.get_num_ips()
         if num_ips > 1:
-            print_total(rpt.opts, org.name, org.total, cols)
+            print_total(rpt, org.name, org.total, cols)
 
     #
     # print selector map
@@ -176,7 +260,23 @@ def print_report(rpt):
     print(f'{"":5s} {"Short":^6s} {"Selector":20s} {"Pass":>6s} {"Fail":>6s}   {"domain":20s}')
     print(f'{"":5s} {dash6:^6s} {dash20:20s} {dash6:>6s} {dash6:>6s}   {dash20:20s}')
     for sel in sel_map.selectors:
-        print(f'{"":5s} {sel.short:^6s} {sel.name:20s} {sel.passes:>6,d} {sel.fails:>6,d}   {sel.domain}')
+        if sel.fails == 0:
+            color = 'okay'
+        elif sel.passes == 0:
+            color = 'error'
+        else:
+            color = 'warn'
+        pass_s = f'{sel.passes:>d}'
+        (pass_s, cdel)  = prnt.colorize(pass_s, fg_col=color)
+        wid = 6 + cdel 
+        pass_s = f'{pass_s:{wid}s}'
+
+        fail_s = f'{sel.fails:>6,d}'
+        (fail_s, cdel)  = prnt.colorize(fail_s, fg_col=color)
+        wid = 6 + cdel 
+        fail_s = f'{fail_s:{wid}s}'
+
+        print(f'{"":5s} {sel.short:^6s} {sel.name:20s} {pass_s} {fail_s}   {sel.domain}')
 
     #
     # If more than 1 org processed then add grand total
@@ -201,6 +301,6 @@ def print_report(rpt):
             num_ips = org.get_num_ips()
             total_num_ips += num_ips
             #if num_ips > 1:
-            print_total(rpt.opts, org.name, org.total, cols, do_dashes=False)
+            print_total(rpt, org.name, org.total, cols, do_dashes=False)
         if total_num_ips > 1:
-            print_total(rpt.opts, 'Grand Total', rpt.total, cols)
+            print_total(rpt, 'Grand Total', rpt.total, cols)

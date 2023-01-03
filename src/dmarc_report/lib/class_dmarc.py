@@ -6,6 +6,9 @@ Report Class DmarcRpt
 from .dmarc_analyze import dmarc_analyze
 from .class_options import DmarcOpts
 from .report import print_report
+from .class_print import Prnt
+from .utils import ips_to_ipset
+from .utils import ip_in_ipset
 
 class IPRpt:
     """
@@ -145,6 +148,9 @@ class DmarcRpt:
         self.selectors = []         # list of selectors encountered
         self.sel_map = SelMap()
 
+        self.dom_ipset = ips_to_ipset(self.opts.dom_ips)
+        self.prnt = Prnt(self.opts.theme)
+
     def get_num_orgs(self):
         """ returns num of org """
         num_orgs = len(self.org)
@@ -161,6 +167,10 @@ class DmarcRpt:
             org = OrgRpt(org_name)
             self.org.append(org)
         return org
+
+    def ip_in_dom_ips(self, ip_str):
+        """ check if ip is one of dom_ips """
+        return ip_in_ipset(ip_str, self.dom_ipset)
 
     def add_drange(self, drange):
         """

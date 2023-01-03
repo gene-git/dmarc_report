@@ -4,7 +4,6 @@
 # pylint: disable=R0913, R0914
 
 import os
-import glob
 import gzip
 import zipfile
 import datetime

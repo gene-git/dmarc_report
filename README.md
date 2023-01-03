@@ -25,6 +25,7 @@ To build it manually, clone the repo and do:
 - Run Time :
   - python (3.9 or later)
   - netaddr (aka python-netaddr )
+  - tomli (for python < 3.11)
 
 - Building Package:
   - git
@@ -37,16 +38,23 @@ To build it manually, clone the repo and do:
 
 ### New
 
- - *.eml* files are now removed after the dmarc report is extracted.  
-   Use option *-k, --keep* to prevent the *.eml* being removed
+ - Added support for config files  
+   Order is /etc/dmarc\_report/config then ~/.config/dmarc\_report/config
+   Config files are in toml format and options are set using
 
- - Added support to extract dmarc reports from mime attachments in  
-   email files.  Any file with extension *.eml* is treated as an email file.
-   No longer necessary to use standalone program to extract mime attachments.
+        long_opt_name = xxx
 
- - Added option *-d, --dir*  
-   Allows specifying the directory with the dmarc report files to be processed.  
-   The default dir remains the current directory.
+ - *-thm, --theme*  
+   Default 'dark'. Can also be 'light' or 'none', which turns off color report.
+
+ - *-ips, --dom_ips*  
+   *dom_ips = [ip, cidr, ... ]  
+   Set the ips and/or cidr blocks for your own domain(s). 
+   This is used to color them easy to spot.
+   Command line option is just comma separated list - no square brackets like config file.
+
+ - *-h, --help*  
+   Help for command line options.
 
 ## Usage
 
@@ -65,9 +73,42 @@ and gzip/zip compressed xml dmarc report files and generates a human readable re
 
 We following Postel's law and try to be liberal in what we accept as input. To that end
 we accept the dmarc XML report file, a gzip/zip compressed version of same or a saved email 
-file with the report embedded as a mime attachment.
+file text file with the report itself being a mime attachment.
 
-## Saving Email Reports
+Any file with extension *.eml* is treated as an email file.
+
+## Options
+
+Options are read first from config files then command line. Config files are read
+from */etc/dmarc_report/config* then *~/.config/dmarc_report/config*.  Config files
+are in standard TOML format.
+
+Available config settings use command line long option = xxx.
+Below the command line options are shown first followed by config.
+
+e.g. to set data report dir in config use:
+
+        dir = "/foo/goo/dmarc_reports"
+
+ - *-d, --dir*   
+   *dir = *  
+   Allows specifying the directory with the dmarc report files to be processed.  
+   The directory holding the report files (.eml, .xml, .gz or .zip)
+   By default, dir is the current directory.
+
+ - *-k, --keep*  
+   *keep = true*  
+   Prevent the *.eml* being removed after the attached xml reports are extracted.
+
+ - *-thm, --theme*  
+   Default 'dark'. Can also be 'light' or 'none', which turns off report colors.
+
+ - *-ips, --dom_ips*  
+   *dom_ips = [ip, cidr, ... ]  
+   Set the ips for your own domain(s), which will then be colored to make them easy to spot.
+   Command line option is just comma separated list - no square brackets like config file.
+
+## Saving Email Reports From Email Client
 
 In most mail clients, such as thunderbird,  one can select multiple email reports and 
 then use *File -> Save As* to save the email files into a directory of your choosing.

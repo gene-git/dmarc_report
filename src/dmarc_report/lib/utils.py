@@ -6,6 +6,38 @@ import glob
 from operator import itemgetter
 import netaddr
 
+
+def ips_to_ipset(cidr_list):
+    """
+    Take list of IPs, cidrs and return IPSet
+    """
+    if not cidr_list:
+        return None
+    ipset = None
+    for cidr in cidr_list:
+        net = netaddr.IPNetwork(cidr)
+        if ipset:
+            ipset.add(net)
+        else:
+            ipset = netaddr.IPSet(net)
+
+    return ipset
+
+def ip_in_ipset(ip_str, ipset):
+    """
+    Checks if ip is member of ipset
+    """
+    if not ip_str or not ipset:
+        return False
+    ip = netaddr.IPAddress(ip_str)
+    is_member = ip in ipset
+    return is_member
+
+def string_is_ip(ip_str):
+    """ check if is an IP address """
+    isip = netaddr.valid_ipv4(ip_str) or netaddr.valid_ipv6(ip_str)
+    return isip
+
 def sort_by_ip(iplist_str):
     """
     sort a list of IP addresses (str)
@@ -73,3 +105,24 @@ def get_glob_file_list(topdir, pattern, withpath=False):
             fnames.append(file)
         flist = fnames
     return flist
+
+def open_file(path, mode):
+    """
+     Open a file and return file object
+    """
+    # pylint: disable=W1514,R1732
+    try:
+        fobj = open(path, mode)
+    except OSError as err:
+        print(f'Error opening file {path} : {err}')
+        fobj = None
+    return fobj
+
+def merge_dict(dic1, dic2):
+    """
+    Merge dic2 over dic1
+    """
+    merged = dic1.copy()
+    for (key,val) in dic2.items():
+        merged[key] = val
+    return merged
