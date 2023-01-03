@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.1] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-03
+ - Improve report format a bit  
+ - typo  
+ - small README tweak  
+ - update CHANGELOG.md  
+
 ## [1.3.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-02
  - silly bug with multipart accidenlty ignoring report file  
  - update CHANGELOG.md  
