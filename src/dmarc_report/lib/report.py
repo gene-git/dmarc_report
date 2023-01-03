@@ -121,8 +121,10 @@ def print_domain_report(opts, org, dom, cols):
     org_name = org.name
     dom_name = dom.domain
 
+
     print('')
-    print(f'{org_name} {"":2s} ({dom_name}) {"":10s} {start} - {end} {contig}')
+    print(f' {org_name:{cols.wip}s} {"":5s} {start} - {end} {contig}')
+    print(f' {"":3s} ↪ {dom_name}')
 
     #
     # sort by IP
@@ -166,7 +168,7 @@ def print_report(rpt):
     #
     # print selector map
     #
-    print('\nSelector Map:')
+    print(f'\n{"":13s}DKIM Selector Map')
     dash6 = 6*'-'
     dash20 = 20 *'-'
     sel_map = rpt.sel_map

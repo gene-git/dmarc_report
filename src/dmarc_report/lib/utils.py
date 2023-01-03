@@ -35,7 +35,7 @@ def drange_summary(drange_list):
     dstart = dts[0][0]
     dend = dts[num-1][1]
 
-    fmt = '%Y-%m-%d %H:%M'
+    fmt = '%y/%m/%d %H:%M'
     start = dstart.strftime(fmt)
     end = dend.strftime(fmt)
     # contig - we ignore time
