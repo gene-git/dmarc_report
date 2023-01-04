@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.1.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-03
+ - Right align numbers  
+ - small tweak to README  
+ - update CHANGELOG.md  
+
 ## [2.0.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-03
  - Fix bug where grand total missed orgs with 1 IP  
    Add color report, default theme is dark. Can be light, dark or none to turn color off  
