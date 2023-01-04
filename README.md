@@ -51,7 +51,7 @@ To build it manually, clone the repo and do:
  - *-ips, --dom_ips*  
    *dom_ips = [ip, cidr, ... ]  
    Set the ips and/or cidr blocks for your own domain(s). 
-   This is used to color them easy to spot.
+   This is used to color them making them easier to spot.
    Command line option is just comma separated list - no square brackets like config file.
 
  - *-h, --help*  
@@ -109,6 +109,9 @@ e.g. to set data report dir in config use:
    *dom_ips = [ip, cidr, ... ]  
    Set the ips for your own domain(s), which will then be colored to make them easy to spot.
    Command line option is just comma separated list - no square brackets like config file.
+
+ - *-h, --help*  
+   Help for command line options.
 
 ## Saving Email Reports From Email Client
 

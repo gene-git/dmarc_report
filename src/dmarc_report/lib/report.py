@@ -66,7 +66,7 @@ def _format_item(prnt, width, color, txt):
     """
     (txt_fmt, cdel) = prnt.colorize(txt, fg_col=color)
     wid = width + cdel 
-    txt_fmt = f'{txt_fmt:{wid}s}'
+    txt_fmt = f'{txt_fmt:>{wid}s}'
     return txt_fmt
 
 def print_ip_row(rpt, name, iprpt, cols):
@@ -136,7 +136,7 @@ def print_ip_row(rpt, name, iprpt, cols):
     fail_s = f'{dmarc_fail:,d}'
     fail_s = _format_item(prnt, cols.cw2, color, fail_s)
 
-    pct_s = f'{dmarc_pct:.0f}'
+    pct_s = f'{dmarc_pct:3.0f}'
     pct_s = _format_item(prnt, cols.cw3, color, pct_s)
 
     col_dmarc = f'{pass_s} {fail_s} {pct_s}'
@@ -269,7 +269,7 @@ def print_report(rpt):
         pass_s = f'{sel.passes:>d}'
         (pass_s, cdel)  = prnt.colorize(pass_s, fg_col=color)
         wid = 6 + cdel 
-        pass_s = f'{pass_s:{wid}s}'
+        pass_s = f'{pass_s:>{wid}s}'
 
         fail_s = f'{sel.fails:>6,d}'
         (fail_s, cdel)  = prnt.colorize(fail_s, fg_col=color)

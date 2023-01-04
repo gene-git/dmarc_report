@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dmarc_report"
-version = "2.0.0"
+version = "2.1.0"
 description = "Generate a human readable DMARC report from 1 or more standard xml email reports."
 authors = ["Gene C"]
 license = "MIT"
