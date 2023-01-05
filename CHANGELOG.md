@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.2.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-05
+ - Add option for disposition of input files after report is generated.  
+   --inp_files_disp can be none, save or delete.  Default is none.  
+   --inp_files_save_dir specifies where to save input files when disposition is "save"  
+ - update CHANGELOG.md  
+
 ## [2.1.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-03
  - Right align numbers  
  - small tweak to README  
