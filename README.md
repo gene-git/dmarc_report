@@ -38,6 +38,18 @@ To build it manually, clone the repo and do:
 
 ### New
 
+ - *-ifd, --inp_file_disp*  
+   Input file disposition options.  
+   If set then all input files (xml, compressed xml and any kept eml files) are moved
+   to directory specified by *inp_files_save_dir*.  
+
+
+ - *-ifsd, --inp_files_save_dir*  
+   When *inp_file_disp* is set, then input files are moved to this directory after report
+   is generated.  Files are saved by year-month under the save directory
+
+### Interesting
+
  - Added support for config files  
    Order is /etc/dmarc\_report/config then ~/.config/dmarc\_report/config
    Config files are in toml format and options are set using
@@ -53,9 +65,6 @@ To build it manually, clone the repo and do:
    Set the ips and/or cidr blocks for your own domain(s). 
    This is used to color them making them easier to spot.
    Command line option is just comma separated list - no square brackets like config file.
-
- - *-h, --help*  
-   Help for command line options.
 
 ## Usage
 
@@ -77,6 +86,28 @@ we accept the dmarc XML report file, a gzip/zip compressed version of same or a 
 file text file with the report itself being a mime attachment.
 
 Any file with extension *.eml* is treated as an email file.
+
+To avoid line wrapping, the report should be viewed on wide enough terminal; roughly 112 or chars or more.
+
+For convenience after report is generated, the inptu files can be autotically moved to a save 
+direcory, left where they are or removed. A typical sequents of eveents is to save
+the email reports, run dmarc-rpt.  By auto moving (or removing) the input files, makes it simpler
+when doing the next batch of dmarc reports.
+
+For example, you might save all .eml files in same directory and with config settings:
+
+        dir = "~/dmarc/reports"
+        inp_files_disp = "save"
+        inp_files_save_dir = "../saved"
+        dom_ips = ['1.1.1.1', '1.2.2.0/24']
+
+
+Then save all the raw .eml files into ~/.dmarc/reports and run :
+
+        dmarc-rpt
+
+Then all attachments delivered from email dmarc reports would be saved into "~/dmarc/saved/2023-01"
+as an example. 
 
 ## Options
 
@@ -109,6 +140,15 @@ e.g. to set data report dir in config use:
    *dom_ips = [ip, cidr, ... ]  
    Set the ips for your own domain(s), which will then be colored to make them easy to spot.
    Command line option is just comma separated list - no square brackets like config file.
+
+ - *-ifd, --inp_file_disp*  
+   Input file disposition options.  
+   If set then all input files (xml, compressed xml and any kept eml files) are moved
+   to directory specified by *inp_files_save_dir*.  
+
+ - *-ifsd, --inp_files_save_dir*  
+   When *inp_file_disp* is set, then input files are moved to this directory after report
+   is generated.  Files are saved by year-month under the save directory
 
  - *-h, --help*  
    Help for command line options.

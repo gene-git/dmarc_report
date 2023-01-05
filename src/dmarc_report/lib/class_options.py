@@ -28,6 +28,8 @@ class DmarcOpts:
         self.dir = './'
         self.theme = 'dark'
         self.dom_ips = None
+        self.inp_files_disp = 'non'        # None, 'delete', 'save' (uses inp_files_save_dir)
+        self.inp_files_save_dir = None    # e.g relative to self.dir, or absolute
 
         # load configs
         config_opts(self)
@@ -45,11 +47,19 @@ class DmarcOpts:
                          help='Keep .eml files after extracting mime attachment (False)')
 
         par.add_argument('-ips','--dom_ips',
-                         help=f'Comma separated list of IPs / CIDRs for your own domains')
+                         help='Comma separated list of IPs / CIDRs for your own domains')
 
         par.add_argument('-d','--dir',
                          default = self.dir,
                          help=f'Directory containing dmarc report files (default {self.dir})')
+
+        par.add_argument('-ifd','--inp_files_disp',
+                         default = self.inp_files_disp,
+                         help='none,delete,save: disposition of input files. See -ifsd  (none)')
+
+        par.add_argument('-ifsd','--inp_files_save_dir',
+                         default = self.inp_files_save_dir,
+                         help=f'-ifd = save, input files moved to here {self.inp_files_save_dir}')
 
         par.add_argument('-thm','--theme',
                          default = self.theme,

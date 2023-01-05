@@ -2,6 +2,7 @@
 Helper tools for dmarc report generator
 """
 import os
+import stat
 import glob
 from operator import itemgetter
 import netaddr
@@ -126,3 +127,17 @@ def merge_dict(dic1, dic2):
     for (key,val) in dic2.items():
         merged[key] = val
     return merged
+
+def make_dir_path(path_dir):
+    """
+    makes directory and any missing path components
+      - set reasonable permissions
+    """
+    okay = True
+    dirmode = stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH
+    try:
+        os.makedirs(path_dir, exist_ok=True)
+        os.chmod(path_dir, dirmode)
+    except OSError as _error:
+        okay = False
+    return okay

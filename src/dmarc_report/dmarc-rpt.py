@@ -11,6 +11,7 @@ from lib import DmarcRpt
 from lib import xml_file_list
 from lib import xml_file_read
 from lib import find_extract_email_attachments
+from lib import input_files_disposition
 
 def main():
     """
@@ -37,6 +38,11 @@ def main():
             report.make_report(xml)
 
     report.print()
+
+    #
+    # disposition of input files
+    #
+    input_files_disposition(report, xml_files)
 
 # -----------------------------------------------------
 if __name__ == '__main__':
