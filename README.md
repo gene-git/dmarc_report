@@ -39,8 +39,8 @@ To build it manually, clone the repo and do:
 ### New
 
  - *-ifd, --inp_file_disp*  
-   Input file disposition options.  
-   If set then all input files (xml, compressed xml and any kept eml files) are moved
+   Input file disposition options one of : none,save,delete
+   If set to save then all input files (xml, compressed xml and any kept eml files) are moved
    to directory specified by *inp_files_save_dir*.  
 
 
@@ -142,8 +142,8 @@ e.g. to set data report dir in config use:
    Command line option is just comma separated list - no square brackets like config file.
 
  - *-ifd, --inp_file_disp*  
-   Input file disposition options.  
-   If set then all input files (xml, compressed xml and any kept eml files) are moved
+   Input file disposition options one of : none,save,delete
+   If set to save then all input files (xml, compressed xml and any kept eml files) are moved
    to directory specified by *inp_files_save_dir*.  
 
  - *-ifsd, --inp_files_save_dir*  
