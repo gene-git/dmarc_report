@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.2.1] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-06
+ - Use SPDX licensing.  
+   Lint and tidy  
+ - Fix description of input file disposition to show none,save,delete  
+ - update CHANGELOG.md  
+
 ## [2.2.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-05
  - Add option for disposition of input files after report is generated.  
    --inp_files_disp can be none, save or delete.  Default is none.  
