@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2023, Gene C
 """
 Read options from config files:
     1) /etc/dmarc_report/config
@@ -8,7 +10,7 @@ from pathlib import Path
 from .toml import read_toml_file
 from .utils import merge_dict
 
-def read_configs(opts):
+def read_configs(_opts):
     """
     Read any config settings
      - /etc/dmarc_report/config

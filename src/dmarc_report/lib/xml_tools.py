@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2023, Gene C
 """
  Routines to read various various xml report files.
 """

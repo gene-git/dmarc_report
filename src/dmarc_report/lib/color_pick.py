@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2023, Gene C
 """
 color_pick.py
 
@@ -9,6 +11,7 @@ color_pick.py
     bl would not be a unique match - in this case we return the first match in list.
     We want to avoid errors
 """
+
 def _get_matches(cnt, num_max, col, col_list):
     """ return matches of first 'cnt' chars """
     if col in col_list:

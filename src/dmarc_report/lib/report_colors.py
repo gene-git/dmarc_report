@@ -1,7 +1,9 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2023, Gene C
 """
  Colors used for dmarc, dkim and spf
 """
-def dmarc_colors(cnt, passes, fails, pass_pct):
+def dmarc_colors(cnt, passes, _fails, _pass_pct):
     """
     Colors for DMARC column
     """
@@ -18,7 +20,7 @@ def dmarc_colors(cnt, passes, fails, pass_pct):
 
 def dkim_colors(cnt, passes, fails, aligns):
     """
-    Set dkim colors for pass, fail, align 
+    Set dkim colors for pass, fail, align
      - dkim may have more than 1 selector
        Can have passes == cnt and also have fails on second selector
        Common when there is 1 RSA and 1 ED25519 selector
@@ -56,7 +58,7 @@ def dkim_colors(cnt, passes, fails, aligns):
 
 def spf_colors(cnt, passes, fails, aligns):
     """
-    Set dkim colors for pass, fail, align 
+    Set dkim colors for pass, fail, align
      - dkim may have more than 1 selector
        Can have passes == cnt and also have fails on second selector
        Common when there is 1 RSA and 1 ED25519 selector
@@ -94,7 +96,3 @@ def spf_colors(cnt, passes, fails, aligns):
         color_align = 'warn'
 
     return (color_pass, color_fail, color_align)
-
-
-
-

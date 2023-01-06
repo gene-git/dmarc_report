@@ -1,4 +1,5 @@
-#!/usr/bin/python
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2023, Gene C
 """
  DMARC report generator:
    read aggregate dmarc reports files in current directory (RUA) and generate report.
@@ -22,7 +23,7 @@ def dmarc_analyze(rpt, xml):
     #
     metadata = xml.find('report_metadata')
     org_name = xml_pull_item(metadata, 'org_name')
-    rpt_id = xml_pull_item(metadata, 'report_id')
+    _rpt_id = xml_pull_item(metadata, 'report_id')
     dmarc_policy = xml.find('policy_published')
     domain = xml_pull_item(dmarc_policy, 'domain')
     drange = xml_pull_date_range(metadata)
@@ -75,12 +76,12 @@ def dmarc_analyze(rpt, xml):
             org.total.dmarc_fail += cnt
             rpt.total.dmarc_fail += cnt
 
-        hdr_from = xml_pull_item(record, 'identifiers/header_from')
+        _hdr_from = xml_pull_item(record, 'identifiers/header_from')
 
         dkims = record.findall('auth_results/dkim')
         for dkim in dkims:
             res = xml_pull_item(dkim, 'result')
-            dom = xml_pull_item(dkim, 'domain')
+            _dom = xml_pull_item(dkim, 'domain')
             selector = xml_pull_item(dkim, 'selector')
             if res == 'pass':
                 ip_rpt.dkim_auth_pass += cnt
@@ -104,8 +105,8 @@ def dmarc_analyze(rpt, xml):
 
         spf = record.find('auth_results/spf')
         spf_res = xml_pull_item(spf, 'result')
-        spf_dom = xml_pull_item(spf, 'domain')
-        spf_scope = xml_pull_item(spf, 'scope')
+        _spf_dom = xml_pull_item(spf, 'domain')
+        _spf_scope = xml_pull_item(spf, 'scope')
 
         if spf_res == 'pass':
             ip_rpt.spf_auth_pass += cnt

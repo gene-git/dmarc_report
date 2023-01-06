@@ -1,4 +1,5 @@
-#!/usr/bin/python
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2023, Gene C
 """
  DMARC report generator:
    Report Print
@@ -46,7 +47,6 @@ def print_total(rpt, name, tot, cols, do_dashes=True):
     """
     print total for 'name'
     """
-    opts = rpt.opts
     prnt = rpt.prnt
 
     dashes = int(cols.wip/2)*'-'
@@ -57,15 +57,15 @@ def print_total(rpt, name, tot, cols, do_dashes=True):
     if tot.cnt > 1 or not do_dashes:        # summary has no dashes
         print_ip_row(rpt, name, tot, cols)
         if do_dashes:
-            print(f'{line}')
+            prnt(f'{line}')
 
 def _format_item(prnt, width, color, txt):
     """
-    Colorize text - hanbdle widht adjustments from additiinal 
+    Colorize text - hanbdle widht adjustments from additiinal
     ascii color codes in output string
     """
     (txt_fmt, cdel) = prnt.colorize(txt, fg_col=color)
-    wid = width + cdel 
+    wid = width + cdel
     txt_fmt = f'{txt_fmt:>{wid}s}'
     return txt_fmt
 
@@ -74,14 +74,9 @@ def print_ip_row(rpt, name, iprpt, cols):
     print 1 row of report per IP address
      - name is IP for ip report line, or org/grand total name for totals
     """
+    # pylint: disable=R0915
     opts = rpt.opts
     prnt = rpt.prnt
-
-    cw1 = cols.cw1
-    cw2 = cols.cw2
-    cw3 = cols.cw3
-    wip = cols.wip
-    wvol = cols.wvol
 
     cnt = iprpt.cnt
     dmarc_pass = iprpt.dmarc_pass
@@ -98,10 +93,6 @@ def print_ip_row(rpt, name, iprpt, cols):
     spf_auth_fail = iprpt.spf_auth_fail
     dkim_auth_pass = iprpt.dkim_auth_pass
     dkim_auth_fail = iprpt.dkim_auth_fail
-
-    has_fails = False
-    if dmarc_fail + dkim_auth_fail + spf_auth_fail > 0:
-        has_fails = True
 
     printit = False
     if not (opts.dmarc_fails or opts.dkim_fails or opts.spf_fails):
@@ -121,9 +112,9 @@ def print_ip_row(rpt, name, iprpt, cols):
     #
     wid = cols.wip
     if string_is_ip(name) and rpt.ip_in_dom_ips(name):
-        (name, cdel) = prnt.colorize(name, fg_col='dom') 
+        (name, cdel) = prnt.colorize(name, fg_col='dom')
         wid = cols.wip + cdel
-    col_ip = f'{name:>{wid}s} {cnt:{wvol},d}'
+    col_ip = f'{name:>{wid}s} {cnt:{cols.wvol},d}'
 
     #
     # DMARC column
@@ -161,7 +152,7 @@ def print_ip_row(rpt, name, iprpt, cols):
     # SPF column
     #
     (color_pass, color_fail, color_align) = spf_colors(cnt, spf_auth_pass, spf_auth_fail, spf_policy_pass)
-        
+
     pass_s = f'{spf_auth_pass:,d}'
     pass_s = _format_item(prnt, cols.cw1, color_pass, pass_s)
 
@@ -199,11 +190,11 @@ def print_domain_report(rpt, org, dom, cols):
 
     print('')
     (org_name, cdel_org) = prnt.colorize(org.name, fg_col='org')
-    (dom_name, cdel_dom)  = prnt.colorize(dom.domain, fg_col='dom') 
+    (dom_name, _cdel_dom)  = prnt.colorize(dom.domain, fg_col='dom')
     wip = cols.wip + cdel_org
 
     date_range = f'{start} - {end} {contig}'
-    (date_range, cdel)  = prnt.colorize(date_range, fg_col='org')
+    (date_range, _cdel)  = prnt.colorize(date_range, fg_col='org')
 
     print(f' {org_name:{wip}s} {"":5s} {date_range}')
     print(f' {"":3s} ↪ {dom_name}')
@@ -268,12 +259,12 @@ def print_report(rpt):
             color = 'warn'
         pass_s = f'{sel.passes:>d}'
         (pass_s, cdel)  = prnt.colorize(pass_s, fg_col=color)
-        wid = 6 + cdel 
+        wid = 6 + cdel
         pass_s = f'{pass_s:>{wid}s}'
 
         fail_s = f'{sel.fails:>6,d}'
         (fail_s, cdel)  = prnt.colorize(fail_s, fg_col=color)
-        wid = 6 + cdel 
+        wid = 6 + cdel
         fail_s = f'{fail_s:{wid}s}'
 
         print(f'{"":5s} {sel.short:^6s} {sel.name:20s} {pass_s} {fail_s}   {sel.domain}')

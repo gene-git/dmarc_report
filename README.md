@@ -39,7 +39,7 @@ To build it manually, clone the repo and do:
 ### New
 
  - *-ifd, --inp_file_disp*  
-   Input file disposition options one of : none,save,delete
+   Input file disposition options one of : none,save,delete  
    If set to save then all input files (xml, compressed xml and any kept eml files) are moved
    to directory specified by *inp_files_save_dir*.  
 
@@ -163,4 +163,7 @@ Each email gets saved with a *.eml* extension.
 ## License
 
 `dmarc_rpt` was created by Gene C. It is licensed under the terms of the MIT license.
+SPDX-License-Identifier: MIT
+Copyright (c) 2023, Gene C 
+
 

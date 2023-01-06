@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2023, Gene C
 """
 class_print.py
  Screen output with color
@@ -150,7 +152,7 @@ class Prnt:
                       blue Bold cyan fail red green head under warn
         """
         # pylint: disable=R0913
-        (txt, cdel) = self.colorize(txt, fg_col=fg_col, bg_col=bg_col, bold=bold)
+        (txt, _cdel) = self.colorize(txt, fg_col=fg_col, bg_col=bg_col, bold=bold)
         self.fpo.write(txt)
         self.fpo.flush()
 
