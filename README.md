@@ -163,7 +163,8 @@ Each email gets saved with a *.eml* extension.
 ## License
 
 `dmarc_rpt` was created by Gene C. It is licensed under the terms of the MIT license.
-SPDX-License-Identifier: MIT
-Copyright (c) 2023, Gene C 
+
+ - SPDX-License-Identifier: MIT
+ - Copyright (c) 2023, Gene C 
 
 
