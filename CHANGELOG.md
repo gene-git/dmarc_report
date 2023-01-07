@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.3.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-07
+ - Bug fix - clean up went too far added silly print bug - so sorry  
+ - tidy README, add SPDX license line to missed file  
+ - update CHANGELOG.md  
+
 ## [2.2.1] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-06
  - Use SPDX licensing.  
    Lint and tidy  
