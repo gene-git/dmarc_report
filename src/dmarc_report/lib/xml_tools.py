@@ -119,7 +119,7 @@ def xml_file_read(topdir, ftype, file):
         case 'xml':
             xml = get_xml_from_xml(fpath)
 
-        case 'gzip':
+        case 'gz':
             xml = get_xml_from_gz(fpath)
 
         case 'zip':

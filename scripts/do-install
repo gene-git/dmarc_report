@@ -8,14 +8,14 @@
 dest="$1"
 self="dmarc_report"
 
-info="README.md CHANGELOG.md scripts packaging"
+info="README.md README-mta-sts.md CHANGELOG.md scripts packaging"
 infodir="/usr/share/${self}"
 
 license="LICENSE"
 licensedir="/usr/share/licenses/${self}"
 
 # list apps without the ".py" or leave empty string
-apps=('dmarc-rpt')
+apps=('dmarc-rpt' 'tls-rpt')
 
 # so can make app link in /usr/bin
 sitedir=$(/usr/bin/python3 -c "import site; print(site.getsitepackages()[0])")

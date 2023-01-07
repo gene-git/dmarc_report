@@ -24,21 +24,23 @@ def print_report_header(cols):
     wvol = cols.wvol
 
     ldr = 10
-    line = (105-ldr)*'-'
+    line = (105-ldr)*'─'
 
     # row 1
     col1 = f'{"":{wip}s} {"":{wvol}s}'
     col2 = f'{"":{cw1}s} {"dmarc":^{cw2}s} {"":{cw3}s}'
     col3 = f'{"":{cw1}s} {"dkim":^{cw2}s} {"":{cw3}s}'
     col4 = f'{"":{cw1}s} {"spf":^{cw2}s} {"":{cw3}s}'
-    print(f'{col1} | {col2} | {col3} | {col4}')
+    #print(f'{col1} | {col2} | {col3} | {col4}')
+    print(f'{col1} │ {col2} │ {col3} │ {col4}')
 
     # row 2
     col1 = f'{"IP":>{wip}s} {"Vol":>{wvol}s}'
     col2 = f'{"Pass":>{cw1}s} {"Fail":>{cw2}s} {"%":>{cw3}s}'
     col3 = f'{"Pass":>{cw3}s} {"Fail":>{cw3}s} {"align":>{cw3}s}'
     col4 = 'Sel'
-    print(f'{col1} | {col2} | {col3} | {col3} | {col4}')
+    #print(f'{col1} | {col2} | {col3} | {col3} | {col4}')
+    print(f'{col1} │ {col2} │ {col3} │ {col3} │ {col4}')
 
     # line
     print(f'{"":{ldr}s} {line}')
@@ -47,7 +49,7 @@ def print_total(rpt, name, tot, cols, do_dashes=True):
     """
     print total for 'name'
     """
-    dashes = int(cols.wip/2)*'-'
+    dashes = int(cols.wip/2)*'─'
     line = f'{dashes:>{cols.wip}s}'
 
     if do_dashes:
@@ -168,7 +170,8 @@ def print_ip_row(rpt, name, iprpt, cols):
     selectors = ' '.join(iprpt.dkim_selectors)
 
     if printit:
-        print(f'{col_ip} | {col_dmarc} | {col_dkim} | {col_spf} | {selectors}')
+        #print(f'{col_ip} | {col_dmarc} | {col_dkim} | {col_spf} | {selectors}')
+        print(f'{col_ip} │ {col_dmarc} │ {col_dkim} │ {col_spf} │ {selectors}')
 
 
 def print_domain_report(rpt, org, dom, cols):
@@ -242,8 +245,8 @@ def print_report(rpt):
     # print selector map
     #
     print(f'\n{"":13s}DKIM Selector Map')
-    dash6 = 6*'-'
-    dash20 = 20 *'-'
+    dash6 = 6*'─'
+    dash20 = 20 *'─'
     sel_map = rpt.sel_map
 
     print(f'{"":5s} {"Short":^6s} {"Selector":20s} {"Pass":>6s} {"Fail":>6s}   {"domain":20s}')
@@ -273,7 +276,7 @@ def print_report(rpt):
     num_orgs = rpt.get_num_orgs()
     if num_orgs > 1:
         ldr = 10
-        line = (105-ldr)*'-'
+        line = (105-ldr)*'─'
         print(f'{"":{ldr}s} {line}')
 
         print_report_header(cols)

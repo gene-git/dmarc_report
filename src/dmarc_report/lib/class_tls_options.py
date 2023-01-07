@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2023, Gene C
 """
- DMARC report options
+ TLS report options
 """
-# pylint: disable=R0801,R0903
+# pylint: disable=R0903
 
 import os
 import argparse
@@ -11,25 +11,21 @@ from .config import read_configs
 
 def config_opts(opts):
     """ read configs into options """
-    conf = read_configs(opts, 'dmarc')
+    conf = read_configs(opts, 'tls')
     if conf:
         for (key,val) in conf.items():
             setattr(opts, key, val)
 
 
-class DmarcOpts:
+class TlsOpts:
     """ cmmand line options """
 
     def __init__(self):
         self.verb = False
-        self.dmarc_fails = False
-        self.dkim_fails = False
-        self.spf_fails = False
         self.keep = False
         self.dir = './'
         self.theme = 'dark'
-        self.dom_ips = None
-        self.inp_files_disp = 'none'      # None, 'delete', 'save' (uses inp_files_save_dir)
+        self.inp_files_disp = 'none'        # None, 'delete', 'save' (uses inp_files_save_dir)
         self.inp_files_save_dir = None    # e.g relative to self.dir, or absolute
 
         # load configs
@@ -38,7 +34,7 @@ class DmarcOpts:
         # expand any "~"
         self.dir = os.path.expanduser(self.dir)
 
-        par = argparse.ArgumentParser(description='dmarc-rpt')
+        par = argparse.ArgumentParser(description='tls-rpt')
         par.add_argument('-v','--verb',
                          action = 'store_true',
                          help='More verbose')
@@ -47,12 +43,9 @@ class DmarcOpts:
                          action = 'store_true',
                          help='Keep .eml files after extracting mime attachment (False)')
 
-        par.add_argument('-ips','--dom_ips',
-                         help='Comma separated list of IPs / CIDRs for your own domains')
-
         par.add_argument('-d','--dir',
                          default = self.dir,
-                         help=f'Directory containing dmarc report files (default {self.dir})')
+                         help=f'Directory containing tls report files (default {self.dir})')
 
         par.add_argument('-ifd','--inp_files_disp',
                          default = self.inp_files_disp,
@@ -65,18 +58,6 @@ class DmarcOpts:
         par.add_argument('-thm','--theme',
                          default = self.theme,
                          help=f'Set color theme : dark, light, none (default {self.theme})')
-
-        par.add_argument('-fdm','--dmarc_fails',
-                         action = 'store_true',
-                         help='Only report dmarc fails')
-
-        par.add_argument('-fdk','--dkim_fails',
-                         action = 'store_true',
-                         help='Only report dkim fails')
-
-        par.add_argument('-fsp','--spf_fails',
-                         action = 'store_true',
-                         help='Only report spf fails')
 
         parsed = par.parse_args()
         if parsed:

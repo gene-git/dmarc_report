@@ -5,8 +5,7 @@
    read aggregate dmarc reports files in current directory (RUA) and generate report.
    Files can be xml or zip or gzip xml.
 """
-# pylint: disable=R0913,R0914,R0915
-
+# pylint: disable=R0912,R0913,R0914,R0915
 
 from .xml_tools import xml_pull_item
 from .xml_tools import xml_pull_date_range
@@ -14,9 +13,12 @@ from .xml_tools import xml_pull_date_range
 
 def dmarc_analyze(rpt, xml):
     """
-    Analuze on dmarc report
+    Analyze on dmarc report
       input - xml data from one report
     """
+
+    if not xml:
+        return
 
     #
     # Pull from report data

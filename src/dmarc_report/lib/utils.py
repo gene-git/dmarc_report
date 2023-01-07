@@ -143,3 +143,19 @@ def make_dir_path(path_dir):
     except OSError as _error:
         okay = False
     return okay
+
+def file_ext_list(topdir, ext_list):
+    """
+    Make dictionary of files with extensions in ext_list
+    Return dictionary containing list of files of each extension type
+    """
+    fext_dict = {}
+    if not ext_list:
+        return fext_dict
+
+    for ext in ext_list:
+        glob_pat = f'*.{ext}'
+        files = get_glob_file_list(topdir, glob_pat)
+        fext_dict[ext] = files
+
+    return fext_dict

@@ -3,7 +3,7 @@
 """
 Report Class DmarcRpt
 """
-# pylint: disable=R0903
+# pylint: disable=R0801,R0903
 
 from .dmarc_analyze import dmarc_analyze
 from .class_options import DmarcOpts
@@ -11,6 +11,8 @@ from .report import print_report
 from .class_print import Prnt
 from .utils import ips_to_ipset
 from .utils import ip_in_ipset
+from .utils import file_ext_list
+from .save_input_files import input_files_disposition
 
 class IPRpt:
     """
@@ -181,7 +183,7 @@ class DmarcRpt:
         """
         self.drange.append(drange)
 
-    def make_report(self, xml):
+    def analyze(self, xml):
         """
         Analyze xml and add to report
         """
@@ -194,3 +196,13 @@ class DmarcRpt:
     def print(self):
         """ print the report """
         print_report(self)
+
+    def input_disposition(self, xml_files):
+        """ handle disposition of all input files """
+        input_files_disposition(self.opts, self.prnt, xml_files)
+
+    def xml_file_list(self):
+        """ get list of xml or compressed xml files """
+        ext_list = ['xml', 'gz', 'zip']
+        flist = file_ext_list(self.opts.dir, ext_list)
+        return flist

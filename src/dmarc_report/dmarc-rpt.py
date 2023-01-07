@@ -10,10 +10,8 @@
 
 #import pdb
 from lib import DmarcRpt
-from lib import xml_file_list
 from lib import xml_file_read
 from lib import find_extract_email_attachments
-from lib import input_files_disposition
 
 def main():
     """
@@ -28,7 +26,7 @@ def main():
     find_extract_email_attachments(topdir, keep_eml)
 
     # returns dict of items ftype: file_list
-    xml_files = xml_file_list(topdir)
+    xml_files = report.xml_file_list()
 
     sep = 40*'-'
     for (ftype, files) in xml_files.items():
@@ -37,14 +35,14 @@ def main():
                 print(f'{sep}')
                 print (f' - {file}')
             xml = xml_file_read(topdir, ftype, file)
-            report.make_report(xml)
+            report.analyze(xml)
 
     report.print()
 
     #
     # disposition of input files
     #
-    input_files_disposition(report, xml_files)
+    report.input_disposition(xml_files)
 
 # -----------------------------------------------------
 if __name__ == '__main__':

@@ -9,7 +9,7 @@ from datetime import datetime
 from .email import email_file_list
 from .utils import make_dir_path
 
-def input_files_disposition(rpt, xml_files):
+def input_files_disposition(opts, prnt, ftyp_files):
     """
     inp_files_disp:
         none        = do nothing
@@ -17,8 +17,6 @@ def input_files_disposition(rpt, xml_files):
         save        = move/save into inp_files_save_dir
     """
 
-    opts = rpt.opts
-    prnt = rpt.prnt
     #
     # If no User request, return
     #
@@ -47,7 +45,7 @@ def input_files_disposition(rpt, xml_files):
     # Make list of input files
     #
     files = []
-    for (_ftype, flist) in xml_files.items():
+    for (_ftype, flist) in ftyp_files.items():
         if flist:
             files += flist
 
@@ -60,10 +58,10 @@ def input_files_disposition(rpt, xml_files):
         return
 
     if save_files:
-        save_input_files(rpt, files)
+        save_input_files(opts, prnt, files)
 
     elif delete_files:
-        delete_input_files(rpt, files)
+        delete_input_files(opts, prnt, files)
 
 def save_subdir():
     """ Save input files in subdir based on date """
@@ -73,13 +71,10 @@ def save_subdir():
     subdir = f'{year:d}-{month:02d}'
     return subdir
 
-def save_input_files(rpt, files):
+def save_input_files(opts, prnt, files):
     """ save nput files """
     if not files:
         return
-
-    opts = rpt.opts
-    prnt = rpt.prnt
 
     #
     # set up dir - handle relative and absolute names
@@ -111,14 +106,11 @@ def save_input_files(rpt, files):
             prnt(f'Error {err}: ', fg_col='error')
             prnt(f'moving file {file}: {save_dir}\n')
 
-def delete_input_files(rpt, files):
+def delete_input_files(opts, prnt, files):
     """ remove nput files """
 
     if not files:
         return
-
-    opts = rpt.opts
-    prnt = rpt.prnt
 
     topdir = opts.dir
     for file in files:

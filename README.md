@@ -38,6 +38,11 @@ To build it manually, clone the repo and do:
 
 ### New
 
+ - tls-rpt
+   New tool to generate report for MTA-STS TLS reports. See README-mta-sts.md
+
+### Interesting
+
  - *-ifd, --inp_file_disp*  
    Input file disposition options one of : none,save,delete  
    If set to save then all input files (xml, compressed xml and any kept eml files) are moved
@@ -48,24 +53,6 @@ To build it manually, clone the repo and do:
    When *inp_file_disp* is set, then input files are moved to this directory after report
    is generated.  Files are saved by year-month under the save directory
 
-### Interesting
-
- - Added support for config files  
-   Order is /etc/dmarc\_report/config then ~/.config/dmarc\_report/config
-   Config files are in toml format and options are set using
-
-        long_opt_name = xxx
-
- - *-thm, --theme*  
-   Report is now in color.
-   Default theme is 'dark'. Theme can be 'light' 'dark' or 'none', which turns off color report.
-
- - *-ips, --dom_ips*  
-   *dom_ips = [ip, cidr, ... ]  
-   Set the ips and/or cidr blocks for your own domain(s). 
-   This is used to color them making them easier to spot.
-   Command line option is just comma separated list - no square brackets like config file.
-
 ## Usage
 
 Save all dmarc reports into a directory. 
@@ -73,6 +60,9 @@ Change to the directory containing one or more dmarc report files and simply run
 
 
         dmarc-rpt
+
+When using the --dir option (or config) it is not necessary to change directories before
+running the report.
 
 Any email files, those ending with *.eml* will be processed first. These are assumed to
 contain the dmarc report as a mime attachment. The attachment is extracted from any such email 
@@ -89,8 +79,8 @@ Any file with extension *.eml* is treated as an email file.
 
 To avoid line wrapping, the report should be viewed on wide enough terminal; roughly 112 or chars or more.
 
-For convenience after report is generated, the inptu files can be autotically moved to a save 
-direcory, left where they are or removed. A typical sequents of eveents is to save
+For convenience after report is generated, the input files can be automatically moved to a save 
+direcory, left where they are or removed. A typical sequents of events is to save
 the email reports, run dmarc-rpt.  By auto moving (or removing) the input files, makes it simpler
 when doing the next batch of dmarc reports.
 
@@ -102,21 +92,26 @@ For example, you might save all .eml files in same directory and with config set
         dom_ips = ['1.1.1.1', '1.2.2.0/24']
 
 
-Then save all the raw .eml files into ~/.dmarc/reports and run :
+Then save all the raw .eml files into ~/dmarc/reports and run :
 
         dmarc-rpt
 
-Then all attachments delivered from email dmarc reports would be saved into "~/dmarc/saved/2023-01"
-as an example. 
+Then all attachments from email dmarc reports would be saved into "~/dmarc/saved/2023-01"
+in this example. 
 
 ## Options
 
-Options are read first from config files then command line. Config files are read
-from */etc/dmarc_report/config* then *~/.config/dmarc_report/config*.  Config files
-are in standard TOML format.
+Options are read first from config files then command line. Config files are read from 
 
-Available config settings use command line long option = xxx.
-Below the command line options are shown first followed by config.
+        */etc/dmarc_report/config* 
+    then
+        *~/.config/dmarc_report/config*.  
+
+Config files are in standard TOML format.  Available config settings are set using:
+
+        command_line_long_opt_name = xxx
+
+Below, the command line options are shown first followed by config version
 
 e.g. to set data report dir in config use:
 
