@@ -47,8 +47,6 @@ def print_total(rpt, name, tot, cols, do_dashes=True):
     """
     print total for 'name'
     """
-    prnt = rpt.prnt
-
     dashes = int(cols.wip/2)*'-'
     line = f'{dashes:>{cols.wip}s}'
 
@@ -57,7 +55,7 @@ def print_total(rpt, name, tot, cols, do_dashes=True):
     if tot.cnt > 1 or not do_dashes:        # summary has no dashes
         print_ip_row(rpt, name, tot, cols)
         if do_dashes:
-            prnt(f'{line}')
+            print(f'{line}')
 
 def _format_item(prnt, width, color, txt):
     """
