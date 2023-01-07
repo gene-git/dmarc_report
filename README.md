@@ -38,7 +38,7 @@ To build it manually, clone the repo and do:
 
 ### New
 
- - tls-rpt
+ - tls-rpt  
    New tool to generate report for MTA-STS TLS reports. See README-mta-sts.md
 
 ### Interesting
