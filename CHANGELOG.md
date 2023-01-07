@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.0.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-07
+ - Refactor code some.  
+   Add new tls-rpt to generate reports for MTA-STS TLS reports  
+ - update CHANGELOG.md  
+
 ## [2.3.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-07
  - Bug fix - clean up went too far added silly print bug - so sorry  
  - tidy README, add SPDX license line to missed file  
