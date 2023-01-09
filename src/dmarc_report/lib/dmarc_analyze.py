@@ -95,7 +95,7 @@ def dmarc_analyze(rpt, xml):
                 rpt.total.dkim_auth_fail += cnt
 
             # selector
-            sel = rpt.get_sel(domain, sel_domain, selector)
+            sel = rpt.get_sel(domain, sel_domain, selector, cnt)
             if res == 'pass':
                 sel.passes += cnt
             else:

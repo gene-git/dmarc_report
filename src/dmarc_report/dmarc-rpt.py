@@ -8,7 +8,7 @@
 """
 # pylint: disable=R0913, R0914
 
-#import pdb
+import pdb
 from lib import DmarcRpt
 from lib import xml_file_read
 from lib import find_extract_email_attachments
@@ -17,7 +17,7 @@ def main():
     """
     dmarc report tool
     """
-    #pdb.set_trace()
+    pdb.set_trace()
     report = DmarcRpt()
     topdir = report.opts.dir
     keep_eml = report.opts.keep

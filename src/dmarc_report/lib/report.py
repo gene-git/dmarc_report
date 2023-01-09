@@ -254,7 +254,7 @@ def print_report(rpt):
     dash20 = 20 *'─'
     sel_map = rpt.sel_map
 
-    print(f'{"":5s} {"Short":^6s} {"Selector":20s} {"Pass":>6s} {"Fail":>6s}   {"domain":20s}')
+    print(f'{"":5s} {"Short":^6s} {"Selector":20s} {"Pass":>6s} {"Fail":>6s}   {"DKIM domain":20s}')
     print(f'{"":5s} {dash6:^6s} {dash20:20s} {dash6:>6s} {dash6:>6s}   {dash20:20s}')
     for sel in sel_map.selectors:
         if sel.fails == 0:
@@ -276,10 +276,9 @@ def print_report(rpt):
         sel_domains = ''
         if sel.sel_domain:
             for item in sel.sel_domain:
-                if item != '-':
-                    sel_domains += ' ' + item
+                sel_domains += f' {item}({sel.cnt[item]})'
 
-        print(f'{"":5s} {sel.short:^6s} {sel.name:20s} {pass_s} {fail_s}   {sel.domain} {sel_domains}')
+        print(f'{"":5s} {sel.short:^6s} {sel.name:20s} {pass_s} {fail_s}   {sel_domains}')
 
     #
     # If more than 1 org processed then add grand total
