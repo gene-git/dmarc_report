@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.1.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-09
+ - Sort short dkim selector tags before printing  
+ - tweak readme for new tls-rpt tool  
+ - update CHANGELOG.md  
+
 ## [3.0.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-07
  - Refactor code some.  
    Add new tls-rpt to generate reports for MTA-STS TLS reports  
