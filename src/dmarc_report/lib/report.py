@@ -167,7 +167,10 @@ def print_ip_row(rpt, name, iprpt, cols):
     #
     # Selectors seen
     #
-    selectors = ' '.join(iprpt.dkim_selectors)
+    selectors = '' 
+    if iprpt.dkim_selectors:
+        sel_sorted = sorted(iprpt.dkim_selectors)
+        selectors = ' '.join(sel_sorted)
 
     if printit:
         #print(f'{col_ip} | {col_dmarc} | {col_dkim} | {col_spf} | {selectors}')
