@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.2.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-09
+ - Add more info about dkim selectors typically from forwarded mail  
+ - update CHANGELOG.md  
+
 ## [3.1.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-09
  - Sort short dkim selector tags before printing  
  - tweak readme for new tls-rpt tool  
