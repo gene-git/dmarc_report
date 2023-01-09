@@ -83,7 +83,7 @@ def dmarc_analyze(rpt, xml):
         dkims = record.findall('auth_results/dkim')
         for dkim in dkims:
             res = xml_pull_item(dkim, 'result')
-            _dom = xml_pull_item(dkim, 'domain')
+            sel_domain = xml_pull_item(dkim, 'domain')
             selector = xml_pull_item(dkim, 'selector')
             if res == 'pass':
                 ip_rpt.dkim_auth_pass += cnt
@@ -95,7 +95,7 @@ def dmarc_analyze(rpt, xml):
                 rpt.total.dkim_auth_fail += cnt
 
             # selector
-            sel = rpt.get_sel(domain, selector)
+            sel = rpt.get_sel(domain, sel_domain, selector)
             if res == 'pass':
                 sel.passes += cnt
             else:

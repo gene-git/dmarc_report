@@ -167,7 +167,7 @@ def print_ip_row(rpt, name, iprpt, cols):
     #
     # Selectors seen
     #
-    selectors = '' 
+    selectors = ''
     if iprpt.dkim_selectors:
         sel_sorted = sorted(iprpt.dkim_selectors)
         selectors = ' '.join(sel_sorted)
@@ -229,6 +229,8 @@ def print_report(rpt):
     """
     Print out dmarc report from all reporting domains
     """
+    # pylint: disable=R0912
+
     cols = ColWidth()
     prnt = rpt.prnt
 
@@ -271,7 +273,13 @@ def print_report(rpt):
         wid = 6 + cdel
         fail_s = f'{fail_s:{wid}s}'
 
-        print(f'{"":5s} {sel.short:^6s} {sel.name:20s} {pass_s} {fail_s}   {sel.domain}')
+        sel_domains = ''
+        if sel.sel_domain:
+            for item in sel.sel_domain:
+                if item != '-':
+                    sel_domains += ' ' + item
+
+        print(f'{"":5s} {sel.short:^6s} {sel.name:20s} {pass_s} {fail_s}   {sel.domain} {sel_domains}')
 
     #
     # If more than 1 org processed then add grand total

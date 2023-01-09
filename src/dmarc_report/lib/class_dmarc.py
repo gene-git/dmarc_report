@@ -105,12 +105,15 @@ class OrgRpt:
 
 class SelItem:
     """ each selector has short name """
-    def __init__(self, domain, name):
-        self.domain = domain
-        self.name = name
+    def __init__(self, domain, sel_domain, sel_name):
+        self.domain = domain            # email report domain
+        self.name = sel_name
+        self.sel_domain = []
         self.short = ''
         self.passes = 0
         self.fails = 0
+        if sel_domain != domain:
+            self.sel_domain = [sel_domain]  # forwarded email from sel_domain/selector
 
 class SelMap:
     """ track selector names and counts thereof """
@@ -123,16 +126,19 @@ class SelMap:
         short = f's{cnt}'
         return short
 
-    def get_sel(self, domain, name):
+    def get_sel(self, domain, sel_domain, sel_name):
         """ return sel item for domain and selector name """
         sel = None
         for this_sel in self.selectors:
-            if this_sel.name == name and this_sel.domain == domain:
+            if (this_sel.name == sel_name and this_sel.domain == domain) :
                 sel = this_sel
+                if sel_domain != domain:
+                    if not sel.sel_domain or sel_domain not in sel.sel_domain :
+                        sel.sel_domain.append(sel_domain)
                 break
 
         if not sel:
-            sel = SelItem(domain, name)
+            sel = SelItem(domain, sel_domain, sel_name)
             sel.short = self.next_short()
             self.selectors.append(sel)
         return sel
@@ -189,9 +195,9 @@ class DmarcRpt:
         """
         dmarc_analyze(self, xml)
 
-    def get_sel(self, domain, name):
+    def get_sel(self, domain, sel_domain, sel_name):
         """ get selector info for 'name' """
-        return self.sel_map.get_sel(domain, name)
+        return self.sel_map.get_sel(domain, sel_domain, sel_name)
 
     def print(self):
         """ print the report """
