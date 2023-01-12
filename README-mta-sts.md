@@ -1,6 +1,6 @@
 # tls-rpt
 
-Generate a human readable tls report from 1 or more standard mta-sta tls report files.
+Generate a human readable tls report from 1 or more standard mta-sts tls report files.
 
 ## Installation
 
@@ -10,9 +10,8 @@ Part of the dmarc\_report package
 
  - tls-rpt
    Tool to generate reports from 1 or more emailed mta-sts reports. Similar to 
-   dmarc-rpt, the files can be email files (.eml) or the json attachments (plain or compressed)
-   delivered as part of the mts-sts report.
-   to directory specified by *inp_files_save_dir*.  
+   dmarc-rpt, the tool can consume email files (.eml) or the json attachments (plain or compressed)
+   delivered as part of the usual mts-sts reports - and in directory specified by *inp_files_save_dir*.  
 
 ### Interesting
 
