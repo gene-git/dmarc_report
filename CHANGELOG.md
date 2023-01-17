@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.4.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-17
+ - Turn off debug - accidently left on with last release! So sorry  
+ - typo in README-mta-sts.md  
+ - update CHANGELOG.md  
+
 ## [3.3.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-09
  - More info about selectors including missing ("-")  
  - update CHANGELOG.md  
