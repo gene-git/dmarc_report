@@ -58,7 +58,6 @@ To build it manually, clone the repo and do:
 Save all dmarc reports into a directory. 
 Change to the directory containing one or more dmarc report files and simply run
 
-
         dmarc-rpt
 
 When using the --dir option (or config) it is not necessary to change directories before
@@ -71,7 +70,7 @@ files.
 Then all remaining files are read and processed. The tool processes all xml 
 and gzip/zip compressed xml dmarc report files and generates a human readable report.
 
-We following Postel's law and try to be liberal in what we accept as input. To that end
+We follow Postel's law and try to be liberal in what we accept as input. To that end
 we accept the dmarc XML report file, a gzip/zip compressed version of same or a saved email 
 file text file with the report itself being a mime attachment.
 
@@ -137,6 +136,7 @@ e.g. to set data report dir in config use:
    Command line option is just comma separated list - no square brackets like config file.
 
  - *-ifd, --inp_file_disp*  
+   *inp_file_disp = save*
    Input file disposition options one of : none,save,delete
    If set to save then all input files (xml, compressed xml and any kept eml files) are moved
    to directory specified by *inp_files_save_dir*.  
