@@ -90,7 +90,3 @@ class DmarcOpts:
         # color turned off when theme is None
         if self.theme and self.theme.lower() == 'none':
             self.theme = None
-
-        # color turned off when theme is None
-        if self.theme and self.theme.lower() == 'none':
-            self.theme = None
