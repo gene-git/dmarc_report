@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.5.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-21
+ - Remove duplicate line in options class - has no effect  
+ - update CHANGELOG.md  
+
 ## [3.4.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-17
  - Turn off debug - accidently left on with last release! So sorry  
  - typo in README-mta-sts.md  
