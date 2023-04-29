@@ -26,7 +26,10 @@ def get_xml_from_zip(fname):
     with zipfile.ZipFile(fname, 'r') as zipobj:
         for member in zipobj.namelist():
             this_member = zipobj.read(member)
-            this_xml = xml_et.fromstring(this_member)
+            try:
+                this_xml = xml_et.fromstring(this_member)
+            except xml_et.ParseError :
+                pass
             members.append(this_xml)
 
     return members
@@ -41,7 +44,10 @@ def get_xml_from_gz(fname):
     xml = None
     with gzip.open(fname, 'rb') as fobj:
         this_member = fobj.read()
-        xml = xml_et.fromstring(this_member)
+        try:
+            xml = xml_et.fromstring(this_member)
+        except xml_et.ParseError :
+            pass
 
     return xml
 
