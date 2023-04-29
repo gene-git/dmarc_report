@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.6.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-04-29
+ - Handle exceptions from bad XML report files  
+ - update CHANGELOG.md  
+
 ## [3.5.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-01-21
  - Remove duplicate line in options class - has no effect  
  - update CHANGELOG.md  
