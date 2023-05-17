@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.6.1] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-05-17
+ - Simplify Arch PKGBUILD and more closely follow arch guidelines  
+ - update CHANGELOG.md  
+
 ## [3.6.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-04-29
  - Handle exceptions from bad XML report files  
  - update CHANGELOG.md  
