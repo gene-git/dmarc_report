@@ -8,7 +8,9 @@ netaddr
 
 # package building/installing
 git
+installer
+build
+wheel
 poetry
-pip
 rsync
 
