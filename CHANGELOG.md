@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.7.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-05-18
+ - install: switch from pip to python installer package. This adds optimized bytecode  
+ - update CHANGELOG.md  
+
 ## [3.6.3] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-05-18
  - PKGBUILD: add python-build to makedepends  
  - update CHANGELOG.md  
