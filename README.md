@@ -14,7 +14,7 @@ If on Arch can build using the PKGBUILD provided which is also available in the 
 To build it manually, clone the repo and do:
 
         rm -f dist/*
-        poetry build --format wheel
+        python -m build --wheel --no-isolation
         root_dest="/"
         ./scripts/do-install $root_dest
 
