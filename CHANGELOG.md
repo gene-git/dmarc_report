@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.8.0, origin/master] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-07-09
+ - Add any failure details to tls report  
+ - update CHANGELOG.md  
+
 ## [3.7.1] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-05-18
  - Update build info in README  
  - update CHANGELOG.md  
