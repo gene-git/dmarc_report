@@ -52,6 +52,10 @@ def print_tls_report(rpt):
             (succ_s, fail_s) = _format_succ_fail(prnt, cw2, dom.success, dom.failure)
 
             print(f'{org_name} {succ_s} {fail_s} {"":3s} ↪ {dom_name}')
+            for det in dom.failure_details_sum:
+                res_type = det['result-type']
+                res_cnt = det['failed-session-count']
+                print(f'{res_type:>45s}  {res_cnt:>15d}')
 
     #
     # Grand total

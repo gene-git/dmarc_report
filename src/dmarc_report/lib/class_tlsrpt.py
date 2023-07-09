@@ -17,7 +17,27 @@ class TlsDom:
         self.name = dom_name
         self.success = 0
         self.failure = 0
+        self.failure_details_all = []
+        self.failure_details_sum = []
 
+    def merge_failure_details(self, details):
+        """ update sum and all """
+
+        if not self.failure_details_sum:
+            self.failure_details_sum.append(details)
+        else:
+            result_type = details.get('result-type')
+            session_count = details.get('failed-session-count')
+            for item in self.failure_details_sum:
+                if item['result-type'] == result_type:
+                    item['failed-session-count'] += session_count
+
+        self.failure_details_all.append(details)
+
+    def merge_failure_details_list(self, details_list):
+        """ update sum and all """
+        for details in details_list:
+            self.merge_failure_details(details)
 
 class TlsOrg:
     """ report for each reporting organiziation """

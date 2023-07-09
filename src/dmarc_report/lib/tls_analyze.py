@@ -30,6 +30,11 @@ def tls_analyze(rpt, one_json):
     org = rpt.get_org(org_name)
     dom = org.get_dom(dom_name)
 
+    if failure > 0:
+        failure_details_list = one_json['policies'][0]['failure-details']
+        dom.merge_failure_details_list(failure_details_list)
+
+
     dom.success += success
     dom.failure += failure
 
