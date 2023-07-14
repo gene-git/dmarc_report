@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.9.2] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-07-14
+ - Change to 3.9.2  
+ - update CHANGELOG.md  
+
 ## [3.9.1] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-07-14
  - With updated README-tls.rst this time  
  - update CHANGELOG.md  
