@@ -40,7 +40,7 @@ To build it manually, clone the repo and do:
 ### New
 
  - tls-rpt  
-   New tool to generate report for MTA-STS TLS reports. See README-mta-sts.md
+   New tool to generate report for TLS reports for MTA-STS or DANE. See README-tls.md
 
 ### Interesting
 
