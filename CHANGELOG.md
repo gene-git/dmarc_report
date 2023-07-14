@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.9.1] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-07-14
+ - With updated README-tls.rst this time  
+ - update CHANGELOG.md  
+
 ## [3.9.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-07-14
  - Update README with better description of TLS Report and use rst  
  - update CHANGELOG.md  
