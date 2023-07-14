@@ -1,6 +1,10 @@
 # Changelog
 
-## [3.8.0, origin/master] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-07-09
+## [3.9.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-07-14
+ - Update README with better description of TLS Report and use rst  
+ - update CHANGELOG.md  
+
+## [3.8.0] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2023-07-09
  - Add any failure details to tls report  
  - update CHANGELOG.md  
 
