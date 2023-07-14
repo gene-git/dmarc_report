@@ -6,7 +6,7 @@ SMTP tls-rpt
 Generate a human readable tls report from one or more standard tls report files.
 These reports are used when an email domain supporets either DANE or MTA-STS.
 
- - tls-rpt
+ tls-rpt    
    Tool to generate reports from one or more emailed tls reports. Similar to 
    dmarc-rpt, the tool can consume email files (.eml) or the json attachments (plain or compressed)
    delivered as part of the usual mts-sts reports - and in directory specified by *inp_files_save_dir*.  
@@ -17,6 +17,9 @@ The tool is provided as part of the dmarc\_report package
 Background
 ----------
 
+TLS Reports are oprionally generated for a mail domaain when so requested by a TXT record in 
+the domain's DNS. The tool parses and summarizes such email reports for human consumption.
+ 
 SMTP TLS reporting is described by [RFC 8460] [1]_ where it summarizes::
 
     A number of protocols exist for establishing encrypted channels
@@ -24,9 +27,6 @@ SMTP TLS reporting is described by [RFC 8460] [1]_ where it summarizes::
     Based Authentication of Named Entities (DANE) TLSA, and MTA Strict
     Transport Security (MTA-STS). 
 
-TLS Reports are oprionally generated for a mail domaain when so requested by a TXT record in 
-the domain's DNS. The tool parses and summarizes such email reports for human consumption.
- 
 MTA-STS, is explained by [RFC 8641] [2]_ where it is summarized::
 
    SMTP MTA Strict Transport Security (MTA-STS) is a mechanism enabling
@@ -52,24 +52,27 @@ To receive TLS reports requires a DNS record requesting a TLS report along with
 either a DANE TLSA record or MTA-STS. MTA-STS requires both a policy and
 and a DNS record.
 
- - TLS Report DNS Record
+TLS Report DNS Record
+---------------------
 
-    + Example
+   Example
 
-        _smtp._tls.example.org IN TXT "v=TLSRPTv1;rua=mailto:tlsrpt@example.com"
+   _smtp._tls.example.org IN TXT "v=TLSRPTv1;rua=mailto:tlsrpt@example.com"
 
-    The TLS reports will be sent to the email provided by the string following *rua=*. 
-    In this example reports would be sent to *tlsrpt@example.com*.
+   The TLS reports will be sent to the email provided by the string following *rua=*. 
+   In this example reports would be sent to *tlsrpt@example.com*.
 
- - MTA-STS 
+MTA-STS 
+-------
    
    Requieres both a DNS record and a policy file available from the email's domain web server.  
 
-   + Example policy file would be located
+   Policy file example to be provided by web server
 
-        https://mta-sts.example.com/.well-known/mta-sts.txt
+     https://mta-sts.example.com/.well-known/mta-sts.txt
 
-   The policy mode can be set to *enforce* or *testing*::
+     The policy mode can be set to *enforce* or *testing*. 
+     Example *mta-sts.txt* file::
 
         version: STSv1
         mode: enforce
@@ -77,17 +80,17 @@ and a DNS record.
         mx: \*.example.com
         max_age: 1296000
 
-   + DNS TXT record example
+   DNS TXT record example
+     _mta-sts.example.org.  IN TXT “v=STSv1; id=202301011200;”
 
-        _mta-sts.example.org.  IN TXT “v=STSv1; id=202301011200;”
-
- - DANE TLSA 
+DANE TLSA 
+---------
  
-    + DNS record example
+   DNS record example
 
-       _25._tcp.example.com. TLSA 3 1 1 (xxx)
+      _25._tcp.example.com. TLSA 3 1 1 (xxx)
 
-    where xxx would be the appropriate public key hash.
+   where xxx would be the appropriate public key hash.
 
 -------------
 Using tls-rpt 
