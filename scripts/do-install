@@ -8,10 +8,10 @@
 dest="$1"
 self="dmarc_report"
 
-info="README.md README-mta-sts.md CHANGELOG.md scripts packaging"
+info="README.rst Docs scripts packaging"
 infodir="/usr/share/${self}"
 
-license="LICENSE"
+license="Docs/License.rst"
 licensedir="/usr/share/licenses/${self}"
 
 # list apps without the ".py" or leave empty string
@@ -25,8 +25,8 @@ if [ ! -d "$dest" ] ; then
     exit 1
 else
     # shared
-    /usr/bin/rsync --mkpath -a ${info} ${dest}${infodir}
-    /usr/bin/rsync --mkpath -a ${license} ${dest}/${licensedir}/${license}
+    /usr/bin/rsync --mkpath -a ${info} ${dest}${infodir}/
+    /usr/bin/rsync --mkpath -a ${license} ${dest}/${licensedir}/
 
     /usr/bin/python -m installer --destdir="$dest" dist/*.whl
 
