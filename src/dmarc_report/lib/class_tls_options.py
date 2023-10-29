@@ -4,6 +4,7 @@
  TLS report options
 """
 # pylint: disable=R0903
+# pylint: disable=R0801
 
 import os
 import argparse

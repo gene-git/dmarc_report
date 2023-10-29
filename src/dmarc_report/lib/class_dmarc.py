@@ -3,7 +3,8 @@
 """
 Report Class DmarcRpt
 """
-# pylint: disable=R0801,R0903
+# pylint: disable=invalid-name,too-many-instance-attributes
+# pylint: disable=too-few-public-methods
 
 from .dmarc_analyze import dmarc_analyze
 from .class_options import DmarcOpts

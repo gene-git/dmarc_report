@@ -6,6 +6,7 @@
    read tlsreport reports files and generate human readable report.
    Files can be json or zip or gzip json.
 """
+# pylint: disable=invalid-name
 from lib import TlsRpt
 from lib import find_extract_email_attachments
 from lib import json_file_read

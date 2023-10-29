@@ -3,7 +3,8 @@
 """
  DMARC report options
 """
-# pylint: disable=R0801,R0903
+# pylint: disable=too-many-instance-attributes,too-few-public-methods
+# pylint: disable=R0801
 
 import os
 import argparse

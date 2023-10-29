@@ -17,6 +17,7 @@ New / Interesting
  * tls-rpt  
 
    New tool to generate report for TLS reports for MTA-STS or DANE. See README-tls.md
+   This report has been updated - see Changelog for details.
 
 
  * *-ifd, --inp_file_disp*  

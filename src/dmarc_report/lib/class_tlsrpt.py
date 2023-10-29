@@ -2,108 +2,128 @@
 # Copyright (c) 2023, Gene C
 """
  MTA-STS TLS Report Class
+ {
+   "organization-name": organization-name,
+   "date-range": {
+     "start-datetime": date-time,
+     "end-datetime": date-time
+   },
+   "contact-info": email-address,
+   "report-id": report-id,
+   "policies": [{
+     "policy": {
+       "policy-type": policy-type,
+       "policy-string": policy-string,
+       "policy-domain": domain,
+       "mx-host": mx-host-pattern
+     },
+     "summary": {
+       "total-successful-session-count": total-successful-session-count,
+       "total-failure-session-count": total-failure-session-count
+     },
+     "failure-details": [
+       {
+         "result-type": result-type,
+         "sending-mta-ip": ip-address,
+         "receiving-mx-hostname": receiving-mx-hostname,
+         "receiving-mx-helo": receiving-mx-helo,
+         "receiving-ip": receiving-ip,
+         "failed-session-count": failed-session-count,
+         "additional-information": additional-info-uri,
+         "failure-reason-code": failure-reason-code
+         }
+       ]
+     }
+   ]
+ }
 """
-# pylint: disable=R0903
-from .class_tls_options import TlsOpts
-from .tls_report import print_tls_report
-from .class_print import Prnt
-from .save_input_files import input_files_disposition
-from .tls_analyze import tls_analyze
-from .utils import file_ext_list
+# pylint: disable=too-many-instance-attributes
+# pylint: disable=too-few-public-methods
 
-class TlsDom:
-    """ Data for 1 domain as reported by 1 org """
-    def __init__(self, dom_name):
-        self.name = dom_name
-        self.success = 0
-        self.failure = 0
-        self.failure_details_all = []
-        self.failure_details_sum = []
+class TlsFailSummary:
+    """ what we use in report """
+    def __init__(self, result_type):
+        self.result_type = result_type
+        self.count = 0
 
-    def merge_failure_details(self, details):
-        """ update sum and all """
-
-        if not self.failure_details_sum:
-            self.failure_details_sum.append(details)
-        else:
-            result_type = details.get('result-type')
-            session_count = details.get('failed-session-count')
-            for item in self.failure_details_sum:
-                if item['result-type'] == result_type:
-                    item['failed-session-count'] += session_count
-
-        self.failure_details_all.append(details)
-
-    def merge_failure_details_list(self, details_list):
-        """ update sum and all """
-        for details in details_list:
-            self.merge_failure_details(details)
-
-class TlsOrg:
-    """ report for each reporting organiziation """
-    def __init__(self, org_name):
-        self.name = org_name
-        self.dom = []
-        self.success = 0
-        self.failure = 0
-
-    def get_dom(self, dom_name):
-        """ get TlsDom instance for dom_name """
-        dom = None
-        for this_dom in self.dom:
-            if this_dom.name == dom_name:
-                dom = this_dom
-                break
-        if not dom:
-            dom = TlsDom(dom_name)
-            self.dom.append(dom)
-        return dom
-
-class TlsRpt:
-    """
-    Report class for MTA-STS TLS reports
-    """
+class TlsFailureDetails:
+    """ failure details """
     def __init__(self):
-        self.opts = TlsOpts()
+        self.result_type = None
+        self.sending_mta_ip = None
+        self.receiving_mx_hostname = None
+        self.receiving_mx_helo = None
+        self.receiving_ip = None
+        self.failed_session_count = 0
+        self.additional_information = None
+        self.failure_reason_code = None
 
-        self.org = []
+class TlsPolicy:
+    """ result of one policy (tlsa, sts, no-policy) """
+    def __init__(self, policy_type:str):
+        self.type = policy_type
+        self.domain = None
+        self.org_name = None
+        self.string = []
+        self.mx_host_pattern = []
+
         self.success = 0
         self.failure = 0
-        self.prnt = Prnt(self.opts.theme)
 
-    def get_org(self, org_name):
-        """ return org_name class instance """
-        org = None
-        for this_org in self.org:
-            if this_org.name == org_name:
-                org = this_org
-                break
-        if not org:
-            org = TlsOrg(org_name)
-            self.org.append(org)
-        return org
+        self.failure_details = []       # [TlsFailureDetails]
+        self.failure_summary = {}       # {result_type  : TlsFailSummary}
 
-    def get_num_orgs(self):
-        """ number of orgs """
-        num_orgs = len(self.org)
-        return num_orgs
+class TlsOneRpt:
+    """ One report from one org"""
+    def __init__(self, org_name):
+        self.org_name = org_name
+        self.date_start = None
+        self.date_end = None
 
-    def analyze(self, json):
-        """
-        Analyze one json report and add to report
-        """
-        tls_analyze(self, json)
+        # policy_types = ('tlsa', 'sts', 'no_policy')
+        #
+        self.policies = {}        # 'tlsa' : TlsPolicy
 
-    def print(self):
-        """ print the report """
-        print_tls_report(self)
+class TlsOrgReport:
+    """ All reports from one org """
+    def __init__(self, org_name):
+        self.org_name = org_name
 
-    def input_disposition(self, json_files):
-        """ handle disposition of all input files """
-        input_files_disposition(self.opts, self.prnt, json_files)
+        # summary
+        self.date_start = None
+        self.date_end = None
+        self.success = 0
+        self.failure = 0
 
-    def json_file_list(self):
-        """ get list of xml or compressed xml files """
-        ext_list = ['json', 'gz', 'zip']
-        flist = file_ext_list(self.opts.dir, ext_list)
-        return flist
+        # policy_types = ('tlsa', 'sts', 'no_policy')
+        # policies {'tlsa' : {'domain' : tls_policy, 'domain2' :  tls_policy2, ...}
+        self.policies = {}
+
+class TlsDomainReport:
+    """ All reports from one org """
+    def __init__(self, domain):
+        self.domain = domain
+
+        # summary
+        self.date_start = None
+        self.date_end = None
+        self.success = 0
+        self.failure = 0
+
+        # policy_types = ('tlsa', 'sts', 'no_policy')
+        # for each type : {org:tls_policy dict]
+        #                 {'org': tls_pol, 'org': tls_pol, ... }
+        self.policies = {}
+
+class TlsReports:
+    """ all reports """
+    def __init__(self):
+        self.reports = []
+        self.domain_rpts = {}
+        self.org_rpts = {}
+
+        # summary
+        self.date_start = None
+        self.date_end = None
+        self.success = 0
+        self.failure = 0

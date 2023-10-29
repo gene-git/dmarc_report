@@ -5,6 +5,7 @@
    Report Print
 """
 # pylint: disable=R0913,R0914,C0301
+# pylint: disable=invalid-name
 
 from .utils import sort_by_ip
 from .utils import string_is_ip

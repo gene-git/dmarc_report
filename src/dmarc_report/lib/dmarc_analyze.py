@@ -6,6 +6,7 @@
    Files can be xml or zip or gzip xml.
 """
 # pylint: disable=R0912,R0913,R0914,R0915
+# pylint: disable=invalid-name
 
 from .xml_tools import xml_pull_item
 from .xml_tools import xml_pull_date_range

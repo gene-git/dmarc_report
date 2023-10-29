@@ -3,6 +3,7 @@
 """
 Helper tools for dmarc report generator
 """
+# pylint: disable=invalid-name
 import os
 import stat
 import glob
