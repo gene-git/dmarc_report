@@ -9,7 +9,7 @@ import stat
 import glob
 from operator import itemgetter
 import netaddr
-
+import datetime
 
 def ips_to_ipset(cidr_list):
     """
@@ -61,15 +61,29 @@ def drange_summary(drange_list):
     end = '?'
     contig = False
 
-    if not drange_list:
+    # do something if faced with no dates
+    fmt = '%y/%m/%d %H:%M'
+
+    # handle missing dates in report
+
+    drange_clean = []
+    for item in drange_list:
+        if not (item[0] and item[1]) :
+            continue
+        drange_clean.append(item)
+
+    if not drange_clean:
         return (start, end, contig)
 
     # start
-    num = len(drange_list)
-    #dts = sorted (drange_list, key lambda x: x[0])
-    dts = sorted (drange_list, key=itemgetter(0))
+    num = len(drange_clean)
+
+    dts = sorted (drange_clean, key=itemgetter(0))
     dstart = dts[0][0]
     dend = dts[num-1][1]
+
+    if not (dstart and dend):
+        return (start, end, True)
 
     fmt = '%y/%m/%d %H:%M'
     start = dstart.strftime(fmt)

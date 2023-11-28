@@ -1,16 +1,30 @@
-[tool.poetry]
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
 name = "dmarc_report"
-version = "4.0.0"
-description = "Generate a human readable DMARC report from 1 or more standard xml email reports."
-authors = ["Gene C"]
+dynamic = ["version"]
+description = "Generate human readable DMARC and TLS reports from standard email reports."
+authors = [{ name = "Gene C", email = "arch@sapience.com" }]
 license = "MIT"
 readme = "README.rst"
+keywords = []
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = []
 
-[tool.poetry.dependencies]
-python = "^3.9"
+[project.urls]
+Documentation = "https://github.com/gene-git/dmarc_report/Docs"
+Issues = "https://github.com/gene-git/dmarc_report/issues"
+Source = "https://github.com/gene-git/dmarc_report"
 
-[tool.poetry.dev-dependencies]
+[tool.hatch.version]
+path = "src/dmarc_report/__about__.py"
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+[[tool.hatch.envs.all.matrix]]
+python = ["3.10", "3.11", "3.12"]
+
