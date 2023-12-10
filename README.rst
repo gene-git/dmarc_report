@@ -14,6 +14,10 @@ New / Interesting
 
 **Interesting**
 
+ * Add support for handling mbox file with multiple emails containing reports.
+   While some clients save multiple emails in separate *.eml* files, others, like
+   evolution, save them all in a single *.mbox* file. Add support for this.
+
  * tls-rpt  
 
    New tool to generate report for TLS reports for MTA-STS or DANE. See README-tls.md
@@ -74,7 +78,8 @@ to change directories before running the report.
 
 Any email files, those ending with *.eml* will be processed first. These are assumed to
 contain the dmarc report as a mime attachment. The attachment is extracted from any such email 
-files. 
+files. Some mail clients save multiple emails as a single mbox file. Each email in the mbox
+file will be similarly processed and have the attached report extracted.
 
 Then all remaining files are read and processed. The tool processes all xml 
 and gzip/zip compressed xml dmarc report files and generates a human readable report.

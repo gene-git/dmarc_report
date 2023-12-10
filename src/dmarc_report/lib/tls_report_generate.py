@@ -51,9 +51,8 @@ def generate_tls_report(tls_rpt:'TlsRpt'):
 
     cw1 = 32
     cw2 = 15
-    line_len = (cw1+2*cw2 + 3) 
+    line_len = cw1+2*cw2 + 3
     line = line_len * '─'
-    dash = line_len * '-'
 
     print(f' {line}')
     print(f'{"Domain"} {"Org":>{cw1-7}} {"success":>15s} {"failure":>15s}')
@@ -75,7 +74,7 @@ def generate_tls_report(tls_rpt:'TlsRpt'):
             ptype_s = _format_item(prnt, len_ptype, 'green', ptype)
             print(ptype_s, end='')
 
-            for (org, policy) in subreport.items():
+            for (_org, policy) in subreport.items():
                 org_name = policy.org_name
                 if not org_name:
                     org_name = '???'
@@ -90,9 +89,6 @@ def generate_tls_report(tls_rpt:'TlsRpt'):
 
                 lines = 0
                 for (res_type, fail_summary) in policy.failure_summary.items() :
-                    space = 0
-                    if lines > 0:
-                        spaec = cw1 + cw2 
                     lines += 1
                     count = fail_summary.count
                     res = f'{res_type} ({count:>4d})'

@@ -9,7 +9,6 @@ import stat
 import glob
 from operator import itemgetter
 import netaddr
-import datetime
 
 def ips_to_ipset(cidr_list):
     """
