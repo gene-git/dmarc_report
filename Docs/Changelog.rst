@@ -1,6 +1,9 @@
 Changelog
 =========
 
+[head] ----- 2023-12-10
+ * update Changelog.rst  
+
 [4.3.0] ----- 2023-12-10
  * Add support for extracting reports from multiple emails saved into an mbox file - evolution saves emails this way  
  * update Changelog.rst  
