@@ -1,7 +1,8 @@
 Changelog
 =========
 
-[head] ----- 2023-12-10
+[4.3.1] ----- 2023-12-26
+ * Add missing dateutil to depends in PKGBUILD  
  * update Changelog.rst  
 
 [4.3.0] ----- 2023-12-10
