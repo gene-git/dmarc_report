@@ -3,13 +3,13 @@
 """
  Routines to read various various xml report files.
 """
-# pylint: disable=R0913, R0914
+# pylint: disable=c-extension-no-member
 
 import os
 import gzip
 import zipfile
 import datetime
-import xml.etree.ElementTree as xml_et
+from lxml import etree
 from .utils import get_glob_file_list
 
 def get_xml_from_zip(fname):
@@ -26,11 +26,9 @@ def get_xml_from_zip(fname):
     with zipfile.ZipFile(fname, 'r') as zipobj:
         for member in zipobj.namelist():
             this_member = zipobj.read(member)
-            try:
-                this_xml = xml_et.fromstring(this_member)
-            except xml_et.ParseError :
-                pass
-            members.append(this_xml)
+            this_xml = etree.fromstring(this_member)
+            if this_xml is not None:
+                members.append(this_xml)
 
     return members
 
@@ -44,11 +42,7 @@ def get_xml_from_gz(fname):
     xml = None
     with gzip.open(fname, 'rb') as fobj:
         this_member = fobj.read()
-        try:
-            xml = xml_et.fromstring(this_member)
-        except xml_et.ParseError :
-            pass
-
+        xml = etree.fromstring(this_member)
     return xml
 
 def get_xml_from_xml(fname):
@@ -58,19 +52,50 @@ def get_xml_from_xml(fname):
         output return xml
     """
     # extract content into memory
-    xml_tree = xml_et.parse(fname)
+    xml_tree = etree.parse(fname)
     xml = xml_tree.getroot()
 
     return xml
+
+def _get_ns(xml):
+    """
+    return any ns
+     - we create a dummy ns
+     - we should find way to get actual name space and the name:value [, ... name:value]
+    """
+    ns = xml.nsmap
+    #ns = None
+    #if xml and xml.tag and xml.tag[0] == '{':
+    #    ns = xml.tag[1:].split('}')[0]
+    return ns
+
+def xml_pull_node(xml, what):
+    """
+    Extract 'what' from xml
+    """
+    item = None
+    if xml is not None:
+        ns = _get_ns(xml)
+        if ns:
+            item = xml.find(what, ns)
+        else:
+            item = xml.find(what)
+
+    return item
 
 def xml_pull_item(xml, what):
     """
     Extract 'what' from xml
     """
     text = "-"
-    if xml:
-        item = xml.find(what)
-        if item is not None:
+    if xml is not None:
+        ns = _get_ns(xml)
+        if ns:
+            item = xml.find(what, ns)
+        else:
+            item = xml.find(what)
+
+        if item is not None :
             text = item.text
             if not text:
                 text = "-"
@@ -83,19 +108,56 @@ def xml_pull_date_range(metadata):
     """
     dstart = None
     dend = None
-    date_range = metadata.find('date_range')
+    ns = _get_ns(metadata)
+    if ns:
+        date_range = metadata.find('date_range', ns)
+    else:
+        date_range = metadata.find('date_range')
     if date_range is not None:
-        begin = date_range.find('begin')
+        begin = date_range.find('begin', ns)
         if begin  is not None:
             start_secs = begin.text
             dstart = datetime.datetime.fromtimestamp(int(start_secs))
-        end = date_range.find('end')
+        end = date_range.find('end', ns)
         if end is not None:
             end_secs = end.text
             dend = datetime.datetime.fromtimestamp(int(end_secs))
 
     drange = [dstart, dend]
     return drange
+
+def xml_pull_records(xml):
+    """
+    Return list of records
+    """
+    ns = _get_ns(xml)
+    if ns:
+        records = xml.findall('record', ns)
+    else:
+        records = xml.findall('record')
+    return records
+
+def xml_pull_auth_results_dkims(xml):
+    """
+    Return list of auth_results/dkim
+    """
+    ns = _get_ns(xml)
+    if ns:
+        dkims = xml.findall('auth_results/dkim', ns)
+    else:
+        dkims = xml.findall('auth_results/dkim')
+    return dkims
+
+def xml_pull_auth_results_spf(xml):
+    """
+    Return auth_results/spf
+    """
+    ns = _get_ns(xml)
+    if ns:
+        spf = xml.find('auth_results/spf', ns)
+    else:
+        spf = xml.find('auth_results/spf')
+    return spf
 
 def xml_file_list(topdir):
     """

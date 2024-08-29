@@ -14,6 +14,8 @@ New / Interesting
 
 **Interesting**
 
+ * Switch to lxml for better handling of xml namespaces found in some reports
+
  * Add support for handling mbox file with multiple emails containing reports.
    While some clients save multiple emails in separate *.eml* files, others, like
    evolution, save them all in a single *.mbox* file. Add support for this.

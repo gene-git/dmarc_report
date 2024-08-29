@@ -25,6 +25,7 @@ def dkim_colors(cnt, passes, fails, aligns):
        Can have passes == cnt and also have fails on second selector
        Common when there is 1 RSA and 1 ED25519 selector
     """
+    # pylint: disable=possibly-used-before-assignment
     #
     # Passes
     #

@@ -8,9 +8,8 @@
 # pylint: disable=R0912,R0913,R0914,R0915
 # pylint: disable=invalid-name
 
-from .xml_tools import xml_pull_item
-from .xml_tools import xml_pull_date_range
-
+from .xml_tools import (xml_pull_item, xml_pull_node, xml_pull_date_range)
+from .xml_tools import (xml_pull_records, xml_pull_auth_results_dkims, xml_pull_auth_results_spf)
 
 def dmarc_analyze(rpt, xml):
     """
@@ -18,16 +17,20 @@ def dmarc_analyze(rpt, xml):
       input - xml data from one report
     """
 
-    if not xml:
+    if xml is None:
         return
 
     #
     # Pull from report data
     #
-    metadata = xml.find('report_metadata')
+    metadata = xml_pull_node(xml, 'report_metadata')
+    if metadata is None:
+        print('Missing metadata - skipping: {rpt}')
+        return
     org_name = xml_pull_item(metadata, 'org_name')
     _rpt_id = xml_pull_item(metadata, 'report_id')
-    dmarc_policy = xml.find('policy_published')
+
+    dmarc_policy = xml_pull_node(xml, 'policy_published')
     domain = xml_pull_item(dmarc_policy, 'domain')
     drange = xml_pull_date_range(metadata)
 
@@ -43,7 +46,8 @@ def dmarc_analyze(rpt, xml):
     dom_rpt.add_drange(drange)
 
     nrec = 0
-    for record in xml.findall('record'):
+    records = xml_pull_records(xml)
+    for record in records:
         nrec += 1
         ip = xml_pull_item(record,'row/source_ip')
         cnt = xml_pull_item(record,'row/count')
@@ -55,7 +59,7 @@ def dmarc_analyze(rpt, xml):
         org.total.cnt += cnt
         rpt.total.cnt += cnt
 
-        policy = record.find('row/policy_evaluated')
+        policy = xml_pull_node(record, 'row/policy_evaluated')
         disp = xml_pull_item(policy, 'disposition')
         dkim = xml_pull_item(policy, 'dkim')
         spf = xml_pull_item(policy, 'spf')
@@ -81,7 +85,7 @@ def dmarc_analyze(rpt, xml):
 
         _hdr_from = xml_pull_item(record, 'identifiers/header_from')
 
-        dkims = record.findall('auth_results/dkim')
+        dkims = xml_pull_auth_results_dkims(record)
         for dkim in dkims:
             res = xml_pull_item(dkim, 'result')
             sel_domain = xml_pull_item(dkim, 'domain')
@@ -106,7 +110,7 @@ def dmarc_analyze(rpt, xml):
             org.total.add_selector(sel.short)
             rpt.total.add_selector(sel.short)
 
-        spf = record.find('auth_results/spf')
+        spf = xml_pull_auth_results_spf(record)
         spf_res = xml_pull_item(spf, 'result')
         _spf_dom = xml_pull_item(spf, 'domain')
         _spf_scope = xml_pull_item(spf, 'scope')
