@@ -7,9 +7,8 @@
 # pylint: disable=R0913,R0914,C0301
 # pylint: disable=invalid-name
 
-from .utils import sort_by_ip
-from .utils import string_is_ip
 from .utils import drange_summary
+from .cidr import (is_valid_cidr, sort_ips)
 from .report_colors import dmarc_colors
 from .report_colors import dkim_colors
 from .report_colors import spf_colors
@@ -112,7 +111,7 @@ def print_ip_row(rpt, name, iprpt, cols):
     # IP column
     #
     wid = cols.wip
-    if string_is_ip(name) and rpt.ip_in_dom_ips(name):
+    if is_valid_cidr(name) and rpt.ip_in_dom_ips(name):
         (name, cdel) = prnt.colorize(name, fg_col='dom')
         wid = cols.wip + cdel
     col_ip = f'{name:>{wid}s} {cnt:{cols.wvol},d}'
@@ -210,7 +209,7 @@ def print_domain_report(rpt, org, dom, cols):
     iplist = []
     for (ip, _ip_rpt) in dom.ip_rpt.items():
         iplist.append(ip)
-    iplist_sorted = sort_by_ip(iplist)
+    iplist_sorted = sort_ips(iplist)
 
     for ip in iplist_sorted:
         iprpt = dom.ip_rpt[ip]

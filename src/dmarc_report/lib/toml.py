@@ -6,16 +6,8 @@ toml support
 """
 import os
 import sys
+import tomllib as toml
 from .utils import open_file
-
-if sys.version_info >= (3,11):
-    # 3.11 has tomllib
-    try:
-        import tomllib as toml
-    except ImportError:
-        pass
-else:
-    import tomli as toml
 
 def read_toml_file(fpath):
     """

@@ -8,38 +8,6 @@ import os
 import stat
 import glob
 from operator import itemgetter
-import netaddr
-
-def ips_to_ipset(cidr_list):
-    """
-    Take list of IPs, cidrs and return IPSet
-    """
-    if not cidr_list:
-        return None
-    ipset = None
-    for cidr in cidr_list:
-        net = netaddr.IPNetwork(cidr)
-        if ipset:
-            ipset.add(net)
-        else:
-            ipset = netaddr.IPSet(net)
-
-    return ipset
-
-def ip_in_ipset(ip_str, ipset):
-    """
-    Checks if ip is member of ipset
-    """
-    if not ip_str or not ipset:
-        return False
-    ip = netaddr.IPAddress(ip_str)
-    is_member = ip in ipset
-    return is_member
-
-def string_is_ip(ip_str):
-    """ check if is an IP address """
-    isip = netaddr.valid_ipv4(ip_str) or netaddr.valid_ipv6(ip_str)
-    return isip
 
 def sort_by_ip(iplist_str):
     """

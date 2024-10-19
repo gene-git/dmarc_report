@@ -3,8 +3,7 @@
 #
 
 # Run time
-python >= 3.9
-netaddr
+python >= 3.11
 
 # package building/installing
 git

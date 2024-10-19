@@ -14,6 +14,11 @@ New / Interesting
 
 **Interesting**
 
+ * Now use python 3's ipaddress module instead of netaddr. 
+   Its faster and we no longer require 3rd party library
+
+ * Require python version 3.11 or later
+
  * Switch to lxml for better handling of xml namespaces found in some reports
 
  * Add support for handling mbox file with multiple emails containing reports.
@@ -186,9 +191,7 @@ Dependencies
 ============
 
 * Run Time :
-  * python (3.9 or later)
-  * netaddr (aka python-netaddr )
-  * tomli (only if python < 3.11)
+  * python (3.11 or later)
 
 * Building Package:
   * git
