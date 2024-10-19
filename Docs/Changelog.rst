@@ -1,6 +1,14 @@
 Changelog
 =========
 
+**[4.7.0] ----- 2024-10-19** ::
+
+	    Now use python 3s ipaddress module instead of netaddr.
+	      Its faster and we no longer require 3rd party module
+	    Require python version 3.11 or later
+	    update Changelog.rst
+
+
 **[4.6.0] ----- 2024-08-29** ::
 
 	    Switch to lxml for better handling of namespaces found in some reports
