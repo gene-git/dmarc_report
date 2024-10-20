@@ -1,6 +1,12 @@
 Changelog
 =========
 
+**[4.8.0] ----- 2024-10-20** ::
+
+	    For completeness, Handle ip address of form ip/prefix
+	    update Changelog.rst
+
+
 **[4.7.0] ----- 2024-10-19** ::
 
 	    Now use python 3s ipaddress module instead of netaddr.
