@@ -3,6 +3,7 @@
 '''
 Network Address Tools
 '''
+import re
 import ipaddress
 from ipaddress import (AddressValueError, NetmaskValueError)
 from ipaddress import (IPv4Network, IPv6Network, IPv4Address, IPv6Address)
@@ -25,11 +26,26 @@ def cidrs_to_nets(cidrs:[str], strict:bool=False) -> [IPv4Network | IPv6Network]
     nets = [ipaddress.ip_network(cidr, strict=strict) for cidr in cidrs]
     return nets
 
+def ip_to_address(ip:str) -> IPv4Address|IPv6Address|None:
+    '''
+    Return ip address of given ip.
+    If ip has prefix and host bits set, we strip the prefix first
+    '''
+    if not ip:
+        return None
+
+    ipin = ip
+    if '/' in ip:
+        ipin = re.sub(r'/.*$', '',  ip)
+
+    addr = ipaddress.ip_address(ipin)
+    return addr
+
 def ips_to_addresses(ips:[str]) -> [IPv4Address | IPv6Address]:
     '''
     For list of ip strings return list of ip addresses
     '''
-    addresses = [ipaddress.ip_address(ip) for ip in ips]
+    addresses = [ip_to_address(ip) for ip in ips]
     return addresses
 
 def addresses_to_ips(addresses:[IPv4Address | IPv6Address]) -> [str]:
