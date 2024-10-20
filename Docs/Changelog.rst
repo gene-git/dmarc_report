@@ -1,6 +1,12 @@
 Changelog
 =========
 
+**[4.9.0] ----- 2024-10-20** ::
+
+	    remove dead code
+	    update Changelog.rst
+
+
 **[4.8.0] ----- 2024-10-20** ::
 
 	    For completeness, Handle ip address of form ip/prefix
