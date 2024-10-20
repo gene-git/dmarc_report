@@ -5,7 +5,6 @@ toml support
  - toml reader is native to 3.11+
 """
 import os
-import sys
 import tomllib as toml
 from .utils import open_file
 

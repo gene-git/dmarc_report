@@ -9,16 +9,6 @@ import stat
 import glob
 from operator import itemgetter
 
-def sort_by_ip(iplist_str):
-    """
-    sort a list of IP addresses (str)
-    return sorted list
-    """
-    iplist = [netaddr.IPAddress(ip) for ip in iplist_str]
-    sorted_list =  sorted(iplist, key=netaddr.IPAddress.sort_key)
-    sorted_list = [str(ip) for ip in sorted_list]
-    return sorted_list
-
 def drange_summary(drange_list):
     """
     takes list of [start, end]
