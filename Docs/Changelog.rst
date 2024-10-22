@@ -1,6 +1,12 @@
 Changelog
 =========
 
+**[4.11.0] ----- 2024-10-22** ::
+
+	    Additional input protections in cidr utils
+	    update Changelog.rst
+
+
 **[4.10.0] ----- 2024-10-22** ::
 
 	    Bug fix when no "dom_ips" set. Resolves issue #2 reported by @g4242
