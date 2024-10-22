@@ -23,6 +23,8 @@ def cidrs_to_nets(cidrs:[str], strict:bool=False) -> [IPv4Network | IPv6Network]
     '''
     For list of cidr strings return list of ip_network
     '''
+    if not cidrs:
+        return []
     nets = [ipaddress.ip_network(cidr, strict=strict) for cidr in cidrs]
     return nets
 
