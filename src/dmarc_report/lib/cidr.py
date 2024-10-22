@@ -47,6 +47,8 @@ def ips_to_addresses(ips:[str]) -> [IPv4Address | IPv6Address]:
     '''
     For list of ip strings return list of ip addresses
     '''
+    if not ips:
+        return []
     addresses = [ip_to_address(ip) for ip in ips]
     return addresses
 
@@ -54,6 +56,8 @@ def addresses_to_ips(addresses:[IPv4Address | IPv6Address]) -> [str]:
     '''
     For list of ip addresses return list of ip as strings
     '''
+    if not addresses:
+        return []
     ips = [str(address) for address in addresses]
     return ips
 
@@ -61,6 +65,8 @@ def nets_to_cidrs(nets:[IPv4Network | IPv6Network]) -> [str]:
     '''
     List of nets to list of cidr strings
     '''
+    if not nets:
+        return []
     cidrs = [str(net) for net in nets]
     return cidrs
 
