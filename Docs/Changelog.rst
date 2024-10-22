@@ -1,6 +1,12 @@
 Changelog
 =========
 
+**[4.10.0] ----- 2024-10-22** ::
+
+	    Bug fix when no "dom_ips" set. Resolves issue #2 reported by @g4242
+	    update Changelog.rst
+
+
 **[4.9.0] ----- 2024-10-20** ::
 
 	    remove dead code
