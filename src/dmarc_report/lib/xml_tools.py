@@ -117,11 +117,13 @@ def xml_pull_date_range(metadata):
         begin = date_range.find('begin', ns)
         if begin  is not None:
             start_secs = begin.text
-            dstart = datetime.datetime.fromtimestamp(int(start_secs))
+            start_secs = int(float(start_secs))
+            dstart = datetime.datetime.fromtimestamp(start_secs)
         end = date_range.find('end', ns)
         if end is not None:
             end_secs = end.text
-            dend = datetime.datetime.fromtimestamp(int(end_secs))
+            end_secs = int(float(end_secs))
+            dend = datetime.datetime.fromtimestamp(end_secs)
 
     drange = [dstart, dend]
     return drange
