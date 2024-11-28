@@ -1,6 +1,12 @@
 Changelog
 =========
 
+**[4.12.0] ----- 2024-11-28** ::
+
+	    Handle another seconds format in xml file
+	    update Changelog.rst
+
+
 **[4.11.0] ----- 2024-10-22** ::
 
 	    Additional input protections in cidr utils
