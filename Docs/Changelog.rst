@@ -1,6 +1,12 @@
 Changelog
 =========
 
+**[4.12.2] ----- 2024-12-31** ::
+
+	    Add validpgpkeys to PKGBUILD
+	    update Changelog.rst
+
+
 **[4.12.1] ----- 2024-12-31** ::
 
 	    All git tags are now signed.
