@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2023, Gene C
+# SPDX-FileCopyrightText: © 2023-present Gene C <arch@sapience.com>
 """
  DMARC report generator:
    read aggregate dmarc reports files in current directory (RUA) and generate report.

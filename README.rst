@@ -14,6 +14,12 @@ New / Interesting
 
 **Interesting**
 
+ * Going forward all git tags will be signed by <arch@sapience.com>.
+   Public key is available via WKD or download from website:
+   https://www.sapience.com/tech
+   After key is on keyring use the PKGBUILD source line ending with *?signed*
+   or manually verify using *git tag -v <tag-name>
+
  * Now use python 3's ipaddress module instead of netaddr. 
    Its faster and we no longer require 3rd party library
 

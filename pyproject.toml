@@ -26,5 +26,5 @@ Source = "https://github.com/gene-git/dmarc_report"
 path = "src/dmarc_report/__about__.py"
 
 [[tool.hatch.envs.all.matrix]]
-python = ["3.10", "3.11", "3.12"]
+python = ["3.12", "3.13"]
 

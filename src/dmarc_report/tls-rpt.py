@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2023, Gene C
+# SPDX-FileCopyrightText: © 2023-present Gene C <arch@sapience.com>
 """
  TLS report generator:
    read tlsreport reports files and generate human readable report.

@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
-# SPDX-FileCopyrightText: © {{year}}-present  {{author}} <{{email}}>
+# SPDX-FileCopyrightText: © 2023-present Gene C <arch@sapience.com>
 """
 Project dmarc_report
 """
-__version__ = "4.12.0"
+__version__ = "4.12.1"
