@@ -1,6 +1,13 @@
 Changelog
 =========
 
+**[4.12.1] ----- 2024-12-31** ::
+
+	    All git tags are now signed.
+	    Update SPDX tags
+	    update Changelog.rst
+
+
 **[4.12.0] ----- 2024-11-28** ::
 
 	    Handle another seconds format in xml file
