@@ -1,6 +1,12 @@
 Changelog
 =========
 
+**[4.12.4] ----- 2024-12-31** ::
+
+	    Add git signing key to Arch Package
+	    update Changelog.rst
+
+
 **[4.12.3] ----- 2024-12-31** ::
 
 	    typo
