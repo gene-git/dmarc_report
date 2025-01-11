@@ -3,7 +3,7 @@
 #
 
 # Run time
-python >= 3.11
+python >= 3.13
 
 # package building/installing
 git

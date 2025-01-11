@@ -197,7 +197,7 @@ Dependencies
 ============
 
 * Run Time :
-  * python (3.11 or later)
+  * python (3.13 or later)
 
 * Building Package:
   * git
