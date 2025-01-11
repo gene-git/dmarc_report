@@ -1,6 +1,12 @@
 Changelog
 =========
 
+**[4.12.5] ----- 2025-01-11** ::
+
+	    Ensure python version requirement is consistent (README, pyproject, PKGBUILD, requirements)
+	    update Changelog.rst
+
+
 **[4.12.4] ----- 2024-12-31** ::
 
 	    Add git signing key to Arch Package
