@@ -1,6 +1,13 @@
 Changelog
 =========
 
+**[4.13.1] ----- 2025-02-23** ::
+
+	    Change to py-cidr package for network tools.
+	    Update README
+	    update Changelog.rst
+
+
 **[4.12.5] ----- 2025-01-11** ::
 
 	    Ensure python version requirement is consistent (README, pyproject, PKGBUILD, requirements)
