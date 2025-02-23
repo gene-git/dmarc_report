@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SMTP tls-rpt &#8212; dmarc_report 4.13.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=a4f8271a"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Changelog" href="Changelog.html" />
+    <link rel="prev" title="dmarc_report" href="README.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="smtp-tls-rpt">
+<h1>SMTP tls-rpt<a class="headerlink" href="#smtp-tls-rpt" title="Link to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>Generate a human readable tls report from one or more standard tls report files.
+These reports are used for a email domain with support for either DANE or MTA-STS or both.</p>
+<section id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h3>
+<p>Run from command line:
+.. code-block:: bash</p>
+<blockquote>
+<div><p>tls-rpt</p>
+</div></blockquote>
+<p>Generates reports from one or more emailed tls reports. Similar to
+dmarc-rpt, the tool can consume email files (.eml) or the json attachments (plain or compressed)
+delivered as part of the usual mts-sts reports - and in directory specified by <em>inp_files_save_dir</em>.</p>
+<p><em>tls-rpt</em> is provided as part of the dmarc_report package</p>
+<section id="background">
+<h4>Background<a class="headerlink" href="#background" title="Link to this heading">¶</a></h4>
+<p>TLS Reports are oprionally generated for a mail domaain when so requested by a TXT record in
+the domain’s DNS. The tool parses and summarizes such email reports for human consumption.</p>
+<p>SMTP TLS reporting is described by [RFC 8460] <a class="footnote-reference brackets" href="#id6" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> where it summarizes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="n">number</span> <span class="n">of</span> <span class="n">protocols</span> <span class="n">exist</span> <span class="k">for</span> <span class="n">establishing</span> <span class="n">encrypted</span> <span class="n">channels</span>
+<span class="n">between</span> <span class="n">SMTP</span> <span class="n">Mail</span> <span class="n">Transfer</span> <span class="n">Agents</span> <span class="p">(</span><span class="n">MTAs</span><span class="p">),</span> <span class="n">including</span> <span class="n">STARTTLS</span><span class="p">,</span> <span class="n">DNS</span><span class="o">-</span>
+<span class="n">Based</span> <span class="n">Authentication</span> <span class="n">of</span> <span class="n">Named</span> <span class="n">Entities</span> <span class="p">(</span><span class="n">DANE</span><span class="p">)</span> <span class="n">TLSA</span><span class="p">,</span> <span class="ow">and</span> <span class="n">MTA</span> <span class="n">Strict</span>
+<span class="n">Transport</span> <span class="n">Security</span> <span class="p">(</span><span class="n">MTA</span><span class="o">-</span><span class="n">STS</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>MTA-STS, is explained by [RFC 8641] <a class="footnote-reference brackets" href="#id7" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> where it is summarized:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SMTP</span> <span class="n">MTA</span> <span class="n">Strict</span> <span class="n">Transport</span> <span class="n">Security</span> <span class="p">(</span><span class="n">MTA</span><span class="o">-</span><span class="n">STS</span><span class="p">)</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">mechanism</span> <span class="n">enabling</span>
+<span class="n">mail</span> <span class="n">service</span> <span class="n">providers</span> <span class="p">(</span><span class="n">SPs</span><span class="p">)</span> <span class="n">to</span> <span class="n">declare</span> <span class="n">their</span> <span class="n">ability</span> <span class="n">to</span> <span class="n">receive</span>
+<span class="n">Transport</span> <span class="n">Layer</span> <span class="n">Security</span> <span class="p">(</span><span class="n">TLS</span><span class="p">)</span> <span class="n">secure</span> <span class="n">SMTP</span> <span class="n">connections</span> <span class="ow">and</span> <span class="n">to</span> <span class="n">specify</span>
+<span class="n">whether</span> <span class="n">sending</span> <span class="n">SMTP</span> <span class="n">servers</span> <span class="n">should</span> <span class="n">refuse</span> <span class="n">to</span> <span class="n">deliver</span> <span class="n">to</span> <span class="n">MX</span> <span class="n">hosts</span>
+<span class="n">that</span> <span class="n">do</span> <span class="ow">not</span> <span class="n">offer</span> <span class="n">TLS</span> <span class="k">with</span> <span class="n">a</span> <span class="n">trusted</span> <span class="n">server</span> <span class="n">certificate</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>while DANE is documented in [RFC 6698] <a class="footnote-reference brackets" href="#id8" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>, [RFC 7671] <a class="footnote-reference brackets" href="#id9" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a> and [RFC 7672] <a class="footnote-reference brackets" href="#id10" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Encrypted</span> <span class="n">communication</span> <span class="n">on</span> <span class="n">the</span> <span class="n">Internet</span> <span class="n">often</span> <span class="n">uses</span> <span class="n">Transport</span> <span class="n">Layer</span>
+<span class="n">Security</span> <span class="p">(</span><span class="n">TLS</span><span class="p">),</span> <span class="n">which</span> <span class="n">depends</span> <span class="n">on</span> <span class="n">third</span> <span class="n">parties</span> <span class="n">to</span> <span class="n">certify</span> <span class="n">the</span> <span class="n">keys</span>
+<span class="n">used</span><span class="o">.</span>  <span class="n">This</span> <span class="n">document</span> <span class="n">improves</span> <span class="n">on</span> <span class="n">that</span> <span class="n">situation</span> <span class="n">by</span> <span class="n">enabling</span> <span class="n">the</span>
+<span class="n">administrators</span> <span class="n">of</span> <span class="n">domain</span> <span class="n">names</span> <span class="n">to</span> <span class="n">specify</span> <span class="n">the</span> <span class="n">keys</span> <span class="n">used</span> <span class="ow">in</span> <span class="n">that</span>
+<span class="n">domain</span><span class="s1">&#39;s TLS servers.  This requires matching improvements in TLS</span>
+<span class="n">client</span> <span class="n">software</span><span class="p">,</span> <span class="n">but</span> <span class="n">no</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">TLS</span> <span class="n">server</span> <span class="n">software</span>
+</pre></div>
+</div>
+</section>
+<section id="discussion">
+<h4>Discussion<a class="headerlink" href="#discussion" title="Link to this heading">¶</a></h4>
+<p>To receive TLS reports requires a DNS record requesting a TLS report along with
+either a DANE TLSA record or MTA-STS. MTA-STS requires both a policy and
+and a DNS record.</p>
+</section>
+</section>
+<section id="tls-report-dns-record">
+<h3>TLS Report DNS Record<a class="headerlink" href="#tls-report-dns-record" title="Link to this heading">¶</a></h3>
+<blockquote>
+<div><p>Example</p>
+<p>_smtp._tls.example.org IN TXT “v=TLSRPTv1;rua=mailto:<a class="reference external" href="mailto:tlsrpt&#37;&#52;&#48;example&#46;com">tlsrpt<span>&#64;</span>example<span>&#46;</span>com</a>”</p>
+<p>The TLS reports will be sent to the email provided by the string following <em>rua=</em>.
+In this example reports would be sent to <em>tlsrpt&#64;example.com</em>.</p>
+</div></blockquote>
+</section>
+<section id="mta-sts">
+<h3>MTA-STS<a class="headerlink" href="#mta-sts" title="Link to this heading">¶</a></h3>
+<p>Requieres both a DNS record and a policy file available from the email’s domain web server.</p>
+<p>Policy file example to be provided by web server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">mta</span><span class="o">-</span><span class="n">sts</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/.</span><span class="n">well</span><span class="o">-</span><span class="n">known</span><span class="o">/</span><span class="n">mta</span><span class="o">-</span><span class="n">sts</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p>The policy mode can be set to <em>enforce</em> or <em>testing</em>.
+Example <em>mta-sts.txt</em> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">version</span><span class="p">:</span> <span class="n">STSv1</span>
+<span class="n">mode</span><span class="p">:</span> <span class="n">enforce</span>
+<span class="n">mx</span><span class="p">:</span> <span class="n">example</span><span class="o">.</span><span class="n">com</span>
+<span class="n">mx</span><span class="p">:</span> \<span class="o">*.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+<span class="n">max_age</span><span class="p">:</span> <span class="mi">1296000</span>
+</pre></div>
+</div>
+<p>DNS TXT record example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>_mta-sts.example.org.  IN TXT “v=STSv1; id=202301011200;”
+</pre></div>
+</div>
+</section>
+<section id="dane-tlsa">
+<h3>DANE TLSA<a class="headerlink" href="#dane-tlsa" title="Link to this heading">¶</a></h3>
+<p>DNS record example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_25</span><span class="o">.</span><span class="n">_tcp</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">.</span> <span class="n">TLSA</span> <span class="mi">3</span> <span class="mi">1</span> <span class="mi">1</span> <span class="p">(</span><span class="n">xxx</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where xxx would be the appropriate public key hash.</p>
+<section id="using-tls-rpt">
+<h4>Using tls-rpt<a class="headerlink" href="#using-tls-rpt" title="Link to this heading">¶</a></h4>
+<p>Save all tls email reports into a directory.
+Change to the directory containing one or more dmarc report files and simply run
+.. code-block:: back</p>
+<blockquote>
+<div><p>tls-rpt</p>
+</div></blockquote>
+<p>Using the –dir option (or setging the config option <em>dir</em>) makes unnecessary to change directories before
+running the report.</p>
+<p>Any email files, those ending with <em>.eml</em> will be processed first. These are assumed to
+contain the dmarc report as a mime attachment. The attachment is extracted from such email
+files.</p>
+<p>Subsequently, all remaining files are read and processed. The tool processes all json
+and gzip/zip compressed json tls report files and produces a human readable report.</p>
+<p>Any file with extension <em>.eml</em> is treated as an email file.</p>
+<p>For convenience after report is generated, the input files can be automatically moved to a save
+direcory, left where they are or removed. A typical sequents of eveents is to save
+the email reports, run dmarc-rpt.  By auto moving (or removing) the input files, makes it simpler
+when doing the next batch of dmarc reports.</p>
+<p>For example, you might save all .eml files in same directory and with config settings:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">dir</span> <span class="o">=</span> <span class="s2">&quot;~/tlsrpt/reports&quot;</span>
+<span class="n">inp_files_disp</span> <span class="o">=</span> <span class="s2">&quot;save&quot;</span>
+<span class="n">inp_files_save_dir</span> <span class="o">=</span> <span class="s2">&quot;../saved&quot;</span>
+</pre></div>
+</div>
+<p>Then save all the raw .eml files into ~/tlsrpt/reports and run</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tls</span><span class="o">-</span><span class="n">rpt</span>
+</pre></div>
+</div>
+<p>All attachments from email reports would be saved into “~/tlsrpt/saved/2023-01”
+in this example.</p>
+</section>
+</section>
+<section id="tls-rpt-options">
+<h3>tls-rpt Options<a class="headerlink" href="#tls-rpt-options" title="Link to this heading">¶</a></h3>
+<p>Options are read first from config files then command line. Config files are read
+from <em>/etc/dmarc_report/config-tls</em> then <em>~/.config/dmarc_report/config-tls</em>.  Config files
+are in standard TOML format.</p>
+<p>Config settings use corresponding command line option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">long</span><span class="o">-</span><span class="n">option</span> <span class="o">=</span> <span class="n">xxx</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>e.g. to set data report dir in config use</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">dir</span> <span class="o">=</span> <span class="o">/</span><span class="n">foo</span><span class="o">/</span><span class="n">goo</span><span class="o">/</span><span class="n">other</span>
+</pre></div>
+</div>
+<p>The command line options are shown first in parens followed by
+corresponding config in square brackets if available.</p>
+<blockquote>
+<div><ul>
+<li><p>(<em>-d, –dir</em>) [<em>dir = /some/path</em>]</p>
+<p>Allows specifying the directory with the dmarc report files to be processed.
+The directory holding the report files (.eml, .json, .gz or .zip)
+By default, dir is the current directory.</p>
+</li>
+<li><p>(<em>-k, –keep</em>) [<em>keep = true</em>]</p>
+<p>Prevent the <em>.eml</em> being removed after the attached xml reports are extracted.</p>
+</li>
+<li><p>(<em>-thm, –theme</em> )</p>
+<p>Report is now in color.
+Default theme is ‘dark’. Theme can be ‘light’ ‘dark’ or ‘none’, which turns off color report.</p>
+</li>
+<li><p>(<em>-ifd, –inp_file_disp</em>)</p>
+<p>Input file disposition options one of : none,save,delete
+If set to save then all input files (xml, compressed xml and any kept eml files) are moved
+to directory specified by <em>inp_files_save_dir</em>.</p>
+</li>
+<li><p>(<em>-ifsd, –inp_files_save_dir</em>)</p>
+<p>When <em>inp_file_disp</em> is set, then input files are moved to this directory after report
+is generated.  Files are saved by year-month under the save directory</p>
+</li>
+<li><p>(<em>-h, –help</em>)</p>
+<p>Help for command line options.</p>
+</li>
+</ul>
+</div></blockquote>
+</section>
+<section id="saving-email-reports-from-email-client">
+<h3>Saving Email Reports From Email Client<a class="headerlink" href="#saving-email-reports-from-email-client" title="Link to this heading">¶</a></h3>
+<p>In most mail clients, such as thunderbird,  one can select multiple email reports and
+then use <em>File -&gt; Save As</em> to save the email files into a directory of your choosing.
+Each email gets saved with a <em>.eml</em> extension.</p>
+</section>
+<section id="license">
+<h3>License<a class="headerlink" href="#license" title="Link to this heading">¶</a></h3>
+<p>Created by Gene C. It is licensed under the terms of the MIT license.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>SPDX-License-Identifier: MIT</p></li>
+<li><p>Copyright (c) 2023, Gene C</p></li>
+</ul>
+</div></blockquote>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id6" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>TLS Report [RFRC 8460] <a class="reference external" href="https://www.rfc-editor.org/rfc/rfc8460.txt">https://www.rfc-editor.org/rfc/rfc8460.txt</a></p>
+</aside>
+<aside class="footnote brackets" id="id7" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>MTA-STS [RFC 8461] <a class="reference external" href="https://www.rfc-editor.org/rfc/rfc8461.txt">https://www.rfc-editor.org/rfc/rfc8461.txt</a></p>
+</aside>
+<aside class="footnote brackets" id="id8" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<p>DANE [RFC 6698] <a class="reference external" href="https://www.rfc-editor.org/rfc/rfc6698.txt">https://www.rfc-editor.org/rfc/rfc6698.txt</a></p>
+</aside>
+<aside class="footnote brackets" id="id9" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">4</a><span class="fn-bracket">]</span></span>
+<p>DANE [RFC 7671] <a class="reference external" href="https://www.rfc-editor.org/rfc/rfc7671.txt">https://www.rfc-editor.org/rfc/rfc7671.txt</a></p>
+</aside>
+<aside class="footnote brackets" id="id10" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">5</a><span class="fn-bracket">]</span></span>
+<p>DANE SMTP [RFC 7672] <a class="reference external" href="https://www.rfc-editor.org/rfc/rfc7672.txt">https://www.rfc-editor.org/rfc/rfc7672.txt</a></p>
+</aside>
+</aside>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">dmarc_report</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html">dmarc_report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#appendix">Appendix</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SMTP tls-rpt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Contributing.html">How to help with this project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Code-of-conduct.html">Contributor Covenant Code of Conduct</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="README.html" title="previous chapter">dmarc_report</a></li>
+      <li>Next: <a href="Changelog.html" title="next chapter">Changelog</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2023, Gene C.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/Readme-TLS.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
