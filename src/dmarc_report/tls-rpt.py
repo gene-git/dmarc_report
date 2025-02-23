@@ -11,13 +11,10 @@ from lib import TlsRpt
 from lib import find_extract_email_attachments
 from lib import json_file_read
 
-#import pdb
-
 def main():
     """
     dmarc report tool
     """
-    #pdb.set_trace()
     report = TlsRpt()
     topdir = report.opts.dir
     keep_eml = report.opts.keep

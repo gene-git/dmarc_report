@@ -3,4 +3,4 @@
 """
 Project dmarc_report
 """
-__version__ = "4.12.5"
+__version__ = "4.13.1"

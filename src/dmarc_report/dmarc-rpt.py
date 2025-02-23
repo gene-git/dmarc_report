@@ -6,9 +6,8 @@
    read aggregate dmarc reports files in current directory (RUA) and generate report.
    Files can be xml or zip or gzip xml.
 """
-# pylint: disable=R0913, R0914
+# pylint: disable=invalid-name
 
-#import pdb
 from lib import DmarcRpt
 from lib import xml_file_read
 from lib import find_extract_email_attachments
@@ -17,7 +16,6 @@ def main():
     """
     dmarc report tool
     """
-    #pdb.set_trace()
     report = DmarcRpt()
     topdir = report.opts.dir
     keep_eml = report.opts.keep

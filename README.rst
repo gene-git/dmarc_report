@@ -7,18 +7,26 @@ dmarc_report
 Overview
 ========
 
-Generate a human readable DMARC report from 1 or more standard xml email reports .
+Generate a human readable DMARC report from 1 or more standard DMARC and TLS-RPT xml email reports .
 
-New / Interesting
-==================
+Note: 
 
-**Interesting**
-
- * Going forward all git tags will be signed by <arch@sapience.com>.
+   All git tags are signed by <arch@sapience.com>.
    Public key is available via WKD or download from website:
    https://www.sapience.com/tech
    After key is on keyring use the PKGBUILD source line ending with *?signed*
    or manually verify using *git tag -v <tag-name>
+
+New / Interesting
+=================
+
+**Interesting**
+
+ * Switch to *py-cidr* package for handling IPs instead of own versions.
+
+   Available 
+     - github <https://github.com/gene-git/py-cidr>
+     - AUR <https://aur.archlinux.org/packages/py-cidr>
 
  * Now use python 3's ipaddress module instead of netaddr. 
    Its faster and we no longer require 3rd party library
@@ -35,7 +43,6 @@ New / Interesting
 
    New tool to generate report for TLS reports for MTA-STS or DANE. See README-tls.md
    This report has been updated - see Changelog for details.
-
 
  * *-ifd, --inp_file_disp*  
 
@@ -73,14 +80,61 @@ To build manually, clone the repo and
 
 When running as non-root then set root_dest a user writable directory
 
-dmarc_report application
-========================
+Applications
+============
 
-Usage
------
+Save all DMARC or TLS-RPT reports into a directory. These are typically compressed xml files 
+sent as email attachments.
 
-Save all dmarc reports into a directory. 
-Change to the directory containing one or more dmarc report files and simply run
+config files
+------------
+
+There are 2 config files, *config* for dmarc-rpt and *tls-config* for tls-rpt.
+
+Config files are in a directory which is searched in order:
+
+.. code-block::
+
+        /etc/dmarc_report/[tls-]config
+        ~/.config/dmarc_report/[tls-]config
+
+First config found is used.
+
+Config files are standard TOML format.  Available config settings are set using::
+
+        command_line_long_opt_name = xxx
+
+e.g. to set data report dir use::
+
+        dir = "/foo/goo/dmarc_reports"
+
+Command line options override corresponding config setting.
+
+Example of dmarc *config*::
+
+        # comment
+        dir = "~/dmarc/xml"
+        inp_files_disp = "save"
+        inp_files_save_dir = "../saved"
+        dom_ips = ['1.1.1.1', '1.2.2.0/24']
+
+This config says to read all the saved email reports from *~/dmarc/xml*
+and to keep those files after processing report by moving them to *~/dmarc/saved*.
+It also says that ips listed in dom_ips are your own domains.
+
+Example of tls-rpt *tls-config*::
+
+        # comment
+        dir = "~/tls-rpt/xml"
+        inp_files_disp = "save"
+        inp_files_save_dir = "../saved"
+
+See *Options* section for more detail.
+
+dmarc-rpt Usage
+---------------
+
+Change to the directory containing the one or more dmarc report files and simply run
 
  .. code-block:: bash
 
@@ -90,7 +144,7 @@ When using the *--dir* option (or config setting *dir*) it is not necessary
 to change directories before running the report.
 
 Any email files, those ending with *.eml* will be processed first. These are assumed to
-contain the dmarc report as a mime attachment. The attachment is extracted from any such email 
+contain the report as a mime attachment. The attachment is extracted from any such email 
 files. Some mail clients save multiple emails as a single mbox file. Each email in the mbox
 file will be similarly processed and have the attached report extracted.
 
@@ -110,13 +164,6 @@ direcory, left where they are or removed. A typical sequents of events is to sav
 the email reports, run dmarc-rpt.  By auto moving (or removing) the input files, makes it simpler
 when doing the next batch of dmarc reports.
 
-For example, you might save all .eml files in same directory and with config settings::
-
-        dir = "~/dmarc/reports"
-        inp_files_disp = "save"
-        inp_files_save_dir = "../saved"
-        dom_ips = ['1.1.1.1', '1.2.2.0/24']
-
 Then save all the raw .eml files into ~/dmarc/reports and run before running the report
 
 .. code-block:: bash
@@ -126,26 +173,21 @@ Then save all the raw .eml files into ~/dmarc/reports and run before running the
 All attachments from dmarc email reports would be saved into "~/dmarc/saved/2023-01"
 in this example. 
 
-Options
--------
+tls-rpt Usage
+-------------
 
-Options are read first from config files then command line. Config files are searched in 
-order:
-.. code-block::
+tls-rpt works in a similar way to dmarc-rpt, except it operates on TLS-RPT (compresses) xml inputs.
 
-        /etc/dmarc_report/config
-        ~/.config/dmarc_report/config
-
-Config files are standard TOML format.  Available config settings are set using::
-
-        command_line_long_opt_name = xxx
-
-e.g. to set data report dir in config use::
-
-        dir = "/foo/goo/dmarc_reports"
-
-The command line options are shown first in parens below, followed by 
+Command line options are shown first in parens below, followed by 
 the corresponding config version in square brackets, if available.
+
+Common Options
+---------------
+
+These apply to both dmarc-rpt and tls-rpt
+
+ * (*-h, --help*)  
+   Help for command line options.
 
  * (*-d, --dir*) [*dir = /path/xxx/*]  
 
@@ -162,10 +204,9 @@ the corresponding config version in square brackets, if available.
    Report is now in color.
    Default theme is 'dark'. Theme can be 'light' 'dark' or 'none', which turns off color report.
 
- * (*-ips, --dom_ips*)  [*dom_ips = [ip, cidr, ... ]*]  
+ * (*-v, --verb*)
 
-   Set the ips for your own domain(s), which will then be colored to make them easy to spot.
-   Command line option is just comma separated list - no square brackets like config file.
+   More verbose output
 
  * (*-ifd, --inp_file_disp*)  [*inp_file_disp = save*]
 
@@ -178,8 +219,32 @@ the corresponding config version in square brackets, if available.
    When *inp_file_disp* is set, then input files are moved to this directory after report
    is generated.  Files are saved by year-month under the save directory
 
- * (*-h, --help*)  
-   Help for command line options.
+ * (*ips, --dom_ips*) [*dom_ips = ['1.1.1.0/24', '2.2.2.16/29'*]
+
+   Comma separated list of IPs / CIDRs for your own domains. When used in config file 
+   format as array of IP strings.
+
+dmarc-rpt Specific Options
+--------------------------
+
+These are only applicable for dmarc-rpt.
+
+ * (*-ips, --dom_ips*)  [*dom_ips = [ip, cidr, ... ]*]  
+
+   Set the ips for your own domain(s), which will then be colored to make them easy to spot.
+   Command line option is just comma separated list - no square brackets like config file.
+
+ * (*fdm, --dmarc_fails*)
+
+    Only include dmarc failures in report
+
+ * (*fdk, --dkim_fails*)
+
+    Only include dkim failures in report
+
+ * (*fsp, --spf_fails*)
+
+    Only include spf failures in report
 
 
 Saving Email Reports From Email Client

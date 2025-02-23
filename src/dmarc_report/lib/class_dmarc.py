@@ -6,13 +6,13 @@ Report Class DmarcRpt
 # pylint: disable=invalid-name,too-many-instance-attributes
 # pylint: disable=too-few-public-methods
 
+from py_cidr import (Cidr)
 from .dmarc_analyze import dmarc_analyze
 from .class_options import DmarcOpts
 from .report import print_report
 from .class_print import Prnt
 from .save_input_files import input_files_disposition
 from .utils import file_ext_list
-from .cidr import (cidrs_to_nets, cidr_is_subnet)
 
 class IPRpt:
     """
@@ -158,7 +158,7 @@ class DmarcRpt:
         self.selectors = []         # list of selectors encountered
         self.sel_map = SelMap()
 
-        self.dom_nets = cidrs_to_nets(self.opts.dom_ips)
+        self.dom_nets = Cidr.cidrs_to_nets(self.opts.dom_ips)
         self.prnt = Prnt(self.opts.theme)
 
     def get_num_orgs(self):
@@ -180,7 +180,7 @@ class DmarcRpt:
 
     def ip_in_dom_ips(self, ip_str):
         """ check if ip is one of dom_ips """
-        return cidr_is_subnet(ip_str, self.dom_nets)
+        return Cidr.cidr_is_subnet(ip_str, self.dom_nets)
 
     def add_drange(self, drange):
         """

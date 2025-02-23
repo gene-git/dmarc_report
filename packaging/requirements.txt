@@ -4,6 +4,9 @@
 
 # Run time
 python >= 3.13
+python-dateutil
+python-lxml
+py-cidr
 
 # package building/installing
 git
