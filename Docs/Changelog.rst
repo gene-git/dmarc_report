@@ -1,6 +1,13 @@
 Changelog
 =========
 
+**[4.13.2] ----- 2025-02-25** ::
+
+	    Small update to README
+	    Add html and pdf docs to repo
+	    update Changelog.rst
+
+
 **[4.13.1] ----- 2025-02-23** ::
 
 	    Change to py-cidr package for network tools.
