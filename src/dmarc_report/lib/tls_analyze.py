@@ -1,7 +1,45 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: © 2023-present Gene C <arch@sapience.com>
 """
- Analyze one mta-sts tls report
+ Analyze one TLS-RPT dane/mta-sts report
+ Per 
+ https://datatracker.ietf.org/doc/draft-ietf-uta-smtp-tlsrpt/16/
+ Report is of the form:
+
+ {
+   "organization-name": organization-name,
+   "date-range": {
+     "start-datetime": date-time,
+     "end-datetime": date-time
+   },
+   "contact-info": email-address,
+   "report-id": report-id,
+   "policies": [{
+     "policy": {
+       "policy-type": policy-type,
+       "policy-string": policy-string,
+       "policy-domain": domain,
+       "mx-host": mx-host-pattern
+     },
+     "summary": {
+       "total-successful-session-count": total-successful-session-count,
+       "total-failure-session-count": total-failure-session-count
+     },
+     "failure-details": [
+       {
+         "result-type": result-type,
+         "sending-mta-ip": ip-address,
+         "receiving-mx-hostname": receiving-mx-hostname,
+         "receiving-mx-helo": receiving-mx-helo,
+         "receiving-ip": receiving-ip,
+         "failed-session-count": failed-session-count,
+         "additional-information": additional-info-uri,
+         "failure-reason-code": failure-reason-code
+         }
+       ]
+     }
+   ]
+ }
 """
 # pylint: disable=too-many-locals
 #from datetime import datetime

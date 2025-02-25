@@ -7,7 +7,9 @@ dmarc_report
 Overview
 ========
 
-Generate a human readable DMARC report from 1 or more standard DMARC and TLS-RPT xml email reports .
+Generate a human readable report from 1 or more standard DMARC and TLS-RPT xml email reports .
+DMARC reports are made using *dmarc-rpt* while TLS-RPTs use *tls-rpt*
+
 
 Note: 
 
@@ -15,7 +17,7 @@ Note:
    Public key is available via WKD or download from website:
    https://www.sapience.com/tech
    After key is on keyring use the PKGBUILD source line ending with *?signed*
-   or manually verify using *git tag -v <tag-name>
+   or manually verify using *git tag -v <tag-name>*
 
 New / Interesting
 =================
@@ -84,7 +86,23 @@ Applications
 ============
 
 Save all DMARC or TLS-RPT reports into a directory. These are typically compressed xml files 
-sent as email attachments.
+sent as email attachments. The saved reports can be :
+
+* individual email files each with a compressed xml attachment. Thunderbird saves them this way.
+  These are saved with a *.eml* extension.
+* one single file with several emails, each with the attachment. Evolution saves this way.
+  These are saved with *.mbox* extension.
+* Individual compressed, or uncmompressed, xml reports created by saving the attachments from each email.
+
+*dmarc-rpt* and *tls-rpt* will extract the actual XML data from all of the above.
+
+Quick start
+-----------
+
+Save all emails with DMARC or TLS-RPT attachments to a directory, change into that directory and run
+either dmarc-rpt or tls-rpt as appropriate.
+
+It is generally more convenient to use config files explained below.
 
 config files
 ------------
@@ -176,7 +194,7 @@ in this example.
 tls-rpt Usage
 -------------
 
-tls-rpt works in a similar way to dmarc-rpt, except it operates on TLS-RPT (compresses) xml inputs.
+tls-rpt works in a similar way to dmarc-rpt, except it operates on TLS-RPT (compressed) xml inputs.
 
 Command line options are shown first in parens below, followed by 
 the corresponding config version in square brackets, if available.
