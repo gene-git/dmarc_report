@@ -303,7 +303,7 @@ Dependencies
   * python (3.13 or later)
   * python-dateutil
   * python-lxml
-  * py-cidr
+  * py-cidr (2.7.0 or later)
   * tomli-w (for writing version 2 configs converted from version 1)
 
 * Building Package:
