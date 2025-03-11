@@ -7,6 +7,7 @@ python >= 3.13
 python-dateutil
 python-lxml
 py-cidr
+toml-w
 
 # package building/installing
 git

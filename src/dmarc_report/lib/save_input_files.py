@@ -106,8 +106,9 @@ def save_input_files(opts, prnt, files):
             prnt(f'Error {err}: ', fg_col='error')
             prnt(f'moving file {file}: {save_dir}\n')
 
-def delete_input_files(opts, prnt, files):
+def delete_input_files(conf, prnt, files):
     """ remove nput files """
+    opts = conf.data
 
     if not files:
         return

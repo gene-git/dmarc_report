@@ -17,8 +17,8 @@ def main():
     dmarc report tool
     """
     report = DmarcRpt()
-    topdir = report.opts.dir
-    keep_eml = report.opts.keep
+    topdir = report.opts.data.dir
+    keep_eml = report.opts.data.keep
 
     # process any email files first (extract dmarc report attachments)
     find_extract_email_attachments(topdir, keep_eml)
@@ -29,7 +29,7 @@ def main():
     sep = 40*'-'
     for (ftype, files) in xml_files.items():
         for file in files:
-            if report.opts.verb:
+            if report.opts.data.verb:
                 print(f'{sep}')
                 print (f' - {file}')
             xml = xml_file_read(topdir, ftype, file)

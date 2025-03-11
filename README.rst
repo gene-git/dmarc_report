@@ -24,6 +24,10 @@ New / Interesting
 
 **Interesting**
 
+ * New config file format using single config file. Older 2 fille configs will be automatically
+   converted to the new version 2 format. See `config_files_section`_ section and 
+   *configs* directory for sample config.
+
  * Switch to *py-cidr* package for handling IPs instead of own versions.
 
    Available 
@@ -51,7 +55,6 @@ New / Interesting
    Input file disposition options one of : none,save,delete  
    If set to save then all input files (xml, compressed xml and any kept eml files) are moved
    to directory specified by *inp_files_save_dir*.  
-
 
  * *-ifsd, --inp_files_save_dir*  
 
@@ -102,23 +105,34 @@ Quick start
 Save all emails with DMARC or TLS-RPT attachments to a directory, change into that directory and run
 either dmarc-rpt or tls-rpt as appropriate.
 
-It is generally more convenient to use config files explained below.
+It is generally more convenient to use config file explained below.
 
-config files
+.. _config_files_section:
+
+Config Files
 ------------
 
-There are 2 config files, *config* for dmarc-rpt and *tls-config* for tls-rpt.
-
-Config files are in a directory which is searched in order:
+Config files are read, in order, from directories :
 
 .. code-block::
 
         /etc/dmarc_report/[tls-]config
         ~/.config/dmarc_report/[tls-]config
 
-First config found is used.
+with the settings in * ~/.config/...* overriding any found in */etc/...*.
 
-Config files are standard TOML format.  Available config settings are set using::
+
+There are 2 config file formats supported. The older version 1 format used 2 separate files:
+
+* *config* - for dmarc-rpt
+* *tls-config* - for tls-rpt
+
+Newer version 2 format uses a single file, *config.v2*. If only older version 1 configs are found
+they will be automatically converted to version 2, which will then be used going forward.
+
+All config files use standard TOML format.  
+
+Available config settings are set using::
 
         command_line_long_opt_name = xxx
 
@@ -126,26 +140,32 @@ e.g. to set data report dir use::
 
         dir = "/foo/goo/dmarc_reports"
 
+
+A sample config is available in the *conf.d* directory and takes the form:
+
+.. code-block::
+
+        # comment
+        [global]
+            inp_files_disp = "save"
+            inp_files_save_dir = "../saved"
+
+        [dmarc]
+            dom_ips = ['1.1.1.1', '1.2.2.0/24']
+            dir = "~/mail-reports/dmarc/xml"
+
+        [tls]
+            dir = "~/mail-reports/tls/xml"
+
+Variables set in *[dmarc]* or *[tls]* sections override any global ones.
+
+This config says to read all the saved dmarc email reports from *~/mail-reports/dmarc/xml* and
+the tls reports from *~/mail-reports/tls/xml*.
+And to keep those xml files after processing report by moving them to *~/mail-reports/dmarc/saved*
+or *~/mail-reports/tls/saved*.
+For dmarc it says that ips listed in *dom_ips* are your own domains.
+
 Command line options override corresponding config setting.
-
-Example of dmarc *config*::
-
-        # comment
-        dir = "~/dmarc/xml"
-        inp_files_disp = "save"
-        inp_files_save_dir = "../saved"
-        dom_ips = ['1.1.1.1', '1.2.2.0/24']
-
-This config says to read all the saved email reports from *~/dmarc/xml*
-and to keep those files after processing report by moving them to *~/dmarc/saved*.
-It also says that ips listed in dom_ips are your own domains.
-
-Example of tls-rpt *tls-config*::
-
-        # comment
-        dir = "~/tls-rpt/xml"
-        inp_files_disp = "save"
-        inp_files_save_dir = "../saved"
 
 See *Options* section for more detail.
 
@@ -281,6 +301,10 @@ Dependencies
 
 * Run Time :
   * python (3.13 or later)
+  * python-dateutil
+  * python-lxml
+  * py-cidr
+  * tomli-w (for writing version 2 configs converted from version 1)
 
 * Building Package:
   * git

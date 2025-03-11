@@ -95,11 +95,22 @@ def open_file(path, mode):
 
 def merge_dict(dic1, dic2):
     """
-    Merge dic2 over dic1
+    Merge dic2 over dic1 (dic2 overrides dic1)
     """
+    if not dic1:
+        return dic2
+    if not dic2:
+        return dic1
+
     merged = dic1.copy()
     for (key,val) in dic2.items():
-        merged[key] = val
+        if key in merged:
+            if isinstance(val, dict) and isinstance(merged[key], dict):
+                merged[key] = merge_dict(merged[key], val)
+            else:
+                merged[key] = val
+        else:
+            merged[key] = val
     return merged
 
 def make_dir_path(path_dir):

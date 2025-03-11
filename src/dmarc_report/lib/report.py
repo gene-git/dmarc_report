@@ -75,7 +75,7 @@ def print_ip_row(rpt, name, iprpt, cols):
      - name is IP for ip report line, or org/grand total name for totals
     """
     # pylint: disable=R0915
-    opts = rpt.opts
+    opts = rpt.opts.data
     prnt = rpt.prnt
 
     cnt = iprpt.cnt
@@ -209,7 +209,12 @@ def print_domain_report(rpt, org, dom, cols):
     iplist = []
     for (ip, _ip_rpt) in dom.ip_rpt.items():
         iplist.append(ip)
-    iplist_sorted = Cidr.sort_ips(iplist)
+
+    try:
+        iplist_sorted = Cidr.sort_ips(iplist)
+    except TypeError :
+        # use unsorted
+        iplist_sorted = iplist
 
     for ip in iplist_sorted:
         iprpt = dom.ip_rpt[ip]
@@ -234,7 +239,7 @@ def print_report(rpt):
     cols = ColWidth()
     prnt = rpt.prnt
 
-    print(f' Report data directory: {rpt.opts.dir}')
+    print(f' Report data directory: {rpt.opts.data.dir}')
     print_report_header(cols)
 
     for org in rpt.org:

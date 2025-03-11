@@ -8,7 +8,7 @@
 dest="$1"
 self="dmarc_report"
 
-info="README.rst Docs scripts packaging"
+info="README.rst Docs scripts packaging configs"
 infodir="/usr/share/${self}"
 
 license="Docs/License.rst"

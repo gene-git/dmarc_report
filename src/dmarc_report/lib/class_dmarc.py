@@ -8,7 +8,7 @@ Report Class DmarcRpt
 
 from py_cidr import (Cidr)
 from .dmarc_analyze import dmarc_analyze
-from .class_options import DmarcOpts
+from .class_options import Conf
 from .report import print_report
 from .class_print import Prnt
 from .save_input_files import input_files_disposition
@@ -149,7 +149,7 @@ class DmarcRpt:
     """
     def __init__(self):
 
-        self.opts = DmarcOpts()
+        self.opts = Conf('dmarc')
         self.org = []               # list of orgs
 
         self.total = IPRpt()      # aggregate report
@@ -158,8 +158,8 @@ class DmarcRpt:
         self.selectors = []         # list of selectors encountered
         self.sel_map = SelMap()
 
-        self.dom_nets = Cidr.cidrs_to_nets(self.opts.dom_ips)
-        self.prnt = Prnt(self.opts.theme)
+        self.dom_nets = Cidr.cidrs_to_nets(self.opts.data.dom_ips)
+        self.prnt = Prnt(self.opts.data.theme)
 
     def get_num_orgs(self):
         """ returns num of org """
@@ -205,10 +205,10 @@ class DmarcRpt:
 
     def input_disposition(self, xml_files):
         """ handle disposition of all input files """
-        input_files_disposition(self.opts, self.prnt, xml_files)
+        input_files_disposition(self.opts.data, self.prnt, xml_files)
 
     def xml_file_list(self):
         """ get list of xml or compressed xml files """
         ext_list = ['xml', 'gz', 'zip']
-        flist = file_ext_list(self.opts.dir, ext_list)
+        flist = file_ext_list(self.opts.data.dir, ext_list)
         return flist
