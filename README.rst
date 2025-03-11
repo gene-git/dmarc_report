@@ -116,23 +116,23 @@ Config files are read, in order, from directories :
 
 .. code-block::
 
-        /etc/dmarc_report/[tls-]config
-        ~/.config/dmarc_report/[tls-]config
+        /etc/dmarc_report/
+        ~/.config/dmarc_report/
 
-with the settings in * ~/.config/...* overriding any found in */etc/...*.
+with the settings in latter *~/.config/...* overriding any found in */etc/...*.
 
-
-There are 2 config file formats supported. The older version 1 format used 2 separate files:
+There are 2 config file formats supported. The older version 1 format uses 2 separate files:
 
 * *config* - for dmarc-rpt
 * *tls-config* - for tls-rpt
 
-Newer version 2 format uses a single file, *config.v2*. If only older version 1 configs are found
-they will be automatically converted to version 2, which will then be used going forward.
+New version 2 format uses a single file, *config.v2*. Version 2 config will be used if its found.
+If only version 1 configs are found they will be automatically converted to version 2, which 
+will then be used going forward.
 
 All config files use standard TOML format.  
 
-Available config settings are set using::
+Available config values are set using::
 
         command_line_long_opt_name = xxx
 
@@ -140,8 +140,7 @@ e.g. to set data report dir use::
 
         dir = "/foo/goo/dmarc_reports"
 
-
-A sample config is available in the *conf.d* directory and takes the form:
+A sample config is available in the *conf.d* directory. A typical config might be of the form:
 
 .. code-block::
 
@@ -157,16 +156,17 @@ A sample config is available in the *conf.d* directory and takes the form:
         [tls]
             dir = "~/mail-reports/tls/xml"
 
-Variables set in *[dmarc]* or *[tls]* sections override any global ones.
+Variables set in *[dmarc]* or *[tls]* sections override any correspodning global ones.
 
-This config says to read all the saved dmarc email reports from *~/mail-reports/dmarc/xml* and
+This sample config says to read all the saved dmarc email reports from *~/mail-reports/dmarc/xml* and
 the tls reports from *~/mail-reports/tls/xml*.
-And to keep those xml files after processing report by moving them to *~/mail-reports/dmarc/saved*
+
+And to save the raw files after processing report by moving them to *~/mail-reports/dmarc/saved*
 or *~/mail-reports/tls/saved*.
-For dmarc it says that ips listed in *dom_ips* are your own domains.
 
-Command line options override corresponding config setting.
+For dmarc it says that ips listed in *dom_ips* are for your own domains.
 
+Command line options override the corresponding config setting.
 See *Options* section for more detail.
 
 dmarc-rpt Usage
