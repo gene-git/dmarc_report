@@ -1,6 +1,12 @@
 Changelog
 =========
 
+**[5.0.1] ----- 2025-03-10** ::
+
+	    Require py-cidr >= 2.7.0 which has ip sort fix
+	    update Changelog.rst
+
+
 **[5.0.0] ----- 2025-03-10** ::
 
 	    remove files no longer being used
