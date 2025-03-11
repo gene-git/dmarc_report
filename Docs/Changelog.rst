@@ -1,6 +1,16 @@
 Changelog
 =========
 
+**[5.0.0] ----- 2025-03-10** ::
+
+	    remove files no longer being used
+	    New config file format using single config file shared by dmarc and tls report generators
+	       version 1 configs with 2 files will be automatically converted and saved as config.v2
+	       Auto conversion pulls in new dependency on tomli-w to write the config file.
+	    Reorg and simplify config and options code.
+	    update Changelog.rst
+
+
 **[4.13.2] ----- 2025-02-25** ::
 
 	    Small update to README
