@@ -1,6 +1,11 @@
 Changelog
 =========
 
+**[5.1.1, origin/master] ----- 2025-03-13** ::
+
+	    update Changelog.rst
+
+
 **[5.1.0] ----- 2025-03-13** ::
 
 	    Add missing config sample file
