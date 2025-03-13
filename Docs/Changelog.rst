@@ -3,6 +3,8 @@ Changelog
 
 **[5.1.0] ----- 2025-03-13** ::
 
+	    Add missing config sample file
+	    update Changelog.rst
 	    Bug fix by @rikyborg : Typo in ConfData class
 	    update Changelog.rst
 
