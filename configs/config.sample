@@ -1,0 +1,27 @@
+#
+# Sample config
+# version 1
+#   Uses 2 files. 
+#       - config for dmarc 
+#       - tls-config for tls-rpt.
+# version 2 
+#   Uses 1 file:
+#       - config.v2 combined config 
+#
+# Variables set in global section may be overriden in dmarc or tls sections
+# If config.v2 exists it will be used. If not and version 1 files are found then 
+# a new version 2 config will be generated from them and saved.
+#
+# Configs are read from
+#   /etc/dmarc_report then ~/.config/dmarc_report with latter taking precedence
+#
+[global]
+    inp_files_disp = 'save'
+    inp_files_save_dir = '../saved'         # relative to "dir"
+    
+[dmarc]
+    dir = '~/mail-reports/dmarc/xml'
+    dom_ips = ['1.2.3.0/28', '1.2.3.64/29']
+
+[tls]
+    dir = '~/mail-reports/tls/xml'
