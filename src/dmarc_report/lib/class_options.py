@@ -23,7 +23,7 @@ class ConfData:
     dir : str = './'
     theme : str = 'dark'
     inp_files_disp : str = 'none'
-    np_files_save_dir : str = None
+    inp_files_save_dir : str = None
 
     dom_ips : List[str] = field(default_factory=list)
     dmarc_fails : bool = False
