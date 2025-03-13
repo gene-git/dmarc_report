@@ -1,6 +1,12 @@
 Changelog
 =========
 
+**[5.1.0] ----- 2025-03-13** ::
+
+	    Bug fix by @rikyborg : Typo in ConfData class
+	    update Changelog.rst
+
+
 **[5.0.2] ----- 2025-03-11** ::
 
 	    Update Readme
