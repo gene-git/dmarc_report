@@ -1,7 +1,13 @@
 Changelog
 =========
 
-**[5.1.1, origin/master] ----- 2025-03-13** ::
+**[5.1.2] ----- 2025-03-14** ::
+
+	    Just update PKGBUILD version
+	    update Changelog.rst
+
+
+**[5.1.1] ----- 2025-03-13** ::
 
 	    update Changelog.rst
 
