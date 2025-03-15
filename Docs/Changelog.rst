@@ -1,6 +1,13 @@
 Changelog
 =========
 
+**[5.1.4] ----- 2025-03-15** ::
+
+	    Pre build PDF doc file.
+	    > PKGBUILD includes short changelog (pacman -Qc dmarc_report)
+	    update Changelog.rst
+
+
 **[5.1.3] ----- 2025-03-15** ::
 
 	    Improve README and add theme to sample config
