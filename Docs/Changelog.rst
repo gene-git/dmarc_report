@@ -1,6 +1,12 @@
 Changelog
 =========
 
+**[5.1.3] ----- 2025-03-15** ::
+
+	    Improve README and add theme to sample config
+	    update Changelog.rst
+
+
 **[5.1.2] ----- 2025-03-14** ::
 
 	    Just update PKGBUILD version
