@@ -64,8 +64,8 @@
 
 
 \title{dmarc\_report}
-\date{Feb 23, 2025}
-\release{4.13.1}
+\date{Mar 15, 2025}
+\release{5.1.3}
 \author{Gene C}
 \newcommand{\sphinxlogo}{\vbox{}}
 \renewcommand{\releasename}{Release}
@@ -94,10 +94,11 @@
 \section{Overview}
 \label{\detokenize{README:overview}}
 \sphinxAtStartPar
-Generate a human readable DMARC report from 1 or more standard DMARC and TLS\sphinxhyphen{}RPT xml email reports .
+Generate a human readable report from 1 or more standard DMARC and TLS\sphinxhyphen{}RPT xml email reports .
+DMARC reports are made using \sphinxstyleemphasis{dmarc\sphinxhyphen{}rpt} while TLS\sphinxhyphen{}RPTs use \sphinxstyleemphasis{tls\sphinxhyphen{}rpt}
 
 \sphinxAtStartPar
-Note:
+\sphinxstylestrong{Note}:
 \begin{quote}
 
 \sphinxAtStartPar
@@ -105,7 +106,7 @@ All git tags are signed by \textless{}\sphinxhref{mailto:arch@sapience.com}{arch
 Public key is available via WKD or download from website:
 \sphinxurl{https://www.sapience.com/tech}
 After key is on keyring use the PKGBUILD source line ending with \sphinxstyleemphasis{?signed}
-or manually verify using {\color{red}\bfseries{}*}git tag \sphinxhyphen{}v \textless{}tag\sphinxhyphen{}name\textgreater{}
+or manually verify using \sphinxstyleemphasis{git tag \sphinxhyphen{}v \textless{}tag\sphinxhyphen{}name\textgreater{}}
 \end{quote}
 
 
@@ -116,8 +117,15 @@ or manually verify using {\color{red}\bfseries{}*}git tag \sphinxhyphen{}v \text
 \begin{itemize}
 \item {} 
 \sphinxAtStartPar
+New config file format using single config file. Older 2 fille configs will be automatically
+converted to the new version 2 format. See {\hyperref[\detokenize{README:config-files-section}]{\sphinxcrossref{config\_files\_section}}} section and
+\sphinxstyleemphasis{configs} directory for sample config.
+
+\item {} 
+\sphinxAtStartPar
 Switch to \sphinxstyleemphasis{py\sphinxhyphen{}cidr} package for handling IPs instead of own versions.
-\begin{description}
+
+\item {} \begin{description}
 \sphinxlineitem{Available}\begin{itemize}
 \item {} 
 \sphinxAtStartPar
@@ -158,84 +166,86 @@ tls\sphinxhyphen{}rpt
 New tool to generate report for TLS reports for MTA\sphinxhyphen{}STS or DANE. See README\sphinxhyphen{}tls.md
 This report has been updated \sphinxhyphen{} see Changelog for details.
 
-\item {} 
-\sphinxAtStartPar
-\sphinxstyleemphasis{\sphinxhyphen{}ifd, \textendash{}inp\_file\_disp}
-
-\sphinxAtStartPar
-Input file disposition options one of : none,save,delete
-If set to save then all input files (xml, compressed xml and any kept eml files) are moved
-to directory specified by \sphinxstyleemphasis{inp\_files\_save\_dir}.
-
-\item {} 
-\sphinxAtStartPar
-\sphinxstyleemphasis{\sphinxhyphen{}ifsd, \textendash{}inp\_files\_save\_dir}
-
-\sphinxAtStartPar
-When \sphinxstyleemphasis{inp\_file\_disp} is set, then input files are moved to this directory after report
-is generated.  Files are saved by year\sphinxhyphen{}month under the save directory
-
 \end{itemize}
 
 
 \chapter{Getting Started}
 \label{\detokenize{README:getting-started}}
 
-\section{Installation}
-\label{\detokenize{README:installation}}\begin{description}
-\sphinxlineitem{Available on}\begin{itemize}
-\item {} 
-\sphinxAtStartPar
-\sphinxhref{https://github.com/gene-git/dmarc\_report}{Github}
-
-\item {} 
-\sphinxAtStartPar
-\sphinxhref{https://aur.archlinux.org/packages/dmarc\_report}{Archlinux AUR}
-
-\end{itemize}
-
-\end{description}
-
-\sphinxAtStartPar
-On Arch you can build using the PKGBUILD provided in packaging directory or from the AUR package.
-To build manually, clone the repo and
-
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-rm\PYG{+w}{ }\PYGZhy{}f\PYG{+w}{ }dist/*
-python\PYG{+w}{ }\PYGZhy{}m\PYG{+w}{ }build\PYG{+w}{ }\PYGZhy{}\PYGZhy{}wheel\PYG{+w}{ }\PYGZhy{}\PYGZhy{}no\PYGZhy{}isolation
-\PYG{n+nv}{root\PYGZus{}dest}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}/\PYGZdq{}}
-./scripts/do\PYGZhy{}install\PYG{+w}{ }\PYG{n+nv}{\PYGZdl{}root\PYGZus{}dest}
-\end{sphinxVerbatim}
-
-\sphinxAtStartPar
-When running as non\sphinxhyphen{}root then set root\_dest a user writable directory
-
-
 \section{Applications}
 \label{\detokenize{README:applications}}
 \sphinxAtStartPar
-Save all DMARC or TLS\sphinxhyphen{}RPT reports into a directory. These are typically compressed xml files
-sent as email attachments.
-
-
-\subsection{config files}
-\label{\detokenize{README:config-files}}
+Save all DMARC or TLS\sphinxhyphen{}RPT reports into a directory. These are typically compressed xml/json files
+sent as email attachments. The saved reports can be :
+\begin{itemize}
+\item {} 
 \sphinxAtStartPar
-There are 2 config files, \sphinxstyleemphasis{config} for dmarc\sphinxhyphen{}rpt and \sphinxstyleemphasis{tls\sphinxhyphen{}config} for tls\sphinxhyphen{}rpt.
+individual email files each with a compressed xml/json attachment. Thunderbird saves them this way.
+These are saved with a \sphinxstyleemphasis{.eml} extension.
+
+\item {} 
+\sphinxAtStartPar
+one single file with several emails, each with the attachment. Evolution saves this way.
+These are saved with \sphinxstyleemphasis{.mbox} extension.
+
+\item {} 
+\sphinxAtStartPar
+Individual compressed, or uncmompressed, xml reports created by saving the attachments from each email.
+
+\end{itemize}
 
 \sphinxAtStartPar
-Config files are in a directory which is searched in order:
+\sphinxstyleemphasis{dmarc\sphinxhyphen{}rpt} and \sphinxstyleemphasis{tls\sphinxhyphen{}rpt} will extract the actual \sphinxstylestrong{xml} (\sphinxstyleemphasis{dmarc}) or \sphinxstylestrong{json} (tls\sphinxhyphen{}rpt) data
+from all of the above.
+
+
+\subsection{Quick start}
+\label{\detokenize{README:quick-start}}
+\sphinxAtStartPar
+Save all emails with DMARC or TLS\sphinxhyphen{}RPT attachments to a directory, change into that directory and run
+either dmarc\sphinxhyphen{}rpt or tls\sphinxhyphen{}rpt as appropriate.
+
+\sphinxAtStartPar
+It is generally more convenient to use a config file explained below.
+
+
+\subsection{Config Files}
+\label{\detokenize{README:config-files}}\label{\detokenize{README:config-files-section}}
+\sphinxAtStartPar
+Config files are read, in order, from directories :
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{o}{/}\PYG{n}{etc}\PYG{o}{/}\PYG{n}{dmarc\PYGZus{}report}\PYG{o}{/}\PYG{p}{[}\PYG{n}{tls}\PYG{o}{\PYGZhy{}}\PYG{p}{]}\PYG{n}{config}
-\PYG{o}{\PYGZti{}}\PYG{o}{/}\PYG{o}{.}\PYG{n}{config}\PYG{o}{/}\PYG{n}{dmarc\PYGZus{}report}\PYG{o}{/}\PYG{p}{[}\PYG{n}{tls}\PYG{o}{\PYGZhy{}}\PYG{p}{]}\PYG{n}{config}
+\PYG{o}{/}\PYG{n}{etc}\PYG{o}{/}\PYG{n}{dmarc\PYGZus{}report}\PYG{o}{/}
+\PYG{o}{\PYGZti{}}\PYG{o}{/}\PYG{o}{.}\PYG{n}{config}\PYG{o}{/}\PYG{n}{dmarc\PYGZus{}report}\PYG{o}{/}
 \end{sphinxVerbatim}
 
 \sphinxAtStartPar
-First config found is used.
+with the settings in latter \sphinxstyleemphasis{\textasciitilde{}/.config/…} overriding any found in \sphinxstyleemphasis{/etc/…}.
 
 \sphinxAtStartPar
-Config files are standard TOML format.  Available config settings are set using:
+There are 2 config file formats supported. The older version 1 format uses 2 separate files:
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleemphasis{config} \sphinxhyphen{} for dmarc\sphinxhyphen{}rpt
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleemphasis{tls\sphinxhyphen{}config} \sphinxhyphen{} for tls\sphinxhyphen{}rpt
+
+\end{itemize}
+
+\sphinxAtStartPar
+New version 2 format uses a single file, \sphinxstyleemphasis{config.v2}. Version 2 config will be used if its found.
+If only version 1 configs are found they will be automatically converted to version 2, which
+will then be used going forward.
+
+\sphinxAtStartPar
+All config files use standard TOML format. Config files use 3 sections. A global section
+and one each for dmarc and tls\sphinxhyphen{}rpt.
+
+\sphinxAtStartPar
+Available config values are set using:
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{n}{command\PYGZus{}line\PYGZus{}long\PYGZus{}opt\PYGZus{}name} \PYG{o}{=} \PYG{n}{xxx}
@@ -249,35 +259,39 @@ e.g. to set data report dir use:
 \end{sphinxVerbatim}
 
 \sphinxAtStartPar
-Command line options override corresponding config setting.
-
-\sphinxAtStartPar
-Example of dmarc \sphinxstyleemphasis{config}:
+A sample config is available in the \sphinxstyleemphasis{conf.d} directory. A typical config might be of the form:
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c+c1}{\PYGZsh{} comment}
-\PYG{n+nb}{dir} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZti{}/dmarc/xml}\PYG{l+s+s2}{\PYGZdq{}}
-\PYG{n}{inp\PYGZus{}files\PYGZus{}disp} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{save}\PYG{l+s+s2}{\PYGZdq{}}
-\PYG{n}{inp\PYGZus{}files\PYGZus{}save\PYGZus{}dir} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{../saved}\PYG{l+s+s2}{\PYGZdq{}}
-\PYG{n}{dom\PYGZus{}ips} \PYG{o}{=} \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{1.1.1.1}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{1.2.2.0/24}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{]}
+\PYG{p}{[}\PYG{k}{global}\PYG{p}{]}
+    \PYG{n}{theme} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{dark}\PYG{l+s+s1}{\PYGZsq{}}
+    \PYG{n}{inp\PYGZus{}files\PYGZus{}disp} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{save}\PYG{l+s+s2}{\PYGZdq{}}
+    \PYG{n}{inp\PYGZus{}files\PYGZus{}save\PYGZus{}dir} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{../saved}\PYG{l+s+s2}{\PYGZdq{}}
+
+\PYG{p}{[}\PYG{n}{dmarc}\PYG{p}{]}
+    \PYG{n}{dom\PYGZus{}ips} \PYG{o}{=} \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{1.1.1.1}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{1.2.2.0/24}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{]}
+    \PYG{n+nb}{dir} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZti{}/mail\PYGZhy{}reports/dmarc/xml}\PYG{l+s+s2}{\PYGZdq{}}
+
+\PYG{p}{[}\PYG{n}{tls}\PYG{p}{]}
+    \PYG{n+nb}{dir} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZti{}/mail\PYGZhy{}reports/tls/xml}\PYG{l+s+s2}{\PYGZdq{}}
 \end{sphinxVerbatim}
 
 \sphinxAtStartPar
-This config says to read all the saved email reports from \sphinxstyleemphasis{\textasciitilde{}/dmarc/xml}
-and to keep those files after processing report by moving them to \sphinxstyleemphasis{\textasciitilde{}/dmarc/saved}.
-It also says that ips listed in dom\_ips are your own domains.
+Variables set in \sphinxstyleemphasis{{[}dmarc{]}} or \sphinxstyleemphasis{{[}tls{]}} sections override any correspodning global ones.
 
 \sphinxAtStartPar
-Example of tls\sphinxhyphen{}rpt \sphinxstyleemphasis{tls\sphinxhyphen{}config}:
-
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{\PYGZsh{} comment}
-\PYG{n+nb}{dir} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZti{}/tls\PYGZhy{}rpt/xml}\PYG{l+s+s2}{\PYGZdq{}}
-\PYG{n}{inp\PYGZus{}files\PYGZus{}disp} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{save}\PYG{l+s+s2}{\PYGZdq{}}
-\PYG{n}{inp\PYGZus{}files\PYGZus{}save\PYGZus{}dir} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{../saved}\PYG{l+s+s2}{\PYGZdq{}}
-\end{sphinxVerbatim}
+This sample config says to read all the saved dmarc email reports from \sphinxstyleemphasis{\textasciitilde{}/mail\sphinxhyphen{}reports/dmarc/xml} and
+the tls reports from \sphinxstyleemphasis{\textasciitilde{}/mail\sphinxhyphen{}reports/tls/xml}.
 
 \sphinxAtStartPar
+And to save the raw files after processing report by moving them to \sphinxstyleemphasis{\textasciitilde{}/mail\sphinxhyphen{}reports/dmarc/saved}
+or \sphinxstyleemphasis{\textasciitilde{}/mail\sphinxhyphen{}reports/tls/saved}.
+
+\sphinxAtStartPar
+For dmarc it says that ips listed in \sphinxstyleemphasis{dom\_ips} are for your own domains.
+
+\sphinxAtStartPar
+Command line options override the corresponding config setting.
 See \sphinxstyleemphasis{Options} section for more detail.
 
 
@@ -338,7 +352,7 @@ in this example.
 \subsection{tls\sphinxhyphen{}rpt Usage}
 \label{\detokenize{README:tls-rpt-usage}}
 \sphinxAtStartPar
-tls\sphinxhyphen{}rpt works in a similar way to dmarc\sphinxhyphen{}rpt, except it operates on TLS\sphinxhyphen{}RPT (compresses) xml inputs.
+tls\sphinxhyphen{}rpt works in a similar way to dmarc\sphinxhyphen{}rpt, except it operates on TLS\sphinxhyphen{}RPT (compressed) xml inputs.
 
 \sphinxAtStartPar
 Command line options are shown first in parens below, followed by
@@ -366,7 +380,7 @@ By default, dir is the current directory.
 
 \item {} 
 \sphinxAtStartPar
-(\sphinxstyleemphasis{\sphinxhyphen{}k, \textendash{}keep})  {[}\sphinxstyleemphasis{keep = true}{]}
+(\sphinxstyleemphasis{\sphinxhyphen{}k, \textendash{}keep})
 
 \sphinxAtStartPar
 Prevent the \sphinxstyleemphasis{.eml} being removed after the attached xml reports are extracted.
@@ -388,7 +402,7 @@ More verbose output
 
 \item {} 
 \sphinxAtStartPar
-(\sphinxstyleemphasis{\sphinxhyphen{}ifd, \textendash{}inp\_file\_disp})  {[}\sphinxstyleemphasis{inp\_file\_disp = save}{]}
+(\sphinxstyleemphasis{\sphinxhyphen{}ifd, \textendash{}inp\_file\_disp})
 
 \sphinxAtStartPar
 Input file disposition options one of : none,save,delete
@@ -402,14 +416,6 @@ to directory specified by \sphinxstyleemphasis{inp\_files\_save\_dir}.
 \sphinxAtStartPar
 When \sphinxstyleemphasis{inp\_file\_disp} is set, then input files are moved to this directory after report
 is generated.  Files are saved by year\sphinxhyphen{}month under the save directory
-
-\item {} 
-\sphinxAtStartPar
-(\sphinxstyleemphasis{ips, \textendash{}dom\_ips}) {[}\sphinxstyleemphasis{dom\_ips = {[}‘1.1.1.0/24’, ‘2.2.2.16/29’}{]}
-
-\sphinxAtStartPar
-Comma separated list of IPs / CIDRs for your own domains. When used in config file
-format as array of IP strings.
 
 \end{itemize}
 
@@ -425,7 +431,20 @@ These are only applicable for dmarc\sphinxhyphen{}rpt.
 
 \sphinxAtStartPar
 Set the ips for your own domain(s), which will then be colored to make them easy to spot.
-Command line option is just comma separated list \sphinxhyphen{} no square brackets like config file.
+Command line option is a comma separated list of IPs.
+e.g.:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZhy{}}\PYG{n}{dom\PYGZus{}ips} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{1.1.1.0/24,2.2.2.16/29}\PYG{l+s+s2}{\PYGZdq{}}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+When used in config file format as array of IP stringsC.
+e.g.:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{dom\PYGZus{}ips} \PYG{o}{=} \PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{1.1.1.0/24}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{2.2.2.16/29}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{]}
+\end{sphinxVerbatim}
 
 \item {} 
 \sphinxAtStartPar
@@ -474,6 +493,10 @@ Each email gets saved with a \sphinxstyleemphasis{.eml} extension.
 \sphinxAtStartPar
 Run Time :
 * python (3.13 or later)
+* python\sphinxhyphen{}dateutil
+* python\sphinxhyphen{}lxml
+* py\sphinxhyphen{}cidr (2.7.0 or later)
+* tomli\sphinxhyphen{}w (for writing version 2 configs converted from version 1)
 
 \item {} 
 \sphinxAtStartPar
@@ -500,6 +523,36 @@ texlive\sphinxhyphen{}latexextra  (archlinux packaguing of texlive tools)
 \end{itemize}
 
 \end{itemize}
+
+
+\section{Installation}
+\label{\detokenize{README:installation}}\begin{description}
+\sphinxlineitem{Available on}\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxhref{https://github.com/gene-git/dmarc\_report}{Github}
+
+\item {} 
+\sphinxAtStartPar
+\sphinxhref{https://aur.archlinux.org/packages/dmarc\_report}{Archlinux AUR}
+
+\end{itemize}
+
+\end{description}
+
+\sphinxAtStartPar
+On Arch you can build using the PKGBUILD provided in packaging directory or from the AUR package.
+To build manually, clone the repo and
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+rm\PYG{+w}{ }\PYGZhy{}f\PYG{+w}{ }dist/*
+python\PYG{+w}{ }\PYGZhy{}m\PYG{+w}{ }build\PYG{+w}{ }\PYGZhy{}\PYGZhy{}wheel\PYG{+w}{ }\PYGZhy{}\PYGZhy{}no\PYGZhy{}isolation
+\PYG{n+nv}{root\PYGZus{}dest}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}/\PYGZdq{}}
+./scripts/do\PYGZhy{}install\PYG{+w}{ }\PYG{n+nv}{\PYGZdl{}root\PYGZus{}dest}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+When running as non\sphinxhyphen{}root then set root\_dest a user writable directory
 
 
 \section{Philosophy}
@@ -855,6 +908,76 @@ Copyright (c) 2023, Gene C
 
 \chapter{Changelog}
 \label{\detokenize{Changelog:changelog}}\label{\detokenize{Changelog::doc}}
+\sphinxAtStartPar
+\sphinxstylestrong{{[}5.1.3{]} —\textendash{} 2025\sphinxhyphen{}03\sphinxhyphen{}15}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{Improve} \PYG{n}{README} \PYG{o+ow}{and} \PYG{n}{add} \PYG{n}{theme} \PYG{n}{to} \PYG{n}{sample} \PYG{n}{config}
+\PYG{n}{update} \PYG{n}{Changelog}\PYG{o}{.}\PYG{n}{rst}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+\sphinxstylestrong{{[}5.1.2{]} —\textendash{} 2025\sphinxhyphen{}03\sphinxhyphen{}14}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{Just} \PYG{n}{update} \PYG{n}{PKGBUILD} \PYG{n}{version}
+\PYG{n}{update} \PYG{n}{Changelog}\PYG{o}{.}\PYG{n}{rst}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+\sphinxstylestrong{{[}5.1.1{]} —\textendash{} 2025\sphinxhyphen{}03\sphinxhyphen{}13}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{update} \PYG{n}{Changelog}\PYG{o}{.}\PYG{n}{rst}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+\sphinxstylestrong{{[}5.1.0{]} —\textendash{} 2025\sphinxhyphen{}03\sphinxhyphen{}13}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{Add} \PYG{n}{missing} \PYG{n}{config} \PYG{n}{sample} \PYG{n}{file}
+\PYG{n}{update} \PYG{n}{Changelog}\PYG{o}{.}\PYG{n}{rst}
+\PYG{n}{Bug} \PYG{n}{fix} \PYG{n}{by} \PYG{n+nd}{@rikyborg} \PYG{p}{:} \PYG{n}{Typo} \PYG{o+ow}{in} \PYG{n}{ConfData} \PYG{k}{class}
+\PYG{n+nc}{update} \PYG{n}{Changelog}\PYG{o}{.}\PYG{n}{rst}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+\sphinxstylestrong{{[}5.0.2{]} —\textendash{} 2025\sphinxhyphen{}03\sphinxhyphen{}11}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{Update} \PYG{n}{Readme}
+\PYG{n}{update} \PYG{n}{Changelog}\PYG{o}{.}\PYG{n}{rst}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+\sphinxstylestrong{{[}5.0.1{]} —\textendash{} 2025\sphinxhyphen{}03\sphinxhyphen{}10}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{Require} \PYG{n}{py}\PYG{o}{\PYGZhy{}}\PYG{n}{cidr} \PYG{o}{\PYGZgt{}}\PYG{o}{=} \PYG{l+m+mf}{2.7}\PYG{l+m+mf}{.0} \PYG{n}{which} \PYG{n}{has} \PYG{n}{ip} \PYG{n}{sort} \PYG{n}{fix}
+\PYG{n}{update} \PYG{n}{Changelog}\PYG{o}{.}\PYG{n}{rst}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+\sphinxstylestrong{{[}5.0.0{]} —\textendash{} 2025\sphinxhyphen{}03\sphinxhyphen{}10}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{remove} \PYG{n}{files} \PYG{n}{no} \PYG{n}{longer} \PYG{n}{being} \PYG{n}{used}
+\PYG{n}{New} \PYG{n}{config} \PYG{n}{file} \PYG{n+nb}{format} \PYG{n}{using} \PYG{n}{single} \PYG{n}{config} \PYG{n}{file} \PYG{n}{shared} \PYG{n}{by} \PYG{n}{dmarc} \PYG{o+ow}{and} \PYG{n}{tls} \PYG{n}{report} \PYG{n}{generators}
+   \PYG{n}{version} \PYG{l+m+mi}{1} \PYG{n}{configs} \PYG{k}{with} \PYG{l+m+mi}{2} \PYG{n}{files} \PYG{n}{will} \PYG{n}{be} \PYG{n}{automatically} \PYG{n}{converted} \PYG{o+ow}{and} \PYG{n}{saved} \PYG{k}{as} \PYG{n}{config}\PYG{o}{.}\PYG{n}{v2}
+   \PYG{n}{Auto} \PYG{n}{conversion} \PYG{n}{pulls} \PYG{o+ow}{in} \PYG{n}{new} \PYG{n}{dependency} \PYG{n}{on} \PYG{n}{tomli}\PYG{o}{\PYGZhy{}}\PYG{n}{w} \PYG{n}{to} \PYG{n}{write} \PYG{n}{the} \PYG{n}{config} \PYG{n}{file}\PYG{o}{.}
+\PYG{n}{Reorg} \PYG{o+ow}{and} \PYG{n}{simplify} \PYG{n}{config} \PYG{o+ow}{and} \PYG{n}{options} \PYG{n}{code}\PYG{o}{.}
+\PYG{n}{update} \PYG{n}{Changelog}\PYG{o}{.}\PYG{n}{rst}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+\sphinxstylestrong{{[}4.13.2{]} —\textendash{} 2025\sphinxhyphen{}02\sphinxhyphen{}25}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{Small} \PYG{n}{update} \PYG{n}{to} \PYG{n}{README}
+\PYG{n}{Add} \PYG{n}{html} \PYG{o+ow}{and} \PYG{n}{pdf} \PYG{n}{docs} \PYG{n}{to} \PYG{n}{repo}
+\PYG{n}{update} \PYG{n}{Changelog}\PYG{o}{.}\PYG{n}{rst}
+\end{sphinxVerbatim}
+
 \sphinxAtStartPar
 \sphinxstylestrong{{[}4.13.1{]} —\textendash{} 2025\sphinxhyphen{}02\sphinxhyphen{}23}
 

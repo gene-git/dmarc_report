@@ -61,14 +61,14 @@ Applications
 Save all DMARC or TLS-RPT reports into a directory. These are typically compressed xml/json files 
 sent as email attachments. The saved reports can be :
 
-* individual email files each with a compressed xml/json attachment. Thunderbird saves them this way.
-  These are saved with a *.eml* extension.
+ * individual email files each with a compressed xml/json attachment. Thunderbird saves them this way.
+   These are saved with a *.eml* extension.
 
-* one single file with several emails, each with the attachment. Evolution saves this way.
-  These are saved with *.mbox* extension.
+ * one single file with several emails, each with the attachment. Evolution saves this way.
+   These are saved with *.mbox* extension.
 
-* Individual compressed, or uncmompressed, xml reports created by saving the attachments from each email.
-
+ * Individual compressed, or uncmompressed, xml reports created by saving the attachments from each email.
+ 
 *dmarc-rpt* and *tls-rpt* will extract the actual **xml** (*dmarc*) or **json** (tls-rpt) data 
 from all of the above.
 
