@@ -18,6 +18,7 @@
 [global]
     inp_files_disp = 'save'
     inp_files_save_dir = '../saved'         # relative to "dir"
+    theme = 'dark'
     
 [dmarc]
     dir = '~/mail-reports/dmarc/xml'

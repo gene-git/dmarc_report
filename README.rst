@@ -10,8 +10,7 @@ Overview
 Generate a human readable report from 1 or more standard DMARC and TLS-RPT xml email reports .
 DMARC reports are made using *dmarc-rpt* while TLS-RPTs use *tls-rpt*
 
-
-Note: 
+**Note**: 
 
    All git tags are signed by <arch@sapience.com>.
    Public key is available via WKD or download from website:
@@ -30,7 +29,7 @@ New / Interesting
 
  * Switch to *py-cidr* package for handling IPs instead of own versions.
 
-   Available 
+ * Available 
      - github <https://github.com/gene-git/py-cidr>
      - AUR <https://aur.archlinux.org/packages/py-cidr>
 
@@ -50,54 +49,28 @@ New / Interesting
    New tool to generate report for TLS reports for MTA-STS or DANE. See README-tls.md
    This report has been updated - see Changelog for details.
 
- * *-ifd, --inp_file_disp*  
-
-   Input file disposition options one of : none,save,delete  
-   If set to save then all input files (xml, compressed xml and any kept eml files) are moved
-   to directory specified by *inp_files_save_dir*.  
-
- * *-ifsd, --inp_files_save_dir*  
-
-   When *inp_file_disp* is set, then input files are moved to this directory after report
-   is generated.  Files are saved by year-month under the save directory
-
 
 ###############
 Getting Started
 ###############
 
-Installation
-============
-
-Available on
- * `Github`_
- * `Archlinux AUR`_
-
-On Arch you can build using the PKGBUILD provided in packaging directory or from the AUR package.
-To build manually, clone the repo and 
-
-.. code-block:: bash
-
-        rm -f dist/*
-        python -m build --wheel --no-isolation
-        root_dest="/"
-        ./scripts/do-install $root_dest
-
-When running as non-root then set root_dest a user writable directory
 
 Applications
 ============
 
-Save all DMARC or TLS-RPT reports into a directory. These are typically compressed xml files 
+Save all DMARC or TLS-RPT reports into a directory. These are typically compressed xml/json files 
 sent as email attachments. The saved reports can be :
 
-* individual email files each with a compressed xml attachment. Thunderbird saves them this way.
+* individual email files each with a compressed xml/json attachment. Thunderbird saves them this way.
   These are saved with a *.eml* extension.
+
 * one single file with several emails, each with the attachment. Evolution saves this way.
   These are saved with *.mbox* extension.
+
 * Individual compressed, or uncmompressed, xml reports created by saving the attachments from each email.
 
-*dmarc-rpt* and *tls-rpt* will extract the actual XML data from all of the above.
+*dmarc-rpt* and *tls-rpt* will extract the actual **xml** (*dmarc*) or **json** (tls-rpt) data 
+from all of the above.
 
 Quick start
 -----------
@@ -105,7 +78,7 @@ Quick start
 Save all emails with DMARC or TLS-RPT attachments to a directory, change into that directory and run
 either dmarc-rpt or tls-rpt as appropriate.
 
-It is generally more convenient to use config file explained below.
+It is generally more convenient to use a config file explained below.
 
 .. _config_files_section:
 
@@ -130,7 +103,8 @@ New version 2 format uses a single file, *config.v2*. Version 2 config will be u
 If only version 1 configs are found they will be automatically converted to version 2, which 
 will then be used going forward.
 
-All config files use standard TOML format.  
+All config files use standard TOML format. Config files use 3 sections. A global section
+and one each for dmarc and tls-rpt.
 
 Available config values are set using::
 
@@ -146,6 +120,7 @@ A sample config is available in the *conf.d* directory. A typical config might b
 
         # comment
         [global]
+            theme = 'dark'
             inp_files_disp = "save"
             inp_files_save_dir = "../saved"
 
@@ -233,11 +208,11 @@ These apply to both dmarc-rpt and tls-rpt
    The directory holding the report files (.eml, .xml, .gz or .zip)
    By default, dir is the current directory.
 
- * (*-k, --keep*)  [*keep = true*] 
+ * (*-k, --keep*)
 
    Prevent the *.eml* being removed after the attached xml reports are extracted.
 
- * (*-thm, --theme*)   
+ * (*-thm, --theme*)
 
    Report is now in color.
    Default theme is 'dark'. Theme can be 'light' 'dark' or 'none', which turns off color report.
@@ -246,7 +221,7 @@ These apply to both dmarc-rpt and tls-rpt
 
    More verbose output
 
- * (*-ifd, --inp_file_disp*)  [*inp_file_disp = save*]
+ * (*-ifd, --inp_file_disp*)
 
    Input file disposition options one of : none,save,delete
    If set to save then all input files (xml, compressed xml and any kept eml files) are moved
@@ -257,11 +232,6 @@ These apply to both dmarc-rpt and tls-rpt
    When *inp_file_disp* is set, then input files are moved to this directory after report
    is generated.  Files are saved by year-month under the save directory
 
- * (*ips, --dom_ips*) [*dom_ips = ['1.1.1.0/24', '2.2.2.16/29'*]
-
-   Comma separated list of IPs / CIDRs for your own domains. When used in config file 
-   format as array of IP strings.
-
 dmarc-rpt Specific Options
 --------------------------
 
@@ -270,7 +240,15 @@ These are only applicable for dmarc-rpt.
  * (*-ips, --dom_ips*)  [*dom_ips = [ip, cidr, ... ]*]  
 
    Set the ips for your own domain(s), which will then be colored to make them easy to spot.
-   Command line option is just comma separated list - no square brackets like config file.
+   Command line option is a comma separated list of IPs. 
+   e.g.::
+
+        --dom_ips "1.1.1.0/24,2.2.2.16/29"
+
+   When used in config file format as array of IP stringsC.
+   e.g.::
+
+        dom_ips = ['1.1.1.0/24', '2.2.2.16/29']
 
  * (*fdm, --dmarc_fails*)
 
@@ -283,7 +261,6 @@ These are only applicable for dmarc-rpt.
  * (*fsp, --spf_fails*)
 
     Only include spf failures in report
-
 
 Saving Email Reports From Email Client
 ======================================
@@ -318,6 +295,25 @@ Dependencies
 
   * sphinx
   * texlive-latexextra  (archlinux packaguing of texlive tools)
+
+Installation
+============
+
+Available on
+ * `Github`_
+ * `Archlinux AUR`_
+
+On Arch you can build using the PKGBUILD provided in packaging directory or from the AUR package.
+To build manually, clone the repo and 
+
+.. code-block:: bash
+
+        rm -f dist/*
+        python -m build --wheel --no-isolation
+        root_dest="/"
+        ./scripts/do-install $root_dest
+
+When running as non-root then set root_dest a user writable directory
 
 Philosophy
 ==========
