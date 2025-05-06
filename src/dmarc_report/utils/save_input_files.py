@@ -3,19 +3,38 @@
 """
  disposition of all input files
 """
+from typing import (Dict, List)
 import os
 from datetime import datetime
 
 from .email import email_file_list
-from .utils import make_dir_path
+from .tools import make_dir_path
+from .class_options import (ConfData)
+from .class_print import Prnt
 
-def input_files_disposition(opts, prnt, ftyp_files):
+
+def input_files_disposition(opts: ConfData, pcls: Prnt,
+                            ftyp_files: Dict[str, List[str]]):
     """
     inp_files_disp:
-        none        = do nothing
-        delete      = remove them
-        save        = move/save into inp_files_save_dir
+
+    - none        = do nothing
+    - delete      = remove them
+    - save        = move/save into inp_files_save_dir
+
+    Args:
+        opts (ConfData):
+        Config options data class.
+
+        prnt (Prnt):
+        print function with asccii color escapes.
+
+        ftyp_files (Dict[str, List[str]]:
+        List of files for each file type in the dictionary for each of
+        [xml, gzip, zip].
+
     """
+    prnt = pcls.prnt
 
     #
     # If no User request, return
@@ -25,14 +44,16 @@ def input_files_disposition(opts, prnt, ftyp_files):
 
     delete_files = False
     save_files = False
-    if opts.inp_files_disp.startswith('del') or opts.inp_files_disp.startswith('rem'):
+    disp = opts.inp_files_disp
+    if disp.startswith('del') or disp.startswith('rem'):
         delete_files = True
-    elif opts.inp_files_disp.startswith('sav'):
+
+    elif disp.startswith('sav'):
         save_files = True
         save_dir = opts.inp_files_save_dir
         if not save_dir:
             prnt('Warning: ', fg_col='warn')
-            prnt('to save inputs --inp_files_save_dir must provide directory\n')
+            prnt('to save inputs need --inp_files_save_dir\n')
             save_files = False
 
     #
@@ -58,12 +79,13 @@ def input_files_disposition(opts, prnt, ftyp_files):
         return
 
     if save_files:
-        save_input_files(opts, prnt, files)
+        save_input_files(opts, pcls, files)
 
     elif delete_files:
-        delete_input_files(opts, prnt, files)
+        delete_input_files(opts, pcls, files)
 
-def save_subdir():
+
+def save_subdir() -> str:
     """ Save input files in subdir based on date """
     today = datetime.today()
     year = today.year
@@ -71,11 +93,13 @@ def save_subdir():
     subdir = f'{year:d}-{month:02d}'
     return subdir
 
-def save_input_files(opts, prnt, files):
+
+def save_input_files(opts: ConfData, pcls: Prnt, files: List[str]):
     """ save nput files """
     if not files:
         return
 
+    prnt = pcls.prnt
     #
     # set up dir - handle relative and absolute names
     #
@@ -106,18 +130,19 @@ def save_input_files(opts, prnt, files):
             prnt(f'Error {err}: ', fg_col='error')
             prnt(f'moving file {file}: {save_dir}\n')
 
-def delete_input_files(conf, prnt, files):
+
+def delete_input_files(opts: ConfData, pcls: Prnt, files: List[str]):
     """ remove nput files """
-    opts = conf.data
 
     if not files:
         return
-
     topdir = opts.dir
+    prnt = pcls.prnt
+
     for file in files:
         fpath = os.path.join(topdir, file)
         if os.path.exists(fpath):
-            try :
+            try:
                 os.unlink(fpath)
             except OSError as err:
                 prnt(f'Error {err}: ', fg_col='error')

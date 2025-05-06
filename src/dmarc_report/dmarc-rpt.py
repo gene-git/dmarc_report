@@ -2,21 +2,22 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: © 2023-present Gene C <arch@sapience.com>
 """
- DMARC report generator:
-   read aggregate dmarc reports files in current directory (RUA) and generate report.
-   Files can be xml or zip or gzip xml.
+DMARC report generator:
+
+read aggregate dmarc reports files in current directory (RUA)
+and generate report. Files can be xml, zip or gzip xml.
 """
 # pylint: disable=invalid-name
+from dmarc import DmarcReport
+from utils import xml_file_read
+from utils import find_extract_email_attachments
 
-from lib import DmarcRpt
-from lib import xml_file_read
-from lib import find_extract_email_attachments
 
 def main():
     """
     dmarc report tool
     """
-    report = DmarcRpt()
+    report = DmarcReport()
     topdir = report.opts.data.dir
     keep_eml = report.opts.data.keep
 
@@ -31,7 +32,7 @@ def main():
         for file in files:
             if report.opts.data.verb:
                 print(f'{sep}')
-                print (f' - {file}')
+                print(f' - {file}')
             xml = xml_file_read(topdir, ftype, file)
             report.analyze(xml)
 
@@ -41,6 +42,7 @@ def main():
     # disposition of input files
     #
     report.input_disposition(xml_files)
+
 
 # -----------------------------------------------------
 if __name__ == '__main__':

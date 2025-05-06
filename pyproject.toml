@@ -17,14 +17,20 @@ classifiers = [
 ]
 dependencies = []
 
+[tool.hatch.build.targets.wheel]
+packages = ["src/dmarc_report"]
+include = [
+    "src/dmarc_report",
+]
+
 [project.urls]
 Documentation = "https://github.com/gene-git/dmarc_report/Docs"
 Issues = "https://github.com/gene-git/dmarc_report/issues"
 Source = "https://github.com/gene-git/dmarc_report"
 
 [tool.hatch.version]
-path = "src/dmarc_report/__about__.py"
+path = "src/dmarc_report/_version.py"
 
 [[tool.hatch.envs.all.matrix]]
-python = ["3.13", "3.14"]
+python = ["3.13", "3.14", "3.15"]
 

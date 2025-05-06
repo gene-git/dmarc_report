@@ -4,6 +4,7 @@
 Update Org and Domain reports
 """
 # pylint: disable=too-many-locals
+from datetime import datetime
 from .class_tlsrpt import TlsOneRpt
 from .class_tlsrpt import TlsReports
 from .class_tlsrpt import TlsPolicy
@@ -11,34 +12,37 @@ from .class_tlsrpt import TlsOrgReport
 from .class_tlsrpt import TlsDomainReport
 from .class_tlsrpt import TlsFailSummary
 
-# -------------------------------------------------------------
-def _earlier_date(new_date, current_date):
-    """ earlier start dates"""
-    if not current_date or new_date < current_date:
-        return new_date
-    return current_date
 
-def _later_date(new_date, current_date):
+# -------------------------------------------------------------
+def _earlier_date(new_date: datetime, curr_date: datetime) -> datetime:
     """ earlier start dates"""
-    if not current_date or new_date > current_date:
+    if not curr_date or (new_date and new_date < curr_date):
         return new_date
-    return current_date
+    return curr_date
+
+
+def _later_date(new_date: datetime, curr_date: datetime) -> datetime:
+    """ earlier start dates"""
+    if not curr_date or (new_date and new_date > curr_date):
+        return new_date
+    return curr_date
 # -------------------------------------------------------------
 
-def _merge_policy(new_policy, policy):
+
+def _merge_policy(new_pol: TlsPolicy, policy: TlsPolicy):
     """
     Merge new policy into existing.
     """
-    policy.success += new_policy.success
-    policy.failure += new_policy.failure
+    policy.success += new_pol.success
+    policy.failure += new_pol.failure
 
-    policy.failure_details += new_policy.failure_details
+    policy.failure_details += new_pol.failure_details
 
-    if new_policy.string:
-        policy.string += new_policy.string
+    if new_pol.string:
+        policy.string += new_pol.string
 
-    if new_policy.mx_host_pattern:
-        policy.mx_host_pattern += new_policy.new_mx_host_pattern
+    if new_pol.mx_host_pattern:
+        policy.mx_host_pattern += new_pol.mx_host_pattern
 
     #
     # Failure details
@@ -46,7 +50,7 @@ def _merge_policy(new_policy, policy):
     # only fields updated are result_type and count
     # So we just aggregate
     #
-    for fail in new_policy.failure_details:
+    for fail in new_pol.failure_details:
         count = fail.failed_session_count
         res_type = fail.result_type
 
@@ -54,7 +58,8 @@ def _merge_policy(new_policy, policy):
             policy.failure_summary[res_type] = TlsFailSummary(res_type)
         policy.failure_summary[res_type].count += count
 
-def tls_update_reports(new_rpt:TlsOneRpt, rpts:TlsReports):
+
+def tls_update_reports(new_rpt: TlsOneRpt, rpts: TlsReports):
     """
      - Add new_rpt to all report list
      - merge new_rpt into domain report
@@ -96,8 +101,11 @@ def tls_update_reports(new_rpt:TlsOneRpt, rpts:TlsReports):
         org_rpt_dom.success += new_success
         org_rpt_dom.failure += new_failure
 
-        org_rpt_dom.date_start = _earlier_date(new_rpt.date_start, org_rpt_dom.date_start)
-        org_rpt_dom.date_end = _later_date(new_rpt.date_end, org_rpt_dom.date_end)
+        org_rpt_dom.date_start = _earlier_date(new_rpt.date_start,
+                                               org_rpt_dom.date_start)
+
+        org_rpt_dom.date_end = _later_date(new_rpt.date_end,
+                                           org_rpt_dom.date_end)
 
         #
         # Domain report
@@ -120,7 +128,9 @@ def tls_update_reports(new_rpt:TlsOneRpt, rpts:TlsReports):
         dom_rpt.success += new_success
         dom_rpt.failure += new_failure
 
-        dom_rpt.date_start = _earlier_date(new_rpt.date_start, dom_rpt.date_start)
+        dom_rpt.date_start = _earlier_date(new_rpt.date_start,
+                                           dom_rpt.date_start)
+
         dom_rpt.date_end = _later_date(new_rpt.date_end, dom_rpt.date_end)
 
         #

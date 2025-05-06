@@ -3,7 +3,11 @@
 """
  Colors used for dmarc, dkim and spf
 """
-def dmarc_colors(cnt, passes, _fails, _pass_pct):
+from typing import (Tuple)
+
+
+def dmarc_colors(cnt: int, passes: int, _fails: int, _pass_pct: float
+                 ) -> str:
     """
     Colors for DMARC column
     """
@@ -18,12 +22,16 @@ def dmarc_colors(cnt, passes, _fails, _pass_pct):
 
     return color
 
-def dkim_colors(cnt, passes, fails, aligns):
+
+def dkim_colors(cnt: int, passes: int, fails: int, aligns: int
+                ) -> Tuple[str, str, str]:
     """
-    Set dkim colors for pass, fail, align
+    Set dkim colors for pass, fail, align.
+
      - dkim may have more than 1 selector
        Can have passes == cnt and also have fails on second selector
        Common when there is 1 RSA and 1 ED25519 selector
+
     """
     # pylint: disable=possibly-used-before-assignment
     #
@@ -57,7 +65,9 @@ def dkim_colors(cnt, passes, fails, aligns):
 
     return (color_pass, color_fail, color_align)
 
-def spf_colors(cnt, passes, fails, aligns):
+
+def spf_colors(cnt: int, passes: int, fails: int, aligns: int
+               ) -> Tuple[str, str, str]:
     """
     Set dkim colors for pass, fail, align
      - dkim may have more than 1 selector

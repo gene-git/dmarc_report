@@ -4,43 +4,50 @@
 Helper tools for dmarc report generator
 """
 # pylint: disable=invalid-name
+# Use IO since we dont know if open used for TextIO or BinaryIO
+from typing import (Any, Dict, IO, List, Tuple)
 import os
 import stat
 import glob
+import random
+import string
 from operator import itemgetter
+from datetime import datetime
 
-def drange_summary(drange_list):
+
+def drange_summary(drange_list: List[List[datetime]]) -> Tuple[str, str, str]:
     """
     takes list of [start, end]
-    returns earliest start and last end and whether range is continuous by date.
+    returns earliest start and last end and
+    whether range is contiguous by date.
     """
     start = '?'
     end = '?'
     contig = False
+    contig_flag = ''
 
     # do something if faced with no dates
     fmt = '%y/%m/%d %H:%M'
 
     # handle missing dates in report
 
-    drange_clean = []
+    drange_clean: List[List[datetime]] = []
     for item in drange_list:
-        if not (item[0] and item[1]) :
+        if not (item[0] and item[1]):
             continue
         drange_clean.append(item)
 
     if not drange_clean:
-        return (start, end, contig)
+        return (start, end, contig_flag)
 
     # start
     num = len(drange_clean)
-
-    dts = sorted (drange_clean, key=itemgetter(0))
-    dstart = dts[0][0]
-    dend = dts[num-1][1]
+    dts = sorted(drange_clean, key=itemgetter(0))
+    dstart: datetime = dts[0][0]
+    dend: datetime = dts[num-1][1]
 
     if not (dstart and dend):
-        return (start, end, True)
+        return (start, end, '')
 
     fmt = '%y/%m/%d %H:%M'
     start = dstart.strftime(fmt)
@@ -56,13 +63,13 @@ def drange_summary(drange_list):
             contig = False
             break
 
-    contig_flag = ''
-    if not contig :
+    if not contig:
         contig_flag = '*'
 
     return (start, end, contig_flag)
 
-def get_glob_file_list(topdir, pattern, withpath=False):
+
+def get_glob_file_list(topdir, pattern, withpath=False) -> List[str]:
     """
     gets list of files in topdir/pattern
       - returns filenames without topdir unless withpath=True
@@ -81,7 +88,8 @@ def get_glob_file_list(topdir, pattern, withpath=False):
         flist = fnames
     return flist
 
-def open_file(path, mode):
+
+def open_file(path: str, mode: str) -> IO | None:
     """
      Open a file and return file object
     """
@@ -89,11 +97,13 @@ def open_file(path, mode):
     try:
         fobj = open(path, mode)
     except OSError as err:
-        print(f'Error opening file {path} : {err}')
+        print(f'Error opening file {path}: {err}')
         fobj = None
     return fobj
 
-def merge_dict(dic1, dic2):
+
+def merge_dict(dic1: Dict[str, Any], dic2: Dict[str, Any]
+               ) -> Dict[str, Any]:
     """
     Merge dic2 over dic1 (dic2 overrides dic1)
     """
@@ -103,7 +113,7 @@ def merge_dict(dic1, dic2):
         return dic1
 
     merged = dic1.copy()
-    for (key,val) in dic2.items():
+    for (key, val) in dic2.items():
         if key in merged:
             if isinstance(val, dict) and isinstance(merged[key], dict):
                 merged[key] = merge_dict(merged[key], val)
@@ -113,13 +123,15 @@ def merge_dict(dic1, dic2):
             merged[key] = val
     return merged
 
-def make_dir_path(path_dir):
+
+def make_dir_path(path_dir: str) -> bool:
     """
     makes directory and any missing path components
       - set reasonable permissions
     """
     okay = True
-    dirmode = stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH
+    dirmode = stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP
+    dirmode |= stat.S_IROTH | stat.S_IXOTH
     try:
         os.makedirs(path_dir, exist_ok=True)
         os.chmod(path_dir, dirmode)
@@ -127,12 +139,14 @@ def make_dir_path(path_dir):
         okay = False
     return okay
 
-def file_ext_list(topdir, ext_list):
+
+def file_ext_list(topdir: str, ext_list: List[str]
+                  ) -> Dict[str, List[str]]:
     """
     Make dictionary of files with extensions in ext_list
     Return dictionary containing list of files of each extension type
     """
-    fext_dict = {}
+    fext_dict: Dict[str, List[str]] = {}
     if not ext_list:
         return fext_dict
 
@@ -142,3 +156,18 @@ def file_ext_list(topdir, ext_list):
         fext_dict[ext] = files
 
     return fext_dict
+
+
+def random_ascii_name(num: int) -> str:
+    """
+    Return random string of length num
+
+    Args:
+        num (int)
+        An integer of desired length of the string.
+    Returns:
+        str:
+        A string of "num" random ASCII characters.
+    """
+    ascii_list = [random.choice(string.ascii_letters) for _ in range(num)]
+    return ''.join(ascii_list)

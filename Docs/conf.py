@@ -9,7 +9,7 @@
 project = "dmarc_report"
 copyright = '2023, Gene C'
 author = 'Gene C'
-release = '5.1.4'
+release = '6.0.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

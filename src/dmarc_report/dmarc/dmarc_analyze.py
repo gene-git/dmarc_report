@@ -1,15 +1,18 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: © 2023-present Gene C <arch@sapience.com>
 """
- DMARC report generator:
-   read aggregate dmarc reports files in current directory (RUA) and generate report.
-   Files can be xml or zip or gzip xml.
+DMARC report generator:
+
+read aggregate dmarc reports files in current directory (RUA)
+and generate report. Files can be xml or zip or gzip xml.
 """
 # pylint: disable=R0912,R0913,R0914,R0915
 # pylint: disable=invalid-name
 
-from .xml_tools import (xml_pull_item, xml_pull_node, xml_pull_date_range)
-from .xml_tools import (xml_pull_records, xml_pull_auth_results_dkims, xml_pull_auth_results_spf)
+from utils import (xml_pull_item, xml_pull_node)
+from utils import (xml_pull_records, xml_pull_auth_results_dkims)
+from utils import (xml_pull_auth_results_spf, xml_pull_date_range)
+
 
 def dmarc_analyze(rpt, xml):
     """
@@ -34,7 +37,6 @@ def dmarc_analyze(rpt, xml):
     domain = xml_pull_item(dmarc_policy, 'domain')
     drange = xml_pull_date_range(metadata)
 
-
     org = rpt.get_org(org_name)
     org.add_drange(drange)
     rpt.add_drange(drange)
@@ -49,9 +51,9 @@ def dmarc_analyze(rpt, xml):
     records = xml_pull_records(xml)
     for record in records:
         nrec += 1
-        ip = xml_pull_item(record,'row/source_ip')
-        cnt = xml_pull_item(record,'row/count')
-        cnt = int(cnt)
+        ip = xml_pull_item(record, 'row/source_ip')
+        cnt_str = xml_pull_item(record, 'row/count')
+        cnt = int(cnt_str)
 
         ip_rpt = dom_rpt.get_ip_rpt(ip)
 

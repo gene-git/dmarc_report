@@ -4,8 +4,15 @@
  Print the actual report
 """
 # pylint: disable=too-many-locals
+from typing import (Tuple)
+from datetime import datetime
 
-def _format_item(prnt, width, color, txt, lcr='>'):
+from utils import Prnt
+from ._class_tls import (TlsRpt)
+
+
+def _format_item(prnt: Prnt, width: int, color: str,
+                 txt: str, lcr: str = '>') -> str:
     """
     Colorize text - hanbdle widht adjustments from additiinal
     ascii color codes in output string
@@ -15,7 +22,9 @@ def _format_item(prnt, width, color, txt, lcr='>'):
     txt_fmt = f'{txt_fmt:{lcr}{wid}s}'
     return txt_fmt
 
-def _format_succ_fail(prnt, wid, succ, fail):
+
+def _format_succ_fail(prnt: Prnt, wid: int, succ: int, fail: int
+                      ) -> Tuple[str, str]:
     """ format the success and failures columns """
     total = succ + fail
 
@@ -33,7 +42,8 @@ def _format_succ_fail(prnt, wid, succ, fail):
 
     return (succ_s, fail_s)
 
-def _date_string(date):
+
+def _date_string(date: datetime) -> str:
     """ report date string """
     if not date:
         return ''
@@ -41,7 +51,8 @@ def _date_string(date):
     date_str = date.strftime(fmt)
     return date_str
 
-def generate_tls_report(tls_rpt:'TlsRpt'):
+
+def generate_tls_report(tls_rpt: TlsRpt):
     """
     Print final report
     """
@@ -63,7 +74,8 @@ def generate_tls_report(tls_rpt:'TlsRpt'):
         failure = rpt.failure
 
         dom_s = _format_item(prnt, cw1, 'dom', dom, lcr='<')
-        (succ_s, fail_s) = _format_succ_fail(prnt, cw2, rpt.success, rpt.failure)
+        (succ_s, fail_s) = _format_succ_fail(prnt, cw2,
+                                             rpt.success, rpt.failure)
         print(f'\n{dom_s} {succ_s} {fail_s} {"":3s} {start} ⟶  {end}')
 
         for (ptype, subreport) in rpt.policies.items():
@@ -84,11 +96,13 @@ def generate_tls_report(tls_rpt:'TlsRpt'):
                 wid = cw1 - len_ptype
                 len_ptype = 0
                 org_s = _format_item(prnt, wid, 'org', org_name)
-                (succ_s, fail_s) = _format_succ_fail(prnt, cw2, success, failure)
+                (succ_s, fail_s) = _format_succ_fail(prnt, cw2,
+                                                     success, failure)
                 print(f'{org_s} {succ_s} {fail_s} {"":3s}', end='')
 
                 lines = 0
-                for (res_type, fail_summary) in policy.failure_summary.items() :
+                failure_summary = policy.failure_summary
+                for (res_type, fail_summary) in failure_summary.items():
                     lines += 1
                     count = fail_summary.count
                     res = f'{res_type} ({count:>4d})'

@@ -4,48 +4,53 @@
  Routines to read various various xml report files.
 """
 # pylint: disable=c-extension-no-member
-
+# pylint: disable=no-name-in-module         # ELement is cython
+# mypy: disable-error-code=import-untyped
+from typing import (Any, List)
 import os
 import gzip
 import zipfile
-import datetime
+from datetime import datetime
 from lxml import etree
-from .utils import get_glob_file_list
+from lxml.etree import Element
 
-def get_xml_from_zip(fname):
+
+def get_xml_from_zip(fname: str) -> List[Element]:
     """
-    returns xml object
+    returns xml object.
       input: fname = foo.xml.zip
       output: 'foo.xml' as xml object
 
     Sinze zip file can contain more than one file we return a list.
-    All dmarc reports contain only a single file however and only use zip to compress.
+    All dmarc reports contain only a single file however and
+    only use zip to compress.
     """
     # extract content into memory
-    members = []
+    members: List[Any] = []
     with zipfile.ZipFile(fname, 'r') as zipobj:
         for member in zipobj.namelist():
             this_member = zipobj.read(member)
             this_xml = etree.fromstring(this_member)
             if this_xml is not None:
                 members.append(this_xml)
-
     return members
 
-def get_xml_from_gz(fname):
+
+def get_xml_from_gz(fname: str) -> Element:
     """
     returns xml object
         input fname = foo.xml.gz
         outpu return 'foo.xml' as xml
     """
     # extract content into memory
-    xml = None
+    xml: Element = None
     with gzip.open(fname, 'rb') as fobj:
         this_member = fobj.read()
         xml = etree.fromstring(this_member)
     return xml
 
-def get_xml_from_xml(fname):
+
+def get_xml_from_xml(fname: str) -> Element:
     """
     returns xml object
         input fname = foo.xml
@@ -54,36 +59,37 @@ def get_xml_from_xml(fname):
     # extract content into memory
     xml_tree = etree.parse(fname)
     xml = xml_tree.getroot()
-
     return xml
 
-def _get_ns(xml):
+
+def _get_ns(xml: Element) -> str:
     """
-    return any ns
-     - we create a dummy ns
-     - we should find way to get actual name space and the name:value [, ... name:value]
+    return any ns.
+
+    - we create a dummy ns
+    - we should find way to get actual name space and the
+      name:value [, ... name:value]
+
     """
     ns = xml.nsmap
-    #ns = None
-    #if xml and xml.tag and xml.tag[0] == '{':
-    #    ns = xml.tag[1:].split('}')[0]
     return ns
 
-def xml_pull_node(xml, what):
+
+def xml_pull_node(xml: Element, what: str) -> Element:
     """
     Extract 'what' from xml
     """
-    item = None
+    item: Element = None
     if xml is not None:
         ns = _get_ns(xml)
         if ns:
             item = xml.find(what, ns)
         else:
             item = xml.find(what)
-
     return item
 
-def xml_pull_item(xml, what):
+
+def xml_pull_item(xml: Element, what: str) -> str:
     """
     Extract 'what' from xml
     """
@@ -95,16 +101,18 @@ def xml_pull_item(xml, what):
         else:
             item = xml.find(what)
 
-        if item is not None :
+        if item is not None:
             text = item.text
             if not text:
                 text = "-"
     return text
 
-def xml_pull_date_range(metadata):
+
+def xml_pull_date_range(metadata: Element) -> List[datetime | None]:
     """
-    metadata should contain 'date_range' which in turn contains 'begin' and 'end'
-    extract date range [start, end] as datetime objects
+    metadata should contain 'date_range' which in turn
+    contains 'begin' and 'end' extract date
+    range [start, end] as datetime objects
     """
     dstart = None
     dend = None
@@ -115,20 +123,21 @@ def xml_pull_date_range(metadata):
         date_range = metadata.find('date_range')
     if date_range is not None:
         begin = date_range.find('begin', ns)
-        if begin  is not None:
+        if begin is not None:
             start_secs = begin.text
             start_secs = int(float(start_secs))
-            dstart = datetime.datetime.fromtimestamp(start_secs)
+            dstart = datetime.fromtimestamp(start_secs)
         end = date_range.find('end', ns)
         if end is not None:
             end_secs = end.text
             end_secs = int(float(end_secs))
-            dend = datetime.datetime.fromtimestamp(end_secs)
+            dend = datetime.fromtimestamp(end_secs)
 
     drange = [dstart, dend]
     return drange
 
-def xml_pull_records(xml):
+
+def xml_pull_records(xml: Element) -> str:
     """
     Return list of records
     """
@@ -139,7 +148,8 @@ def xml_pull_records(xml):
         records = xml.findall('record')
     return records
 
-def xml_pull_auth_results_dkims(xml):
+
+def xml_pull_auth_results_dkims(xml: Element) -> str:
     """
     Return list of auth_results/dkim
     """
@@ -150,7 +160,8 @@ def xml_pull_auth_results_dkims(xml):
         dkims = xml.findall('auth_results/dkim')
     return dkims
 
-def xml_pull_auth_results_spf(xml):
+
+def xml_pull_auth_results_spf(xml: Element) -> str:
     """
     Return auth_results/spf
     """
@@ -161,23 +172,8 @@ def xml_pull_auth_results_spf(xml):
         spf = xml.find('auth_results/spf')
     return spf
 
-def xml_file_list(topdir):
-    """
-    Make list of xml files (plain or zip or gzip)
-    Return dictionary containing list of files of each type
-    """
-    plain_files = get_glob_file_list(topdir, '*.xml')
-    gzip_files = get_glob_file_list(topdir, '*.gz')
-    zip_files = get_glob_file_list(topdir, '*.zip')
 
-    xml_files = {
-            'xml' : plain_files,
-            'gzip' : gzip_files,
-            'zip' : zip_files
-            }
-    return  xml_files
-
-def xml_file_read(topdir, ftype, file):
+def xml_file_read(topdir: str, ftype: str, file: str) -> Element:
     """
     Read file into xml - ftype is one of types retturned by xml_file_list():
       - xml, gz, zip
@@ -196,5 +192,5 @@ def xml_file_read(topdir, ftype, file):
             xml_list = get_xml_from_zip(fpath)
             xml = xml_list[0]
             if len(xml_list) > 1:
-                print('Warning zip compressed report has more than 1 report file - not exepcted')
-    return  xml
+                print('Warning zip compressed report has > 1 report file.')
+    return xml

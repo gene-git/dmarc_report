@@ -1,22 +1,24 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: © 2023-present Gene C <arch@sapience.com>
 """
-Report Class DmarcRpt
+Base classes for Reports.
+Allows separation with helper functions without
+circular imports.
+
 """
 # pylint: disable=invalid-name,too-many-instance-attributes
 # pylint: disable=too-few-public-methods
-
 from py_cidr import (Cidr)
-from .dmarc_analyze import dmarc_analyze
-from .class_options import Conf
-from .report import print_report
-from .class_print import Prnt
-from .save_input_files import input_files_disposition
-from .utils import file_ext_list
+
+from utils import Prnt
+from utils import file_ext_list
+from utils import input_files_disposition
+from utils import Conf
+
 
 class IPRpt:
     """
-    Basic Report Information for one IP address
+    Base Report class with Information for one IP address
     """
     def __init__(self):
         self.ip = None
@@ -35,6 +37,7 @@ class IPRpt:
         """ add if dont have """
         if sel_name not in self.dkim_selectors:
             self.dkim_selectors.append(sel_name)
+
 
 class DomRpt:
     """
@@ -103,16 +106,19 @@ class OrgRpt:
             num_ips += dom.get_num_ips()
         return num_ips
 
+
 class SelItem:
     """ each selector has short name """
     def __init__(self, domain, sel_domain, sel_name):
-        self.domain = domain            # email report domain
+        self.domain = domain       # email report domain
         self.name = sel_name
         self.short = ''
         self.passes = 0
         self.fails = 0
-        self.sel_domain = [sel_domain]  # forwarded email from sel_domain/selector
-        self.cnt = {sel_domain : 0}
+        # forwarded email from sel_domain/selector
+        self.sel_domain = [sel_domain]
+        self.cnt = {sel_domain: 0}
+
 
 class SelMap:
     """ track selector names and counts thereof """
@@ -129,11 +135,11 @@ class SelMap:
         """ return sel item for domain and selector name """
         sel = None
         for this_sel in self.selectors:
-            if this_sel.name == sel_name : #and this_sel.domain == domain) :
+            if this_sel.name == sel_name:
                 sel = this_sel
                 if sel_domain not in sel.sel_domain:
                     sel.sel_domain.append(sel_domain)
-                    sel.cnt[sel_domain] =  0
+                    sel.cnt[sel_domain] = 0
                 break
 
         if not sel:
@@ -142,6 +148,7 @@ class SelMap:
             self.selectors.append(sel)
         sel.cnt[sel_domain] += cnt
         return sel
+
 
 class DmarcRpt:
     """
@@ -189,19 +196,9 @@ class DmarcRpt:
         """
         self.drange.append(drange)
 
-    def analyze(self, xml):
-        """
-        Analyze xml and add to report
-        """
-        dmarc_analyze(self, xml)
-
     def get_sel(self, domain, sel_domain, sel_name, cnt):
         """ get selector info for 'name' """
         return self.sel_map.get_sel(domain, sel_domain, sel_name, cnt)
-
-    def print(self):
-        """ print the report """
-        print_report(self)
 
     def input_disposition(self, xml_files):
         """ handle disposition of all input files """

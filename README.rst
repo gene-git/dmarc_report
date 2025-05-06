@@ -21,6 +21,13 @@ DMARC reports are made using *dmarc-rpt* while TLS-RPTs use *tls-rpt*
 New / Interesting
 =================
 
+**New**
+
+ * Tidy ups: PEP-8, PEP-257, PEP-484 PEP-561
+ * And Reorganize code especially for PEP-561 (type hints)
+ * Has passed all tests here, so hopefully no problems.
+   But, always some risk cleaning up code - please let me know if something is not right.
+
 **Interesting**
 
  * New config file format using single config file. Older 2 fille configs will be automatically

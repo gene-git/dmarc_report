@@ -3,28 +3,34 @@
 """
 Handles exatrction of mime attachments
 """
+from typing import (List)
 import os
 import email
 import mimetypes
-from .utils import get_glob_file_list
+from .tools import random_ascii_name
+from .tools import get_glob_file_list
 
-def email_file_list(topdir):
+
+def email_file_list(topdir: str) -> List[str]:
     """
-    return list of files ending in .eml in topdir
+    Return list of files ending in .eml in topdir.
     """
     eml_list = get_glob_file_list(topdir, '*.eml')
     return eml_list
 
-def mbox_file_list(topdir):
+
+def mbox_file_list(topdir: str) -> List[str]:
     """
-    return list of files ending in .mbox in topdir
+    Return list of files ending in .mbox in topdir.
     """
     mbox_list = get_glob_file_list(topdir, '*.mbox')
     return mbox_list
 
-def email_data_extract_attachment(topdir, email_str, skip_exist=True):
+
+def email_data_extract_attachment(topdir: str, email_str: str,
+                                  skip_exist=True):
     """
-    extract mime attach from mail string
+    Extract mime attach from mail string.
     """
     if not email_str:
         return
@@ -37,10 +43,13 @@ def email_data_extract_attachment(topdir, email_str, skip_exist=True):
         for part in mail.walk():
             # multipart/* are just containers
             cmtype = part.get_content_maintype()
-            if cmtype in  ['multipart', 'text', 'html']:
+            if cmtype in ['multipart', 'text', 'html']:
                 continue
+
+            #
             # Applications should really sanitize the given filename so that an
             # email message can't be used to overwrite important files
+            #
             attach_fname = part.get_filename()
             if not attach_fname:
                 ext = mimetypes.guess_extension(part.get_content_type())
@@ -50,23 +59,30 @@ def email_data_extract_attachment(topdir, email_str, skip_exist=True):
                 attach_fname = f'part-{counter:03d}{ext}'
 
                 # skip txt, html and bin
-                if ext in ['.txt', '.html', '.bin'] :
+                if ext in ['.txt', '.html', '.bin']:
                     continue
 
             counter += 1
             attach_path = os.path.join(topdir, attach_fname)
             if not (skip_exist and os.path.exists(attach_path)):
                 with open(attach_path, 'wb') as fobj:
-                    fobj.write(part.get_payload(decode=True))
+                    data = bytes(part.get_payload(decode=True))
+                    fobj.write(data)
 
     else:
         attach_fname = mail.get_filename()
+        if not attach_fname:
+            attach_fname = random_ascii_name(6)
+
         attach_path = os.path.join(topdir, attach_fname)
         if not (skip_exist and os.path.exists(attach_path)):
             with open(attach_path, 'wb') as fobj:
-                fobj.write(mail.get_payload(decode=True))
+                data = bytes(mail.get_payload(decode=True))
+                fobj.write(data)
 
-def eml_extract_attachment(topdir, email_file, keep_email, skip_exist=True):
+
+def eml_extract_attachment(topdir: str, email_file: str,
+                           keep_email: bool, skip_exist=True):
     """
     extract mime attachment from email file
      - if attachment file exists we skip
@@ -85,7 +101,9 @@ def eml_extract_attachment(topdir, email_file, keep_email, skip_exist=True):
     if not keep_email:
         os.unlink(email_path)
 
-def mbox_extract_attachments(topdir, mbox, keep_email, skip_exist=True):
+
+def mbox_extract_attachments(topdir: str, mbox: str,
+                             keep_email: bool, skip_exist: bool = True):
     """
     Extract attachments from mbox file
       each email starts with "From " and ends wiht blank line
@@ -116,7 +134,8 @@ def mbox_extract_attachments(topdir, mbox, keep_email, skip_exist=True):
     if not keep_email:
         os.unlink(mbox_path)
 
-def find_extract_email_attachments(topdir, keep_email):
+
+def find_extract_email_attachments(topdir: str, keep_email: bool):
     """
     Get all filenames ending in .eml in topdir
     Extract mime attachment into same directory
