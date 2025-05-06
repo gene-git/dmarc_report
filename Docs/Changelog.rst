@@ -7,18 +7,20 @@ Tags
 
 ::
 
-	0.6.0 (2023-01-01) -> HEAD (2025-03-15)
-	135 commits.
+	0.6.0 (2023-01-01) -> 6.0.0 (2025-05-05)
+	136 commits.
 
 Commits
 =======
 
 
-* 2025-03-15  : **HEAD**
+* 2025-05-05  : **6.0.0**
 
 ::
 
-                update Changelog
+                Tidy ups: PEP-8, PEP-257, PEP-484 PEP-561
+                Reorganize code especially for PEP-561 (type hints)
+ 2025-03-15     update Changelog
                 update Changelog
 
 * 2025-03-15  : **5.1.4**
