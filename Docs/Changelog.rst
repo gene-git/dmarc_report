@@ -7,12 +7,19 @@ Tags
 
 ::
 
-	0.6.0 (2023-01-01) -> 6.0.0 (2025-05-05)
-	136 commits.
+	0.6.0 (2023-01-01) -> 6.1.0 (2025-05-21)
+	138 commits.
 
 Commits
 =======
 
+
+* 2025-05-21  : **6.1.0**
+
+::
+
+                Use builtin types where possible. e.g. typing.List -> list
+ 2025-05-05     update Changelog
 
 * 2025-05-05  : **6.0.0**
 
