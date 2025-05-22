@@ -3,7 +3,6 @@
 """
  Colors used for dmarc, dkim and spf
 """
-from typing import (Tuple)
 
 
 def dmarc_colors(cnt: int, passes: int, _fails: int, _pass_pct: float
@@ -24,7 +23,7 @@ def dmarc_colors(cnt: int, passes: int, _fails: int, _pass_pct: float
 
 
 def dkim_colors(cnt: int, passes: int, fails: int, aligns: int
-                ) -> Tuple[str, str, str]:
+                ) -> tuple[str, str, str]:
     """
     Set dkim colors for pass, fail, align.
 
@@ -67,7 +66,7 @@ def dkim_colors(cnt: int, passes: int, fails: int, aligns: int
 
 
 def spf_colors(cnt: int, passes: int, fails: int, aligns: int
-               ) -> Tuple[str, str, str]:
+               ) -> tuple[str, str, str]:
     """
     Set dkim colors for pass, fail, align
      - dkim may have more than 1 selector

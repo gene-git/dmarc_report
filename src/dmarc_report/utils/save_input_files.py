@@ -3,7 +3,6 @@
 """
  disposition of all input files
 """
-from typing import (Dict, List)
 import os
 from datetime import datetime
 
@@ -14,7 +13,7 @@ from .class_print import Prnt
 
 
 def input_files_disposition(opts: ConfData, pcls: Prnt,
-                            ftyp_files: Dict[str, List[str]]):
+                            ftyp_files: dict[str, list[str]]):
     """
     inp_files_disp:
 
@@ -29,8 +28,8 @@ def input_files_disposition(opts: ConfData, pcls: Prnt,
         prnt (Prnt):
         print function with asccii color escapes.
 
-        ftyp_files (Dict[str, List[str]]:
-        List of files for each file type in the dictionary for each of
+        ftyp_files (dict[str, list[str]]:
+        list of files for each file type in the dictionary for each of
         [xml, gzip, zip].
 
     """
@@ -94,7 +93,7 @@ def save_subdir() -> str:
     return subdir
 
 
-def save_input_files(opts: ConfData, pcls: Prnt, files: List[str]):
+def save_input_files(opts: ConfData, pcls: Prnt, files: list[str]):
     """ save nput files """
     if not files:
         return
@@ -131,7 +130,7 @@ def save_input_files(opts: ConfData, pcls: Prnt, files: List[str]):
             prnt(f'moving file {file}: {save_dir}\n')
 
 
-def delete_input_files(opts: ConfData, pcls: Prnt, files: List[str]):
+def delete_input_files(opts: ConfData, pcls: Prnt, files: list[str]):
     """ remove nput files """
 
     if not files:

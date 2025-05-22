@@ -39,7 +39,6 @@
 """
 # pylint: disable=too-many-instance-attributes
 # pylint: disable=too-few-public-methods
-from typing import (Dict, List)
 from datetime import (datetime, timezone)
 
 
@@ -69,14 +68,14 @@ class TlsPolicy:
         self.type = policy_type
         self.domain: str = ''
         self.org_name: str = ''
-        self.string: List[str] = []
-        self.mx_host_pattern: List[str] = []
+        self.string: list[str] = []
+        self.mx_host_pattern: list[str] = []
 
         self.success: int = 0
         self.failure: int = 0
 
-        self.failure_details: List[TlsFailureDetails] = []
-        self.failure_summary: Dict[str, TlsFailSummary] = {}
+        self.failure_details: list[TlsFailureDetails] = []
+        self.failure_summary: dict[str, TlsFailSummary] = {}
 
 
 class TlsOneRpt:
@@ -88,7 +87,7 @@ class TlsOneRpt:
 
         # policy_types = ('tlsa', 'sts', 'no_policy')
         #
-        self.policies: Dict[str, TlsPolicy] = {}        # 'tlsa' : TlsPolicy
+        self.policies: dict[str, TlsPolicy] = {}        # 'tlsa' : TlsPolicy
 
 
 class TlsOrgReport:
@@ -106,7 +105,7 @@ class TlsOrgReport:
         #   ('tlsa', 'sts', 'no_policy')
         # policies:
         #   {'tlsa': {'domain' : policy, 'domain2' :  policy2, ...}
-        self.policies: Dict[str, Dict[str, TlsPolicy]] = {}
+        self.policies: dict[str, dict[str, TlsPolicy]] = {}
 
 
 class TlsDomainReport:
@@ -123,15 +122,15 @@ class TlsDomainReport:
         # policy_types = ('tlsa', 'sts', 'no_policy')
         # for each type : {org:tls_policy dict]
         #                 {'org': tls_pol, 'org': tls_pol, ... }
-        self.policies: Dict[str, Dict[str, TlsPolicy]] = {}
+        self.policies: dict[str, dict[str, TlsPolicy]] = {}
 
 
 class TlsReports:
     """ all reports """
     def __init__(self):
-        self.reports: List[TlsOneRpt] = []
-        self.domain_rpts: Dict[str, TlsDomainReport] = {}
-        self.org_rpts: Dict[str, TlsOrgReport] = {}
+        self.reports: list[TlsOneRpt] = []
+        self.domain_rpts: dict[str, TlsDomainReport] = {}
+        self.org_rpts: dict[str, TlsOrgReport] = {}
 
         # summary
         self.date_start: datetime = datetime.now(timezone.utc)

@@ -5,7 +5,7 @@ Helper tools for dmarc report generator
 """
 # pylint: disable=invalid-name
 # Use IO since we dont know if open used for TextIO or BinaryIO
-from typing import (Any, Dict, IO, List, Tuple)
+from typing import (Any, IO)
 import os
 import stat
 import glob
@@ -15,7 +15,7 @@ from operator import itemgetter
 from datetime import datetime
 
 
-def drange_summary(drange_list: List[List[datetime]]) -> Tuple[str, str, str]:
+def drange_summary(drange_list: list[list[datetime]]) -> tuple[str, str, str]:
     """
     takes list of [start, end]
     returns earliest start and last end and
@@ -31,7 +31,7 @@ def drange_summary(drange_list: List[List[datetime]]) -> Tuple[str, str, str]:
 
     # handle missing dates in report
 
-    drange_clean: List[List[datetime]] = []
+    drange_clean: list[list[datetime]] = []
     for item in drange_list:
         if not (item[0] and item[1]):
             continue
@@ -69,7 +69,7 @@ def drange_summary(drange_list: List[List[datetime]]) -> Tuple[str, str, str]:
     return (start, end, contig_flag)
 
 
-def get_glob_file_list(topdir, pattern, withpath=False) -> List[str]:
+def get_glob_file_list(topdir, pattern, withpath=False) -> list[str]:
     """
     gets list of files in topdir/pattern
       - returns filenames without topdir unless withpath=True
@@ -102,8 +102,8 @@ def open_file(path: str, mode: str) -> IO | None:
     return fobj
 
 
-def merge_dict(dic1: Dict[str, Any], dic2: Dict[str, Any]
-               ) -> Dict[str, Any]:
+def merge_dict(dic1: dict[str, Any], dic2: dict[str, Any]
+               ) -> dict[str, Any]:
     """
     Merge dic2 over dic1 (dic2 overrides dic1)
     """
@@ -140,13 +140,13 @@ def make_dir_path(path_dir: str) -> bool:
     return okay
 
 
-def file_ext_list(topdir: str, ext_list: List[str]
-                  ) -> Dict[str, List[str]]:
+def file_ext_list(topdir: str, ext_list: list[str]
+                  ) -> dict[str, list[str]]:
     """
     Make dictionary of files with extensions in ext_list
     Return dictionary containing list of files of each extension type
     """
-    fext_dict: Dict[str, List[str]] = {}
+    fext_dict: dict[str, list[str]] = {}
     if not ext_list:
         return fext_dict
 

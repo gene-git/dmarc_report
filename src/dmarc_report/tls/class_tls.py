@@ -3,7 +3,6 @@
 """
  MTA-STS TLS Report Class
 """
-from typing import (Dict, List)
 from utils import file_ext_list
 from utils import input_files_disposition
 
@@ -30,11 +29,11 @@ class TlsReport(TlsRpt):
         """ print the report """
         generate_tls_report(self)
 
-    def input_disposition(self, json_files: Dict[str, List[str]]):
+    def input_disposition(self, json_files: dict[str, list[str]]):
         """ handle disposition of all input files """
         input_files_disposition(self.opts.data, self.prnt, json_files)
 
-    def json_file_list(self) -> Dict[str, List[str]]:
+    def json_file_list(self) -> dict[str, list[str]]:
         """ get list of xml or compressed xml files """
         ext_list = ['json', 'gz', 'zip']
         flist = file_ext_list(self.opts.data.dir, ext_list)

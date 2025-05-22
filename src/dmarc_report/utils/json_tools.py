@@ -3,7 +3,7 @@
 """
  json support tools
 """
-from typing import (Any, Dict, List)
+from typing import (Any)
 import os
 import gzip
 import zipfile
@@ -11,7 +11,7 @@ import json
 from .tools import open_file
 
 
-def get_json_from_zip(fname: str) -> List[Dict[str, Any]]:
+def get_json_from_zip(fname: str) -> list[dict[str, Any]]:
     """
     Returns json object.
 
@@ -30,7 +30,7 @@ def get_json_from_zip(fname: str) -> List[Dict[str, Any]]:
     return members
 
 
-def get_json_from_gz(fname: str) -> Dict[str, Any]:
+def get_json_from_gz(fname: str) -> dict[str, Any]:
     """
     Returns json object.
 
@@ -39,14 +39,14 @@ def get_json_from_gz(fname: str) -> Dict[str, Any]:
 
     """
     # extract content into memory
-    this_json: Dict[str, Any] = {}
+    this_json: dict[str, Any] = {}
     with gzip.open(fname, 'rb') as fobj:
         this_member = fobj.read()
         this_json = json.loads(this_member)
     return this_json
 
 
-def get_json_from_json(fname: str) -> Dict[str, Any]:
+def get_json_from_json(fname: str) -> dict[str, Any]:
     """
     Returns json object.
 
@@ -55,7 +55,7 @@ def get_json_from_json(fname: str) -> Dict[str, Any]:
 
     """
     # extract content into memory
-    this_json: Dict[str, Any] = {}
+    this_json: dict[str, Any] = {}
     fobj = open_file(fname, 'r')
     if fobj:
         this_json = json.load(fobj)
@@ -63,7 +63,7 @@ def get_json_from_json(fname: str) -> Dict[str, Any]:
     return this_json
 
 
-def json_file_read(topdir: str, ext_type: str, file: str) -> Dict[str, Any]:
+def json_file_read(topdir: str, ext_type: str, file: str) -> dict[str, Any]:
     """
     Read file into json.
 
@@ -72,7 +72,7 @@ def json_file_read(topdir: str, ext_type: str, file: str) -> Dict[str, Any]:
     Note that while zip may contain more than 1 file,
     all tls reports only use zip to compress single file.
     """
-    jsons: Dict[str, Any] = {}
+    jsons: dict[str, Any] = {}
     fpath = os.path.join(topdir, file)
     match ext_type:
         case 'json':

@@ -6,7 +6,7 @@
 # pylint: disable=c-extension-no-member
 # pylint: disable=no-name-in-module         # ELement is cython
 # mypy: disable-error-code=import-untyped
-from typing import (Any, List)
+from typing import (Any)
 import os
 import gzip
 import zipfile
@@ -15,7 +15,7 @@ from lxml import etree
 from lxml.etree import Element
 
 
-def get_xml_from_zip(fname: str) -> List[Element]:
+def get_xml_from_zip(fname: str) -> list[Element]:
     """
     returns xml object.
       input: fname = foo.xml.zip
@@ -26,7 +26,7 @@ def get_xml_from_zip(fname: str) -> List[Element]:
     only use zip to compress.
     """
     # extract content into memory
-    members: List[Any] = []
+    members: list[Any] = []
     with zipfile.ZipFile(fname, 'r') as zipobj:
         for member in zipobj.namelist():
             this_member = zipobj.read(member)
@@ -108,7 +108,7 @@ def xml_pull_item(xml: Element, what: str) -> str:
     return text
 
 
-def xml_pull_date_range(metadata: Element) -> List[datetime | None]:
+def xml_pull_date_range(metadata: Element) -> list[datetime | None]:
     """
     metadata should contain 'date_range' which in turn
     contains 'begin' and 'end' extract date

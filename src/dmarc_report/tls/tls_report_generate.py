@@ -4,7 +4,6 @@
  Print the actual report
 """
 # pylint: disable=too-many-locals
-from typing import (Tuple)
 from datetime import datetime
 
 from utils import Prnt
@@ -24,7 +23,7 @@ def _format_item(prnt: Prnt, width: int, color: str,
 
 
 def _format_succ_fail(prnt: Prnt, wid: int, succ: int, fail: int
-                      ) -> Tuple[str, str]:
+                      ) -> tuple[str, str]:
     """ format the success and failures columns """
     total = succ + fail
 

@@ -5,13 +5,13 @@
 """
 # pylint: disable=too-many-instance-attributes,too-few-public-methods
 # pylint: disable=
-from typing import (Any, Dict, List, Tuple)
+from typing import (Any)
 from dataclasses import dataclass, field
 import os
 import argparse
 
 from .config import read_config
-type Opt = Tuple[Tuple[str, str], Dict[str, Any]]
+type Opt = tuple[tuple[str, str], dict[str, Any]]
 
 
 @dataclass
@@ -27,7 +27,7 @@ class ConfData:
     inp_files_disp: str = 'none'
     inp_files_save_dir: str = ''
 
-    dom_ips: List[str] = field(default_factory=list)
+    dom_ips: list[str] = field(default_factory=list)
     dmarc_fails: bool = False
     dkim_fails: bool = False
     spf_fails: bool = False
@@ -125,7 +125,7 @@ def _available_options(conf: Conf, app: str):
     '''
     data = conf.data
     opt: Opt
-    opts: List[Opt] = []
+    opts: list[Opt] = []
 
     val_bool: bool
     val_str: str

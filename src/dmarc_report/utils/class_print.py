@@ -7,12 +7,11 @@ class_print.py
  Colors are turned off if non-tty
 """
 # pylint: disable=too-many-locals
-from typing import (Dict, Optional, Tuple)
 import sys
 from .color_pick import color_pick
 
 
-def rpt_colors(theme: str) -> Dict[str, str]:
+def rpt_colors(theme: str) -> dict[str, str]:
     """
     Colors for report
     """
@@ -98,7 +97,7 @@ class AscCol:
         return color_num
 
     def colorize(self, txt: str, fg_col: str = '', bg_col: str = '',
-                 bold: bool = False) -> Tuple[str, int]:
+                 bold: bool = False) -> tuple[str, int]:
         """
         Colorize a string using 256 color ascii escapes.
 
@@ -157,9 +156,9 @@ class Prnt:
             self.tty = True
 
     def prnt(self, txt: str,
-             fg_col: Optional[str] = '',
-             bg_col: Optional[str] = '',
-             bold: Optional[bool] = False):
+             fg_col: str | None = '',
+             bg_col: str | None = '',
+             bold: bool | None = False):
         """
         Handles the work for messages with header or footer (dashes)
 
@@ -175,7 +174,7 @@ class Prnt:
         self.fpo.flush()
 
     def colorize(self, txt, fg_col=None, bg_col=None, bold=False
-                 ) -> Tuple[str, int]:
+                 ) -> tuple[str, int]:
         """ colorize text without printing """
         clen = 0
         if self.tty and self.theme:

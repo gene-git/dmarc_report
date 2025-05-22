@@ -5,7 +5,7 @@ Read options from config files:
     1) /etc/dmarc_report/config
     2) ~/.config/dmarc_options/config
 """
-from typing import (Any, Dict)
+from typing import (Any)
 import os
 from datetime import datetime
 from pathlib import Path
@@ -14,7 +14,7 @@ from .toml import read_toml_file
 from .tools import merge_dict
 
 
-def read_config() -> Dict[str, Any]:
+def read_config() -> dict[str, Any]:
     """
     Read any config settings.
 
@@ -84,17 +84,17 @@ def _read_config_v2(which: str):
     return config
 
 
-def _read_configs_v1(fpath: str) -> Dict[str, Any]:
+def _read_configs_v1(fpath: str) -> dict[str, Any]:
     """
     Read version 1 config from fpath.
     """
-    v1_config: Dict[str, Any] = {}
+    v1_config: dict[str, Any] = {}
     if os.path.exists(fpath) and os.access(fpath, os.R_OK):
         v1_config = read_toml_file(fpath)
     return v1_config
 
 
-def _convert_v1_v2(dmarc: Dict[str, str], tls: Dict[str, str]):
+def _convert_v1_v2(dmarc: dict[str, str], tls: dict[str, str]):
     '''
     Merge version 1 dmarc and tls config into v2 config
     '''
@@ -120,7 +120,7 @@ def _convert_v1_v2(dmarc: Dict[str, str], tls: Dict[str, str]):
     return config
 
 
-def _save_config_v2(config: Dict[str, Any], fpath: str) -> bool:
+def _save_config_v2(config: dict[str, Any], fpath: str) -> bool:
     '''
     Write config to fpath
     returns True if suceeded else False

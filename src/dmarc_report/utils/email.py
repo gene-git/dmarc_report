@@ -3,7 +3,6 @@
 """
 Handles exatrction of mime attachments
 """
-from typing import (List)
 import os
 import email
 import mimetypes
@@ -11,7 +10,7 @@ from .tools import random_ascii_name
 from .tools import get_glob_file_list
 
 
-def email_file_list(topdir: str) -> List[str]:
+def email_file_list(topdir: str) -> list[str]:
     """
     Return list of files ending in .eml in topdir.
     """
@@ -19,7 +18,7 @@ def email_file_list(topdir: str) -> List[str]:
     return eml_list
 
 
-def mbox_file_list(topdir: str) -> List[str]:
+def mbox_file_list(topdir: str) -> list[str]:
     """
     Return list of files ending in .mbox in topdir.
     """
