@@ -1,38 +1,42 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.9.21,<=1.0.0"]
+build-backend = "uv_build"
 
 [project]
 name = "dmarc_report"
-dynamic = ["version"]
 description = "Generate human readable DMARC and TLS reports from standard email reports."
 authors = [{ name = "Gene C", email = "arch@sapience.com" }]
-license = "MIT"
+license = "GPL-2.0-or-later"
 readme = "README.rst"
 keywords = []
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
 ]
+requires-python = ">=3.13"
+version = "7.0.0"
 dependencies = []
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/dmarc_report"]
-include = [
-    "src/dmarc_report",
-]
 
 [project.urls]
 Documentation = "https://github.com/gene-git/dmarc_report/Docs"
 Issues = "https://github.com/gene-git/dmarc_report/issues"
 Source = "https://github.com/gene-git/dmarc_report"
 
-[tool.hatch.version]
-path = "src/dmarc_report/_version.py"
-
-[[tool.hatch.envs.all.matrix]]
-python = ["3.13", "3.14", "3.15"]
+[tool.uv.build-backend]
+module-name = 'dmarc_rpt'
+module-root = "src"
+source-include = [
+    '/dmarc_rpt',
+    '/dmarc_rpt/py.typed',
+]
+source-exclude = [
+    ".pytest_cache",
+    "__pycache__",
+    ".mypy_cache",
+]
 
 [tool.mypy]
 check_untyped_defs = true

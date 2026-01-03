@@ -1,4 +1,4 @@
-.. SPDX-License-Identifier: MIT
+.. SPDX-License-Identifier: GPL-2.0-or-later
 
 ############
 dmarc_report
@@ -21,40 +21,46 @@ DMARC reports are made using *dmarc-rpt* while TLS-RPTs use *tls-rpt*
 New / Interesting
 =================
 
-**New**
+**7.0.0**
 
- * Tidy ups: PEP-8, PEP-257, PEP-484 PEP-561
- * And Reorganize code especially for PEP-561 (type hints)
- * Has passed all tests here, so hopefully no problems.
-   But, always some risk cleaning up code - please let me know if something is not right.
+* Switch packaging from hatch to uv
+* License GPL-2.0-or-later
+* Reorg source code 
+
+**6.x**
+
+* Tidy ups: PEP-8, PEP-257, PEP-484 PEP-561
+* And Reorganize code especially for PEP-561 (type hints)
+* Has passed all tests here, so hopefully no problems.
+  But, always some risk cleaning up code - please let me know if something is not right.
 
 **Interesting**
 
- * New config file format using single config file. Older 2 fille configs will be automatically
-   converted to the new version 2 format. See `config_files_section`_ section and 
-   *configs* directory for sample config.
+* New config file format using single config file. Older 2 fille configs will be automatically
+  converted to the new version 2 format. See `config_files_section`_ section and 
+  *configs* directory for sample config.
 
- * Switch to *py-cidr* package for handling IPs instead of own versions.
+* Switch to *py-cidr* package for handling IPs instead of own versions.
 
- * Available 
-     - github <https://github.com/gene-git/py-cidr>
-     - AUR <https://aur.archlinux.org/packages/py-cidr>
+* Available 
+  - github <https://github.com/gene-git/py-cidr>
+  - AUR <https://aur.archlinux.org/packages/py-cidr>
 
- * Now use python 3's ipaddress module instead of netaddr. 
-   Its faster and we no longer require 3rd party library
+* Now use python 3's ipaddress module instead of netaddr. 
+  Its faster and we no longer require 3rd party library
 
- * Require python version 3.11 or later
+* Require python version 3.11 or later
 
- * Switch to lxml for better handling of xml namespaces found in some reports
+* Switch to lxml for better handling of xml namespaces found in some reports
 
- * Add support for handling mbox file with multiple emails containing reports.
-   While some clients save multiple emails in separate *.eml* files, others, like
-   evolution, save them all in a single *.mbox* file. Add support for this.
+* Add support for handling mbox file with multiple emails containing reports.
+  While some clients save multiple emails in separate *.eml* files, others, like
+  evolution, save them all in a single *.mbox* file. Add support for this.
 
- * tls-rpt  
+* tls-rpt  
 
-   New tool to generate report for TLS reports for MTA-STS or DANE. See README-tls.md
-   This report has been updated - see Changelog for details.
+  New tool to generate report for TLS reports for MTA-STS or DANE. See README-tls.md
+  This report has been updated - see Changelog for details.
 
 
 ###############
@@ -68,13 +74,13 @@ Applications
 Save all DMARC or TLS-RPT reports into a directory. These are typically compressed xml/json files 
 sent as email attachments. The saved reports can be :
 
- * individual email files each with a compressed xml/json attachment. Thunderbird saves them this way.
-   These are saved with a *.eml* extension.
+* individual email files each with a compressed xml/json attachment. Thunderbird saves them this way.
+  These are saved with a *.eml* extension.
 
- * one single file with several emails, each with the attachment. Evolution saves this way.
-   These are saved with *.mbox* extension.
+* one single file with several emails, each with the attachment. Evolution saves this way.
+  These are saved with *.mbox* extension.
 
- * Individual compressed, or uncmompressed, xml reports created by saving the attachments from each email.
+* Individual compressed, or uncmompressed, xml reports created by saving the attachments from each email.
  
 *dmarc-rpt* and *tls-rpt* will extract the actual **xml** (*dmarc*) or **json** (tls-rpt) data 
 from all of the above.
@@ -206,68 +212,68 @@ Common Options
 
 These apply to both dmarc-rpt and tls-rpt
 
- * (*-h, --help*)  
-   Help for command line options.
+* (*-h, --help*)  
+  Help for command line options.
 
- * (*-d, --dir*) [*dir = /path/xxx/*]  
+* (*-d, --dir*) [*dir = /path/xxx/*]  
 
-   Allows specifying the directory with the dmarc report files to be processed.  
-   The directory holding the report files (.eml, .xml, .gz or .zip)
-   By default, dir is the current directory.
+  Allows specifying the directory with the dmarc report files to be processed.  
+  The directory holding the report files (.eml, .xml, .gz or .zip)
+  By default, dir is the current directory.
 
- * (*-k, --keep*)
+* (*-k, --keep*)
 
-   Prevent the *.eml* being removed after the attached xml reports are extracted.
+  Prevent the *.eml* being removed after the attached xml reports are extracted.
 
- * (*-thm, --theme*)
+* (*-thm, --theme*)
 
-   Report is now in color.
-   Default theme is 'dark'. Theme can be 'light' 'dark' or 'none', which turns off color report.
+  Report is now in color.
+  Default theme is 'dark'. Theme can be 'light' 'dark' or 'none', which turns off color report.
 
- * (*-v, --verb*)
+* (*-v, --verb*)
 
-   More verbose output
+  More verbose output
 
- * (*-ifd, --inp_file_disp*)
+* (*-ifd, --inp_file_disp*)
 
-   Input file disposition options one of : none,save,delete
-   If set to save then all input files (xml, compressed xml and any kept eml files) are moved
-   to directory specified by *inp_files_save_dir*.  
+  Input file disposition options one of : none,save,delete
+  If set to save then all input files (xml, compressed xml and any kept eml files) are moved
+  to directory specified by *inp_files_save_dir*.  
 
- * (*-ifsd, --inp_files_save_dir*)
+* (*-ifsd, --inp_files_save_dir*)
 
-   When *inp_file_disp* is set, then input files are moved to this directory after report
-   is generated.  Files are saved by year-month under the save directory
+  When *inp_file_disp* is set, then input files are moved to this directory after report
+  is generated.  Files are saved by year-month under the save directory
 
 dmarc-rpt Specific Options
 --------------------------
 
 These are only applicable for dmarc-rpt.
 
- * (*-ips, --dom_ips*)  [*dom_ips = [ip, cidr, ... ]*]  
+* (*-ips, --dom_ips*)  [*dom_ips = [ip, cidr, ... ]*]  
 
-   Set the ips for your own domain(s), which will then be colored to make them easy to spot.
-   Command line option is a comma separated list of IPs. 
-   e.g.::
+  Set the ips for your own domain(s), which will then be colored to make them easy to spot.
+  Command line option is a comma separated list of IPs. 
+  e.g.::
 
-        --dom_ips "1.1.1.0/24,2.2.2.16/29"
+       --dom_ips "1.1.1.0/24,2.2.2.16/29"
 
    When used in config file format as array of IP stringsC.
    e.g.::
 
         dom_ips = ['1.1.1.0/24', '2.2.2.16/29']
 
- * (*fdm, --dmarc_fails*)
+* (*fdm, --dmarc_fails*)
 
-    Only include dmarc failures in report
+  Only include dmarc failures in report
 
- * (*fdk, --dkim_fails*)
+* (*fdk, --dkim_fails*)
 
-    Only include dkim failures in report
+  Only include dkim failures in report
 
- * (*fsp, --spf_fails*)
+* (*fsp, --spf_fails*)
 
-    Only include spf failures in report
+  Only include spf failures in report
 
 Saving Email Reports From Email Client
 ======================================
@@ -307,8 +313,9 @@ Installation
 ============
 
 Available on
- * `Github`_
- * `Archlinux AUR`_
+
+* `Github`_
+* `Archlinux AUR`_
 
 On Arch you can build using the PKGBUILD provided in packaging directory or from the AUR package.
 To build manually, clone the repo and 
@@ -325,24 +332,22 @@ When running as non-root then set root_dest a user writable directory
 Philosophy
 ==========
 
-We follow the *live at head commit* philosophy. This means we recommend using the
-latest commit on git master branch. We also provide git tags.
-
-This approach is also taken by Google [1]_ [2]_.
+We follow the *live at head commit* philosophy as recommended by
+Google's Abseil team [1]_.  This means we recommend using the
+latest commit on git master branch. 
 
 
 License
 =======
 
-Created by Gene C. and licensed under the terms of the MIT license.
+Created by Gene C. and licensed under the terms of the GPL-2.0-or-later license.
 
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-2.0-or-later
  * Copyright (c) 2023, Gene C 
 
 
 .. _Github: https://github.com/gene-git/dmarc_report
 .. _Archlinux AUR: https://aur.archlinux.org/packages/dmarc_report
 
-.. [1] https://github.com/google/googletest  
-.. [2] https://abseil.io/about/philosophy#upgrade-support
+.. [1] https://abseil.io/about/philosophy#upgrade-support
 
