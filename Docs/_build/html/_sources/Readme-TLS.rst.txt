@@ -1,4 +1,4 @@
-.. SPDX-License-Identifier: MIT
+.. SPDX-License-Identifier: GPL-2.0-or-later
 
 ############
 SMTP tls-rpt
@@ -204,9 +204,9 @@ Each email gets saved with a *.eml* extension.
 License
 -------
 
-Created by Gene C. It is licensed under the terms of the MIT license.
+Created by Gene C. It is licensed under the terms of the GPL-2.0-or-later license.
 
- * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-2.0-or-later
  * Copyright (c) 2023, Gene C 
 
 .. [1] TLS Report [RFRC 8460] https://www.rfc-editor.org/rfc/rfc8460.txt

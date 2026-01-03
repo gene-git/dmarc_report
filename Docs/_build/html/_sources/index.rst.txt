@@ -9,17 +9,5 @@ dmarc_report documentation
 .. toctree::
    README
    Readme-TLS
-   Changelog
-   License
-   Contributing
-   Code-of-conduct
-   :maxdepth: 2
-   :caption: Contents:
+   License/License
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
