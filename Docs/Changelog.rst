@@ -6,12 +6,23 @@ Tags
 
 .. code-block:: text
 
-	0.6.0 (2023-01-01) -> 7.0.0 (2026-01-03)
-	140 commits.
+	0.6.0 (2023-01-01) -> 7.0.1 (2026-01-06)
+	142 commits.
 
 Commits
 =======
 
+
+* 2026-01-06  : **7.0.1**
+
+.. code-block:: text
+
+              - PKGBUILD small change
+ 2026-01-03   ⋯
+
+.. code-block:: text
+
+              - update Docs and Changelogs
 
 * 2026-01-03  : **7.0.0**
 
