@@ -5,8 +5,8 @@
 
 mod=dmarc_rpt
 
-PYTHONPATH=. pylint $mod/*.py $mod/*/*.py
-PYTHONPATH=. pycodestyle --max-line-length=110 $mod/*.py $mod/*/*.py
+PYTHONPATH=. pylint src/$mod/*.py src/$mod/*/*.py
+PYTHONPATH=. pycodestyle --max-line-length=110 src/$mod/*.py src/$mod/*/*.py
 
-PYTHONPATH=. mypy --check-untyped-defs --follow-untyped-imports $mod
+PYTHONPATH=. mypy --check-untyped-defs --follow-untyped-imports src/$mod
 

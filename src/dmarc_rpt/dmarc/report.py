@@ -6,7 +6,7 @@ DMARC report generator.
 # pylint: disable=R0913,R0914,C0301
 # pylint: disable=invalid-name
 
-from py_cidr import Cidr
+from py_cidr import PyCidr
 
 from dmarc_rpt.utils import drange_summary
 from dmarc_rpt.utils import Prnt
@@ -129,7 +129,7 @@ def print_ip_row(rpt: DmarcRpt, name: str, iprpt: IPRpt, cols: ColWidth):
     # IP column
     #
     wid = cols.wip
-    if Cidr.is_valid_cidr(name) and rpt.ip_in_dom_ips(name):
+    if PyCidr.is_valid_cidr(name) and rpt.ip_in_dom_ips(name):
         (name, cdel) = prnt.colorize(name, fg_col='dom')
         wid = cols.wip + cdel
     col_ip = f'{name:>{wid}s} {cnt:{cols.wvol},d}'
@@ -233,12 +233,13 @@ def print_domain_report(rpt: DmarcRpt, org: OrgRpt, dom: DomRpt,
         iplist.append(ip)
 
     try:
-        iplist_sorted = Cidr.sort_ips(iplist)
+        iplist_sorted = PyCidr.sort(iplist)
     except TypeError:
         # use unsorted
         iplist_sorted = iplist
 
-    for ip in iplist_sorted:
+    for cidr in iplist_sorted:
+        (ip, _pfx) = PyCidr.cidr_parts(cidr)
         iprpt = dom.ip_rpt[ip]
         print_ip_row(rpt, ip, iprpt, cols)
 

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1. dmarc_report &#8212; dmarc-report 7.1.1
+ documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=3a48702f"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2. SMTP tls-rpt" href="Readme-TLS.html" />
+    <link rel="prev" title="dmarc_report documentation" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="dmarc-report">
+<h1><span class="section-number">1. </span>dmarc_report<a class="headerlink" href="#dmarc-report" title="Link to this heading">¶</a></h1>
+<section id="overview">
+<h2><span class="section-number">1.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>Generate a human readable report from 1 or more standard DMARC and TLS-RPT xml email reports .
+DMARC reports are made using <em>dmarc-rpt</em> while TLS-RPTs use <em>tls-rpt</em></p>
+<p><strong>Note</strong>:</p>
+<blockquote>
+<div><p>All git tags are signed by &lt;<a class="reference external" href="mailto:arch&#37;&#52;&#48;sapience&#46;com">arch<span>&#64;</span>sapience<span>&#46;</span>com</a>&gt;.
+Public key is available via WKD or download from <a class="reference external" href="https://www.sapience.com/tech">sapience website</a>.
+After key is on keyring use the PKGBUILD source line ending with <em>?signed</em>
+or manually verify using <em>git tag -v &lt;tag-name&gt;</em></p>
+</div></blockquote>
+</section>
+<section id="recent-changes">
+<h2><span class="section-number">1.2. </span>Recent Changes<a class="headerlink" href="#recent-changes" title="Link to this heading">¶</a></h2>
+<p><strong>7.1.1</strong></p>
+<ul class="simple">
+<li><p>Package management is now meson/meson-python</p></li>
+</ul>
+<p><strong>7.1.0</strong></p>
+<ul class="simple">
+<li><p>Network tools now use PyCidr (new, faster than Cidr)</p></li>
+</ul>
+</section>
+<section id="getting-started">
+<h2><span class="section-number">1.3. </span>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading">¶</a></h2>
+<section id="applications">
+<h3><span class="section-number">1.3.1. </span>Applications<a class="headerlink" href="#applications" title="Link to this heading">¶</a></h3>
+<p>Save all DMARC or TLS-RPT reports into a directory. These are typically compressed xml/json files
+sent as email attachments. The saved reports can be :</p>
+<ul class="simple">
+<li><p>individual email files each with a compressed xml/json attachment. Thunderbird saves them this way.
+These are saved with a <em>.eml</em> extension.</p></li>
+<li><p>one single file with several emails, each with the attachment. Evolution saves this way.
+These are saved with <em>.mbox</em> extension.</p></li>
+<li><p>Individual compressed, or uncmompressed, xml reports created by saving the attachments from each email.</p></li>
+</ul>
+<p><em>dmarc-rpt</em> and <em>tls-rpt</em> will extract the actual <strong>xml</strong> (<em>dmarc</em>) or <strong>json</strong> (tls-rpt) data
+from all of the above.</p>
+</section>
+<section id="quick-start">
+<h3><span class="section-number">1.3.2. </span>Quick start<a class="headerlink" href="#quick-start" title="Link to this heading">¶</a></h3>
+<p>Save all emails with DMARC or TLS-RPT attachments to a directory, change into that directory and run
+either dmarc-rpt or tls-rpt as appropriate.</p>
+<p>It is generally more convenient to use a config file explained below.</p>
+</section>
+<section id="config-files">
+<h3><span class="section-number">1.3.3. </span>Config Files<a class="headerlink" href="#config-files" title="Link to this heading">¶</a></h3>
+<p>Config files are read, in order, from directories</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">dmarc_report</span><span class="o">/</span>
+<span class="o">~/.</span><span class="n">config</span><span class="o">/</span><span class="n">dmarc_report</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>with the settings in latter <em>~/.config/…</em> overriding any found in <em>/etc/…</em>.</p>
+<p>There are 2 config file formats supported. The older version 1 format uses 2 separate files:</p>
+<ul class="simple">
+<li><p><em>config</em> - for dmarc-rpt</p></li>
+<li><p><em>tls-config</em> - for tls-rpt</p></li>
+</ul>
+<p>New version 2 format uses a single file, <em>config.v2</em>. Version 2 config will be used if its found.
+If only version 1 configs are found they will be automatically converted to version 2, which
+will then be used going forward.</p>
+<p>All config files use standard TOML format. Config files use 3 sections. A global section
+and one each for dmarc and tls-rpt.</p>
+<p>Available config values are set using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">command_line_long_opt_name</span> <span class="o">=</span> <span class="n">xxx</span>
+</pre></div>
+</div>
+<p>e.g. to set data report dir use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">dir</span> <span class="o">=</span> <span class="s2">&quot;/foo/goo/dmarc_reports&quot;</span>
+</pre></div>
+</div>
+<p>A sample config is available in the <em>conf.d</em> directory. A typical config might be of the form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># comment</span>
+<span class="p">[</span><span class="k">global</span><span class="p">]</span>
+    <span class="n">theme</span> <span class="o">=</span> <span class="s1">&#39;dark&#39;</span>
+    <span class="n">inp_files_disp</span> <span class="o">=</span> <span class="s2">&quot;save&quot;</span>
+    <span class="n">inp_files_save_dir</span> <span class="o">=</span> <span class="s2">&quot;../saved&quot;</span>
+
+<span class="p">[</span><span class="n">dmarc</span><span class="p">]</span>
+    <span class="n">dom_ips</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1.1.1.1&#39;</span><span class="p">,</span> <span class="s1">&#39;1.2.2.0/24&#39;</span><span class="p">]</span>
+    <span class="nb">dir</span> <span class="o">=</span> <span class="s2">&quot;~/mail-reports/dmarc/xml&quot;</span>
+
+<span class="p">[</span><span class="n">tls</span><span class="p">]</span>
+    <span class="nb">dir</span> <span class="o">=</span> <span class="s2">&quot;~/mail-reports/tls/xml&quot;</span>
+</pre></div>
+</div>
+<p>Variables set in <em>[dmarc]</em> or <em>[tls]</em> sections override any correspodning global ones.</p>
+<p>This sample config says to read all the saved dmarc email reports from <em>~/mail-reports/dmarc/xml</em> and
+the tls reports from <em>~/mail-reports/tls/xml</em>.</p>
+<p>And to save the raw files after processing report by moving them to <em>~/mail-reports/dmarc/saved</em>
+or <em>~/mail-reports/tls/saved</em>.</p>
+<p>For dmarc it says that ips listed in <em>dom_ips</em> are for your own domains.</p>
+<p>Command line options override the corresponding config setting.
+See <em>Options</em> section for more detail.</p>
+</section>
+<section id="dmarc-rpt-usage">
+<h3><span class="section-number">1.3.4. </span>dmarc-rpt Usage<a class="headerlink" href="#dmarc-rpt-usage" title="Link to this heading">¶</a></h3>
+<p>Change to the directory containing the one or more dmarc report files and simply run</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dmarc-rpt
+</pre></div>
+</div>
+</div></blockquote>
+<p>When using the <em>–dir</em> option (or config setting <em>dir</em>) it is not necessary
+to change directories before running the report.</p>
+<p>Any email files, those ending with <em>.eml</em> will be processed first. These are assumed to
+contain the report as a mime attachment. The attachment is extracted from any such email
+files. Some mail clients save multiple emails as a single mbox file. Each email in the mbox
+file will be similarly processed and have the attached report extracted.</p>
+<p>Then all remaining files are read and processed. The tool processes all xml
+and gzip/zip compressed xml dmarc report files and generates a human readable report.</p>
+<p>We follow Postel’s law and try to be liberal in what we accept as input. To that end
+we accept the dmarc XML report file, a gzip/zip compressed version of same or a saved email
+file text file with the report itself being a mime attachment.</p>
+<p>Any file with extension <em>.eml</em> is treated as an email file.</p>
+<p>To avoid line wrapping, the report should be viewed on wide enough terminal; roughly 112 or chars or more.</p>
+<p>For convenience after report is generated, the input files can be automatically moved to a save
+direcory, left where they are or removed. A typical sequents of events is to save
+the email reports, run dmarc-rpt.  By auto moving (or removing) the input files, makes it simpler
+when doing the next batch of dmarc reports.</p>
+<p>Then save all the raw .eml files into ~/dmarc/reports and run before running the report</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dmarc-rpt
+</pre></div>
+</div>
+<p>All attachments from dmarc email reports would be saved into “~/dmarc/saved/2023-01”
+in this example.</p>
+</section>
+<section id="tls-rpt-usage">
+<h3><span class="section-number">1.3.5. </span>tls-rpt Usage<a class="headerlink" href="#tls-rpt-usage" title="Link to this heading">¶</a></h3>
+<p>tls-rpt works in a similar way to dmarc-rpt, except it operates on TLS-RPT (compressed) xml inputs.</p>
+<p>Command line options are shown first in parens below, followed by
+the corresponding config version in square brackets, if available.</p>
+</section>
+<section id="common-options">
+<h3><span class="section-number">1.3.6. </span>Common Options<a class="headerlink" href="#common-options" title="Link to this heading">¶</a></h3>
+<p>These apply to both dmarc-rpt and tls-rpt</p>
+<ul>
+<li><p>(<em>-h, –help</em>)
+Help for command line options.</p></li>
+<li><p>(<em>-d, –dir</em>) [<em>dir = /path/xxx/</em>]</p>
+<p>Allows specifying the directory with the dmarc report files to be processed.
+The directory holding the report files (.eml, .xml, .gz or .zip)
+By default, dir is the current directory.</p>
+</li>
+<li><p>(<em>-k, –keep</em>)</p>
+<p>Prevent the <em>.eml</em> being removed after the attached xml reports are extracted.</p>
+</li>
+<li><p>(<em>-thm, –theme</em>)</p>
+<p>Report is now in color.
+Default theme is ‘dark’. Theme can be ‘light’ ‘dark’ or ‘none’, which turns off color report.</p>
+</li>
+<li><p>(<em>-v, –verb</em>)</p>
+<p>More verbose output</p>
+</li>
+<li><p>(<em>-ifd, –inp_file_disp</em>)</p>
+<p>Input file disposition options one of : none,save,delete
+If set to save then all input files (xml, compressed xml and any kept eml files) are moved
+to directory specified by <em>inp_files_save_dir</em>.</p>
+</li>
+<li><p>(<em>-ifsd, –inp_files_save_dir</em>)</p>
+<p>When <em>inp_file_disp</em> is set, then input files are moved to this directory after report
+is generated.  Files are saved by year-month under the save directory</p>
+</li>
+</ul>
+</section>
+<section id="dmarc-rpt-specific-options">
+<h3><span class="section-number">1.3.7. </span>dmarc-rpt Specific Options<a class="headerlink" href="#dmarc-rpt-specific-options" title="Link to this heading">¶</a></h3>
+<p>These are only applicable for dmarc-rpt.</p>
+<ul>
+<li><p>(<em>-ips, –dom_ips</em>)  [<em>dom_ips = [ip, cidr, … ]</em>]</p>
+<p>Set the ips for your own domain(s), which will then be colored to make them easy to spot.
+Command line option is a comma separated list of IPs.
+e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="o">--</span><span class="n">dom_ips</span> <span class="s2">&quot;1.1.1.0/24,2.2.2.16/29&quot;</span>
+
+<span class="n">When</span> <span class="n">used</span> <span class="ow">in</span> <span class="n">config</span> <span class="n">file</span> <span class="nb">format</span> <span class="k">as</span> <span class="n">array</span> <span class="n">of</span> <span class="n">IP</span> <span class="n">stringsC</span><span class="o">.</span>
+<span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="p">::</span>
+
+     <span class="n">dom_ips</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1.1.1.0/24&#39;</span><span class="p">,</span> <span class="s1">&#39;2.2.2.16/29&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>(<em>fdm, –dmarc_fails</em>)</p>
+<p>Only include dmarc failures in report</p>
+</li>
+<li><p>(<em>fdk, –dkim_fails</em>)</p>
+<p>Only include dkim failures in report</p>
+</li>
+<li><p>(<em>fsp, –spf_fails</em>)</p>
+<p>Only include spf failures in report</p>
+</li>
+</ul>
+</section>
+<section id="saving-email-reports-from-email-client">
+<h3><span class="section-number">1.3.8. </span>Saving Email Reports From Email Client<a class="headerlink" href="#saving-email-reports-from-email-client" title="Link to this heading">¶</a></h3>
+<p>In most mail clients, such as thunderbird,  one can select multiple email reports and
+then use <em>File -&gt; Save As</em> to save the email files into a directory of your choosing.
+Each email gets saved with a <em>.eml</em> extension.</p>
+</section>
+</section>
+<section id="appendix">
+<h2><span class="section-number">1.4. </span>Appendix<a class="headerlink" href="#appendix" title="Link to this heading">¶</a></h2>
+<section id="dependencies">
+<h3><span class="section-number">1.4.1. </span>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Run Time :
+* python (3.14 or later)
+* python-dateutil
+* python-lxml
+* py-cidr (2.7.0 or later)
+* tomli-w (for writing version 2 configs converted from version 1)</p></li>
+<li><p>Building Package:
+* git
+* meson
+* meson-python
+- rsync</p></li>
+</ul>
+</section>
+<section id="installation">
+<h3><span class="section-number">1.4.2. </span>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h3>
+<p>Available on</p>
+<ul class="simple">
+<li><p>On <a class="reference external" href="https://github.com/gene-git/dmarc_report">Github</a></p></li>
+<li><p>On <a class="reference external" href="https://aur.archlinux.org/packages/dmarc_report">Archlinux AUR</a></p></li>
+</ul>
+<p>On Arch you can build using the PKGBUILD provided in packaging directory or from the AUR package.
+To build manually, clone the repo and then:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">do</span><span class="o">-</span><span class="n">build</span>
+<span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">do</span><span class="o">-</span><span class="n">install</span> <span class="o">&lt;</span><span class="n">destination</span><span class="o">-</span><span class="nb">dir</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="philosophy">
+<h3><span class="section-number">1.4.3. </span>Philosophy<a class="headerlink" href="#philosophy" title="Link to this heading">¶</a></h3>
+<p>We follow the <em>live at head commit</em> philosophy as recommended by
+Google’s Abseil team <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.  This means we recommend using the
+latest commit on git master branch.</p>
+</section>
+<section id="license">
+<h3><span class="section-number">1.4.4. </span>License<a class="headerlink" href="#license" title="Link to this heading">¶</a></h3>
+<p>Created by Gene C. and licensed under the terms of the GPL-2.0-or-later license.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>SPDX-License-Identifier: GPL-2.0-or-later</p></li>
+<li><p>Copyright (c) 2023, Gene C</p></li>
+</ul>
+</div></blockquote>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://abseil.io/about/philosophy#upgrade-support">https://abseil.io/about/philosophy#upgrade-support</a></p>
+</aside>
+</aside>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">dmarc-report</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">DMARC and TLS Report Manual</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. dmarc_report</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">1.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#recent-changes">1.2. Recent Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">1.3. Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#appendix">1.4. Appendix</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Readme-TLS.html">2. SMTP tls-rpt</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">dmarc_report documentation</a></li>
+      <li>Next: <a href="Readme-TLS.html" title="next chapter"><span class="section-number">2. </span>SMTP tls-rpt</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2023-presennt, Gene C.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/README.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

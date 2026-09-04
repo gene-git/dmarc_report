@@ -8,7 +8,7 @@ circular imports.
 """
 # pylint: disable=invalid-name,too-many-instance-attributes
 # pylint: disable=too-few-public-methods
-from py_cidr import (Cidr)
+from py_cidr import PyCidr
 
 from dmarc_rpt.utils import Prnt
 from dmarc_rpt.utils import file_ext_list
@@ -165,7 +165,7 @@ class DmarcRpt:
         self.selectors = []         # list of selectors encountered
         self.sel_map = SelMap()
 
-        self.dom_nets = Cidr.cidrs_to_nets(self.opts.data.dom_ips)
+        self.dom_cidrs = self.opts.data.dom_ips
         self.prnt = Prnt(self.opts.data.theme)
 
     def get_num_orgs(self):
@@ -187,7 +187,7 @@ class DmarcRpt:
 
     def ip_in_dom_ips(self, ip_str):
         """ check if ip is one of dom_ips """
-        return Cidr.cidr_is_subnet(ip_str, self.dom_nets)
+        return PyCidr.is_subnet(ip_str, self.dom_cidrs)
 
     def add_drange(self, drange):
         """
