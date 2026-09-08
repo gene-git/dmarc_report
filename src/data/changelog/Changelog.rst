@@ -6,14 +6,22 @@ Tags
 
 .. code-block:: text
 
-	0.6.0 (2023-01-01) -> 7.1.1 (2026-09-04)
-	144 commits.
+	0.6.0 (2023-01-01) -> 7.1.2 (2026-09-08)
+	145 commits.
 
 Commits
 =======
 
 
-* 2026-09-04  : **7.1.1**
+* 2026-09-08  : **7.1.2**
+
+.. code-block:: text
+
+              - **7.1.2**
+            
+                * Add link to manual at top level.
+
+* 2026-09-04  : **7.1.1, origin/master**
 
 .. code-block:: text
 

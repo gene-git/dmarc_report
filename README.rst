@@ -20,13 +20,13 @@ DMARC reports are made using *dmarc-rpt* while TLS-RPTs use *tls-rpt*
 Recent Changes
 ==============
 
+**7.1.2**
+
+* Add link to manual at top level.
+
 **7.1.1**
 
 * Package management is now meson/meson-python 
-
-**7.1.0**
-
-* Network tools now use PyCidr (new, faster than Cidr)
 
 Getting Started
 ===============
