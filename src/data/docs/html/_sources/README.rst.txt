@@ -12,27 +12,14 @@ DMARC reports are made using *dmarc-rpt* while TLS-RPTs use *tls-rpt*
 
 **Note**: 
 
-   All git tags are signed by <arch@sapience.com>.
-   Public key is available via WKD or download from `sapience website <https://www.sapience.com/tech>`_.
-   After key is on keyring use the PKGBUILD source line ending with *?signed*
-   or manually verify using *git tag -v <tag-name>*
+All git tags are signed by <arch@sapience.com>.
+Public key is available via WKD or download from `sapience website <https://www.sapience.com/tech>`_.
+After key is on keyring use the PKGBUILD source line ending with *?signed*
+or manually verify using *git tag -v <tag-name>*
 
-Recent Changes
-==============
-
-**7.1.1**
-
-* Package management is now meson/meson-python 
-
-**7.1.0**
-
-* Network tools now use PyCidr (new, faster than Cidr)
 
 Getting Started
 ===============
-
-Applications
-------------
 
 Save all DMARC or TLS-RPT reports into a directory. These are typically compressed xml/json files 
 sent as email attachments. The saved reports can be :
@@ -60,47 +47,48 @@ It is generally more convenient to use a config file explained below.
 Config Files
 ------------
 
-Config files are read, in order, from directories ::
+Config files are read, in order, from directories::
 
-        /etc/dmarc_report/
-        ~/.config/dmarc_report/
+    /etc/dmarc_report/
+    ~/.config/dmarc_report/
 
-with the settings in latter *~/.config/...* overriding any found in */etc/...*.
+with the settings in *~/.config/...* overriding any found in */etc/...*.
+Command line options override config settings.
 
-There are 2 config file formats supported. The older version 1 format uses 2 separate files:
+There are two config file formats supported. The older version 1 format uses 2 separate files:
 
 * *config* - for dmarc-rpt
 * *tls-config* - for tls-rpt
 
 New version 2 format uses a single file, *config.v2*. Version 2 config will be used if its found.
 If only version 1 configs are found they will be automatically converted to version 2, which 
-will then be used going forward.
+are used thereafter.
 
 All config files use standard TOML format. Config files use 3 sections. A global section
 and one each for dmarc and tls-rpt.
 
 Available config values are set using::
 
-        command_line_long_opt_name = xxx
+    command_line_long_opt_name = xxx
 
 e.g. to set data report dir use::
 
-        dir = "/foo/goo/dmarc_reports"
+    dir = "/foo/goo/dmarc_reports"
 
 A sample config is available in the *conf.d* directory. A typical config might be of the form::
 
-        # comment
-        [global]
-            theme = 'dark'
-            inp_files_disp = "save"
-            inp_files_save_dir = "../saved"
+    # comment
+    [global]
+        theme = 'dark'
+        inp_files_disp = "save"
+        inp_files_save_dir = "../saved"
 
-        [dmarc]
-            dom_ips = ['1.1.1.1', '1.2.2.0/24']
-            dir = "~/mail-reports/dmarc/xml"
+    [dmarc]
+        dom_ips = ['1.1.1.1', '1.2.2.0/24']
+        dir = "~/mail-reports/dmarc/xml"
 
-        [tls]
-            dir = "~/mail-reports/tls/xml"
+    [tls]
+        dir = "~/mail-reports/tls/xml"
 
 Variables set in *[dmarc]* or *[tls]* sections override any correspodning global ones.
 
@@ -115,8 +103,8 @@ For dmarc it says that ips listed in *dom_ips* are for your own domains.
 Command line options override the corresponding config setting.
 See *Options* section for more detail.
 
-dmarc-rpt Usage
----------------
+dmarc-rpt
+---------
 
 Change to the directory containing the one or more dmarc report files and simply run
 
@@ -148,90 +136,49 @@ direcory, left where they are or removed. A typical sequents of events is to sav
 the email reports, run dmarc-rpt.  By auto moving (or removing) the input files, makes it simpler
 when doing the next batch of dmarc reports.
 
-Then save all the raw .eml files into ~/dmarc/reports and run before running the report
-
-.. code-block:: bash
-
-        dmarc-rpt
+Then save all the raw .eml files into ~/dmarc/reports and run the report.
 
 All attachments from dmarc email reports would be saved into "~/dmarc/saved/2023-01"
 in this example. 
 
-tls-rpt Usage
--------------
+tls-rpt
+-------
 
 tls-rpt works in a similar way to dmarc-rpt, except it operates on TLS-RPT (compressed) xml inputs.
 
-Command line options are shown first in parens below, followed by 
-the corresponding config version in square brackets, if available.
+Command line options:
 
 Common Options
 ---------------
 
-These apply to both dmarc-rpt and tls-rpt
+These apply to both dmarc-rpt and tls-rpt::
 
-* (*-h, --help*)  
-  Help for command line options.
+    -h, --help                          show this help message and exit
+    -d, --dir DIR                       Directory containing dmarc report files (xxx)
+    -ifd, --inp_files_disp WHAT         none, delete, save: disposition of input files. See -ifsd (save)
+    -ifsd, --inp_files_save_dir DIR     When -ifd is save, input files moved here afer report (../saved)
+    -k, --keep                          Keep .eml files extracted from attachment (False)
+    -thm, --theme THEME                 Set color theme: dark, light, none (dark)
+    -v, --verb                          Be more verbose
 
-* (*-d, --dir*) [*dir = /path/xxx/*]  
+dmarc-rpt Additional Options
+-----------------------------
 
-  Allows specifying the directory with the dmarc report files to be processed.  
-  The directory holding the report files (.eml, .xml, .gz or .zip)
-  By default, dir is the current directory.
+In addition to the common options::
 
-* (*-k, --keep*)
+    -ips, --dom_ips NUM                 Comma separated list of IPs / CIDRs for your own domains
+    -fdm, --dmarc_fails                 DMARC Report - limit to failures
+    -fdk, --dkim_fails                  DKIM Report - limit to failures
+    -fsp, --spf_fails                   SPF Report - limit to failures
 
-  Prevent the *.eml* being removed after the attached xml reports are extracted.
+For example to have these IP addresses marked in the reports::
 
-* (*-thm, --theme*)
+    --dom-ips "1.1.1.0/24,2.2.2.16/29"
 
-  Report is now in color.
-  Default theme is 'dark'. Theme can be 'light' 'dark' or 'none', which turns off color report.
+Or when used in the config file::
 
-* (*-v, --verb*)
+    dom_ips = ['1.1.1.0/24', '2.2.2.16/29']
 
-  More verbose output
-
-* (*-ifd, --inp_file_disp*)
-
-  Input file disposition options one of : none,save,delete
-  If set to save then all input files (xml, compressed xml and any kept eml files) are moved
-  to directory specified by *inp_files_save_dir*.  
-
-* (*-ifsd, --inp_files_save_dir*)
-
-  When *inp_file_disp* is set, then input files are moved to this directory after report
-  is generated.  Files are saved by year-month under the save directory
-
-dmarc-rpt Specific Options
---------------------------
-
-These are only applicable for dmarc-rpt.
-
-* (*-ips, --dom_ips*)  [*dom_ips = [ip, cidr, ... ]*]  
-
-  Set the ips for your own domain(s), which will then be colored to make them easy to spot.
-  Command line option is a comma separated list of IPs. 
-  e.g.::
-
-       --dom_ips "1.1.1.0/24,2.2.2.16/29"
-
-   When used in config file format as array of IP stringsC.
-   e.g.::
-
-        dom_ips = ['1.1.1.0/24', '2.2.2.16/29']
-
-* (*fdm, --dmarc_fails*)
-
-  Only include dmarc failures in report
-
-* (*fdk, --dkim_fails*)
-
-  Only include dkim failures in report
-
-* (*fsp, --spf_fails*)
-
-  Only include spf failures in report
 
 Saving Email Reports From Email Client
 --------------------------------------
@@ -239,58 +186,4 @@ Saving Email Reports From Email Client
 In most mail clients, such as thunderbird,  one can select multiple email reports and 
 then use *File -> Save As* to save the email files into a directory of your choosing.
 Each email gets saved with a *.eml* extension.
-
-Appendix
-========
-
-Dependencies
-------------
-
-* Run Time :
-  * python (3.14 or later)
-  * python-dateutil
-  * python-lxml
-  * py-cidr (2.7.0 or later)
-  * tomli-w (for writing version 2 configs converted from version 1)
-
-* Building Package:
-  * git
-  * meson
-  * meson-python
-  - rsync
-
-Installation
-------------
-
-Available on
-
-
-* On `Github <https://github.com/gene-git/dmarc_report>`_
-* On `Archlinux AUR <https://aur.archlinux.org/packages/dmarc_report>`_
-
-On Arch you can build using the PKGBUILD provided in packaging directory or from the AUR package.
-To build manually, clone the repo and then::
-
-    ./scripts/do-build
-    ./scripts/do-install <destination-dir>
-
-
-Philosophy
-----------
-
-We follow the *live at head commit* philosophy as recommended by
-Google's Abseil team [1]_.  This means we recommend using the
-latest commit on git master branch. 
-
-
-License
--------
-
-Created by Gene C. and licensed under the terms of the GPL-2.0-or-later license.
-
- * SPDX-License-Identifier: GPL-2.0-or-later
- * Copyright (c) 2023, Gene C 
-
-
-.. [1] https://abseil.io/about/philosophy#upgrade-support
 

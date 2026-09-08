@@ -3,10 +3,10 @@
 # Run mypy checker
 # run from "src" dir
 
-mod=dmarc_rpt
+mod="src/dmarc_rpt"
+export PYTHONPATH=$(/usr/bin/realpath ./src)
 
-PYTHONPATH=. pylint src/$mod/*.py src/$mod/*/*.py
-PYTHONPATH=. pycodestyle --max-line-length=110 src/$mod/*.py src/$mod/*/*.py
-
-PYTHONPATH=. mypy --check-untyped-defs --follow-untyped-imports src/$mod
+/usr/bin/pylint $mod/*.py $mod/*/*.py
+/usr/bin/pycodestyle --max-line-length=110 $mod/*.py $mod/*/*.py
+/usr/bin/mypy --check-untyped-defs --follow-untyped-imports $mod
 

@@ -65,12 +65,12 @@ and a DNS record.
 TLS Report DNS Record
 ---------------------
 
-   Example
+Example::
 
    _smtp._tls.example.org IN TXT "v=TLSRPTv1;rua=mailto:tlsrpt@example.com"
 
-   The TLS reports will be sent to the email provided by the string following *rua=*. 
-   In this example reports would be sent to *tlsrpt@example.com*.
+The TLS reports will be sent to the email provided by the string following *rua=*. 
+In this example reports would be sent to *tlsrpt@example.com*.
 
 MTA-STS 
 -------
@@ -132,13 +132,13 @@ when doing the next batch of dmarc reports.
 
 For example, you might save all .eml files in same directory and with config settings::
 
-        dir = "~/tlsrpt/reports"
-        inp_files_disp = "save"
-        inp_files_save_dir = "../saved"
+    dir = "~/tlsrpt/reports"
+    inp_files_disp = "save"
+    inp_files_save_dir = "../saved"
 
 Then save all the raw .eml files into ~/tlsrpt/reports and run ::
 
-        tls-rpt
+    tls-rpt
 
 All attachments from email reports would be saved into "~/tlsrpt/saved/2023-01"
 in this example. 
@@ -158,38 +158,16 @@ e.g. to set data report dir in config use ::
 
     dir = /foo/goo/other 
 
-The command line options are shown first in parens followed by 
-corresponding config in square brackets if available.
+The command line options::
 
- * (*-d, --dir*) [*dir = /some/path*]  
 
-   Allows specifying the directory with the dmarc report files to be processed.  
-   The directory holding the report files (.eml, .json, .gz or .zip)
-   By default, dir is the current directory.
-
- * (*-k, --keep*) [*keep = true*]  
-
-   Prevent the *.eml* being removed after the attached xml reports are extracted.
-
- * (*-thm, --theme* ) 
-
-   Report is now in color.
-   Default theme is 'dark'. Theme can be 'light' 'dark' or 'none', which turns off color report.
-
- * (*-ifd, --inp_file_disp*)
-
-   Input file disposition options one of : none,save,delete
-   If set to save then all input files (xml, compressed xml and any kept eml files) are moved
-   to directory specified by *inp_files_save_dir*.  
-
- * (*-ifsd, --inp_files_save_dir*)
-
-   When *inp_file_disp* is set, then input files are moved to this directory after report
-   is generated.  Files are saved by year-month under the save directory
-
- * (*-h, --help*) 
-
-   Help for command line options.
+    -h, --help                          show this help message and exit
+    -d, --dir DIR                       Directory containing dmarc report files (xxx)
+    -ifd, --inp_files_disp WHAT         none, delete, save: disposition of input files. See -ifsd (save)
+    -ifsd, --inp_files_save_dir DIR     When -ifd is save, input files moved here afer report (../saved)
+    -k, --keep                          Keep .eml files extracted from attachment (False)
+    -thm, --theme THEME                 Set color theme: dark, light, none (dark)
+    -v, --verb                          Be more verbose
 
 
 Saving Email Reports From Email Client
