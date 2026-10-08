@@ -6,14 +6,20 @@ Tags
 
 .. code-block:: text
 
-	0.6.0 (2023-01-01) -> 7.1.3, (2026-09-08)
-	145 commits.
+	0.6.0 (2023-01-01) -> 7.1.4 (2026-10-08)
+	146 commits.
 
 Commits
 =======
 
 
-* 2026-09-08  : **7.1.3,**
+* 2026-10-08  : **7.1.4**
+
+.. code-block:: text
+
+              - add Changes-recent.rst
+
+* 2026-09-08  : **7.1.3, origin/master**
 
 .. code-block:: text
 
