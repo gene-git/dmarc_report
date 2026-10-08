@@ -17,6 +17,13 @@ Public key is available via WKD or download from `sapience website <https://www.
 After key is on keyring use the PKGBUILD source line ending with *?signed*
 or manually verify using *git tag -v <tag-name>*
 
+Documentation
+=============
+
+The manual provides detailed information and is available in both HTML and PDF formats.
+Both are installed under */usr/share/dmarc_report/docs*.
+
+The manual is also available at: `readthedocs <https://dmarc-report.readthedocs.io>`_.
 
 Getting Started
 ===============

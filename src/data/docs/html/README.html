@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1. dmarc_report &mdash; dmarc-report 7.1.4
+  <title>1. dmarc_report &mdash; dmarc-report 7.1.5
  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=6241ee91"></script>
+      <script src="_static/documentation_options.js?v=c6396a88"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
@@ -48,14 +48,15 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">1. dmarc_report</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview">1.1. Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#getting-started">1.2. Getting Started</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#quick-start">1.2.1. Quick start</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#config-files">1.2.2. Config Files</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#dmarc-rpt">1.2.3. dmarc-rpt</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tls-rpt">1.2.4. tls-rpt</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#common-options">1.2.5. Common Options</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#dmarc-rpt-additional-options">1.2.6. dmarc-rpt Additional Options</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#saving-email-reports-from-email-client">1.2.7. Saving Email Reports From Email Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">1.2. Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">1.3. Getting Started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#quick-start">1.3.1. Quick start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config-files">1.3.2. Config Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dmarc-rpt">1.3.3. dmarc-rpt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tls-rpt">1.3.4. tls-rpt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#common-options">1.3.5. Common Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dmarc-rpt-additional-options">1.3.6. dmarc-rpt Additional Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#saving-email-reports-from-email-client">1.3.7. Saving Email Reports From Email Client</a></li>
 </ul>
 </li>
 </ul>
@@ -100,8 +101,14 @@ Public key is available via WKD or download from <a class="reference external" h
 After key is on keyring use the PKGBUILD source line ending with <em>?signed</em>
 or manually verify using <em>git tag -v &lt;tag-name&gt;</em></p>
 </section>
+<section id="documentation">
+<h2><span class="section-number">1.2. </span>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h2>
+<p>The manual provides detailed information and is available in both HTML and PDF formats.
+Both are installed under <em>/usr/share/dmarc_report/docs</em>.</p>
+<p>The manual is also available at: <a class="reference external" href="https://dmarc-report.readthedocs.io">readthedocs</a>.</p>
+</section>
 <section id="getting-started">
-<h2><span class="section-number">1.2. </span>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h2>
+<h2><span class="section-number">1.3. </span>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h2>
 <p>Save all DMARC or TLS-RPT reports into a directory. These are typically compressed xml/json files
 sent as email attachments. The saved reports can be :</p>
 <ul class="simple">
@@ -114,13 +121,13 @@ These are saved with <em>.mbox</em> extension.</p></li>
 <p><em>dmarc-rpt</em> and <em>tls-rpt</em> will extract the actual <strong>xml</strong> (<em>dmarc</em>) or <strong>json</strong> (tls-rpt) data
 from all of the above.</p>
 <section id="quick-start">
-<h3><span class="section-number">1.2.1. </span>Quick start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h3>
+<h3><span class="section-number">1.3.1. </span>Quick start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h3>
 <p>Save all emails with DMARC or TLS-RPT attachments to a directory, change into that directory and run
 either dmarc-rpt or tls-rpt as appropriate.</p>
 <p>It is generally more convenient to use a config file explained below.</p>
 </section>
 <section id="config-files">
-<h3><span class="section-number">1.2.2. </span>Config Files<a class="headerlink" href="#config-files" title="Link to this heading"></a></h3>
+<h3><span class="section-number">1.3.2. </span>Config Files<a class="headerlink" href="#config-files" title="Link to this heading"></a></h3>
 <p>Config files are read, in order, from directories:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/etc/dmarc_report/
 ~/.config/dmarc_report/
@@ -171,7 +178,7 @@ or <em>~/mail-reports/tls/saved</em>.</p>
 See <em>Options</em> section for more detail.</p>
 </section>
 <section id="dmarc-rpt">
-<h3><span class="section-number">1.2.3. </span>dmarc-rpt<a class="headerlink" href="#dmarc-rpt" title="Link to this heading"></a></h3>
+<h3><span class="section-number">1.3.3. </span>dmarc-rpt<a class="headerlink" href="#dmarc-rpt" title="Link to this heading"></a></h3>
 <p>Change to the directory containing the one or more dmarc report files and simply run</p>
 <blockquote>
 <div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dmarc-rpt
@@ -200,12 +207,12 @@ when doing the next batch of dmarc reports.</p>
 in this example.</p>
 </section>
 <section id="tls-rpt">
-<h3><span class="section-number">1.2.4. </span>tls-rpt<a class="headerlink" href="#tls-rpt" title="Link to this heading"></a></h3>
+<h3><span class="section-number">1.3.4. </span>tls-rpt<a class="headerlink" href="#tls-rpt" title="Link to this heading"></a></h3>
 <p>tls-rpt works in a similar way to dmarc-rpt, except it operates on TLS-RPT (compressed) xml inputs.</p>
 <p>Command line options:</p>
 </section>
 <section id="common-options">
-<h3><span class="section-number">1.2.5. </span>Common Options<a class="headerlink" href="#common-options" title="Link to this heading"></a></h3>
+<h3><span class="section-number">1.3.5. </span>Common Options<a class="headerlink" href="#common-options" title="Link to this heading"></a></h3>
 <p>These apply to both dmarc-rpt and tls-rpt:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-h, --help                          show this help message and exit
 -d, --dir DIR                       Directory containing dmarc report files (xxx)
@@ -218,7 +225,7 @@ in this example.</p>
 </div>
 </section>
 <section id="dmarc-rpt-additional-options">
-<h3><span class="section-number">1.2.6. </span>dmarc-rpt Additional Options<a class="headerlink" href="#dmarc-rpt-additional-options" title="Link to this heading"></a></h3>
+<h3><span class="section-number">1.3.6. </span>dmarc-rpt Additional Options<a class="headerlink" href="#dmarc-rpt-additional-options" title="Link to this heading"></a></h3>
 <p>In addition to the common options:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-ips, --dom_ips NUM                 Comma separated list of IPs / CIDRs for your own domains
 -fdm, --dmarc_fails                 DMARC Report - limit to failures
@@ -236,7 +243,7 @@ in this example.</p>
 </div>
 </section>
 <section id="saving-email-reports-from-email-client">
-<h3><span class="section-number">1.2.7. </span>Saving Email Reports From Email Client<a class="headerlink" href="#saving-email-reports-from-email-client" title="Link to this heading"></a></h3>
+<h3><span class="section-number">1.3.7. </span>Saving Email Reports From Email Client<a class="headerlink" href="#saving-email-reports-from-email-client" title="Link to this heading"></a></h3>
 <p>In most mail clients, such as thunderbird,  one can select multiple email reports and
 then use <em>File -&gt; Save As</em> to save the email files into a directory of your choosing.
 Each email gets saved with a <em>.eml</em> extension.</p>
